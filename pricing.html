@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Alielenglish qiymət planları - Sizə uyğun paketi seçin və öyrənməyə başlayın">
+    <meta name="keywords" content="qiymətlər, pricing, premium plan, ingilis dili kurs">
+    <link rel="canonical" href="https://aliel2023.github.io/English2/pricing.html">
+    <title>Qiymətlər - Alielenglish</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/pricing.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="main-nav">
+            <div class="nav-container">
+                <div class="logo-section">
+                    <div class="logo"><span class="logo-icon">A</span></div>
+                    <span class="brand-name">Alielenglish</span>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
+                    <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
+                    <li><a href="speaking.html" data-i18n="nav.speaking">Danışıq Pratikası</a></li>
+                    <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
+                    <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
+                    <li><a href="pricing.html" class="active" data-i18n="nav.pricing">Qiymətlər</a></li>
+                    <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="lang-dropdown nav-item">
+                        <button class="lang-btn current-lang" id="currentLangBtn"
+                            onclick="toggleLangDropdown()">AZ</button>
+                        <div class="lang-menu" id="langMenu">
+                            <button class="lang-option" onclick="switchLanguage('az', event)">AZ</button>
+                            <button class="lang-option" onclick="switchLanguage('en', event)">EN</button>
+                        </div>
+                    </div>
+                    <button class="mobile-toggle" onclick="toggleMobileMenu()">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="pricing-hero">
+        <div class="container">
+            <h1 class="section-title" data-i18n="pricing.title">Sizə Uyğun Planı Seçin</h1>
+            <p class="pricing-subtitle" data-i18n="pricing.subtitle">Hər səviyyə və büdcə üçün ideal həll. İstənilən
+                vaxt ləğv edə bilərsiniz.</p>
+
+            <div class="toggle-switch">
+                <span class="toggle-label" data-i18n="pricing.monthly">Aylıq</span>
+                <label class="switch">
+                    <input type="checkbox" id="billingToggle" onchange="toggleBilling()">
+                    <span class="slider"></span>
+                </label>
+                <span class="toggle-label">
+                    <span data-i18n="pricing.yearly">İllik</span>
+                    <span class="save-badge" data-i18n="pricing.saveBadge">20% QƏNAƏT</span>
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing-plans">
+        <div class="container">
+            <div class="plans-grid">
+                <!-- Free Plan -->
+                <div class="pricing-card">
+                    <h3 data-i18n="pricing.planFree">Pulsuz</h3>
+                    <div class="price">
+                        <span class="price-amount">0</span>
+                        <span class="price-currency">AZN</span>
+                    </div>
+                    <p class="plan-period">/ həmişəlik</p>
+                    <ul class="features-list">
+                        <li>✓ <span data-i18n="pricing.feature1">Günün sözü</span></li>
+                        <li>✓ 10 pulsuz PDF</li>
+                        <li>✓ <span data-i18n="pricing.feature2">Səviyyə testi</span></li>
+                        <li>✓ <span data-i18n="pricing.feature3">Əsas qrammatika</span></li>
+                        <li>✗ Video dərslər</li>
+                        <li>✗ Sertifikat</li>
+                    </ul>
+                    <button class="btn btn-secondary" onclick="openEmailModal()"
+                        data-i18n="pricing.btnStart">Başla</button>
+                </div>
+
+                <!-- Premium Plan -->
+                <div class="pricing-card featured">
+                    <div class="popular-badge" data-i18n="pricing.mostPopular">ƏN POPULYAR</div>
+                    <h3 data-i18n="pricing.planPremium">Premium</h3>
+                    <div class="price">
+                        <span class="price-amount monthly-price">25</span>
+                        <span class="price-amount yearly-price hidden">240</span>
+                        <span class="price-currency">AZN</span>
+                    </div>
+                    <p class="plan-period monthly-period" data-i18n="pricing.perMonth">/ ay</p>
+                    <p class="plan-period yearly-period hidden" data-i18n="pricing.perYear">/ il (20 AZN/ay)</p>
+                    <ul class="features-list">
+                        <li>✓ Bütün pulsuz xüsusiyyətlər</li>
+                        <li>✓ 500+ premium PDF</li>
+                        <li>✓ 100+ video dərs</li>
+                        <li>✓ Flashcard sistemi</li>
+                        <li>✓ Audio təlləffüz</li>
+                        <li>✓ Prioritet dəstək</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="selectPlan('Premium', '25 AZN', 'aylıq')"
+                        data-i18n="pricing.btnSelect">Seç</button>
+                </div>
+
+                <!-- Professional Plan -->
+                <div class="pricing-card">
+                    <h3 data-i18n="pricing.planProfessional">Professional</h3>
+                    <div class="price">
+                        <span class="price-amount monthly-price">45</span>
+                        <span class="price-amount yearly-price hidden">432</span>
+                        <span class="price-currency">AZN</span>
+                    </div>
+                    <p class="plan-period monthly-period" data-i18n="pricing.perMonth">/ ay</p>
+                    <p class="plan-period yearly-period hidden" data-i18n="pricing.perYear">/ il (36 AZN/ay)</p>
+                    <ul class="features-list">
+                        <li>✓ Bütün Premium xüsusiyyətlər</li>
+                        <li>✓ 1000+ premium material</li>
+                        <li>✓ Limitsiz video dərs</li>
+                        <li>✓ 1-on-1 mentor dəstəyi</li>
+                        <li>✓ Rəsmi sertifikat</li>
+                        <li>✓ IELTS hazırlıq</li>
+                    </ul>
+                    <button class="btn btn-secondary" onclick="selectPlan('Professional', '45 AZN', 'aylıq')"
+                        data-i18n="pricing.btnSelect">Seç</button>
+                </div>
+            </div>
+
+            <div class="pricing-note">
+                <p>💳 Təhlükəsiz ödəniş - Stripe tərəfindən qorunur</p>
+                <p>🔄 30 gün geri qaytarma zəmanəti</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title" data-i18n="pricing.faqTitle">❓ Tez-tez Verilən Suallar</h2>
+            <div class="faq-accordion">
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <h3>Necə qeydiyyatdan keçə bilərəm?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ana səhifədəki "Pulsuz Başla" düyməsinə klikləyərək email ünvanınızı daxil edin.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <h3>Ödənişləri necə edə bilərəm?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Biz banka kartları (Visa, Mastercard), PayPal və yerli ödəniş sistemlərini qəbul edirik.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <h3>Premium abunəliyi ləğv edə bilərəmmi?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Bəli, istənilən vaxt ləğv edə bilərsiniz. Heç bir gizli ödəniş yoxdur.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <h3>Sertifikat beynəlxalq tanınırmı?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Professional plandakı sertifikatımız CEFR standartlarına uyğundur.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Alielenglish</h4>
+                    <p data-i18n="footer.about">2023-dən bəri minlərlə tələbəyə keyfiyyətli ingilis dili təhsili təqdim
+                        edirik.</p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/alielenglish" target="_blank" class="social-link" rel="noopener"
+                            title="Instagram">
+                            <img src="assets/instagram-1-svgrepo-com.svg" alt="Instagram">
+                        </a>
+                        <a href="https://t.me/alielenglish" target="_blank" class="social-link" rel="noopener"
+                            title="Telegram">
+                            <img src="assets/telegram-svgrepo-com.svg" alt="Telegram">
+                        </a>
+                        <a href="mailto:englishaliel@gmail.com" class="social-link" title="Gmail">
+                            <img src="assets/gmail-icon-logo-svgrepo-com.svg" alt="Email">
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4 data-i18n="footer.links">Keçidlər</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
+                        <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
+                        <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
+                        <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 data-i18n="footer.support">Dəstək</h4>
+                    <ul class="footer-links">
+                        <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
+                        <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#privacy">Məxfilik</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 data-i18n="footer.newsletter">Xəbər Bülleteni</h4>
+                    <p data-i18n="footer.newsletterDesc">Gündəlik dərs və xüsusi təkliflərdən xəbərdar olun</p>
+                    <button class="btn btn-primary btn-sm" onclick="openEmailModal()"
+                        data-i18n="footer.btnSubscribe">Abunə Ol</button>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. Bütün hüquqlar qorunur.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="emailModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeEmailModal()">&times;</button>
+            <h2 data-i18n="modal.welcome">🎉 Xoş gəlmisiniz!</h2>
+            <p data-i18n="modal.subtitle">Pulsuz e-kitab və bonus materiallar əldə etmək üçün qeydiyyatdan keçin</p>
+            <form id="emailForm" class="modal-form">
+                <input type="text" id="userName" name="name" data-i18n="modal.inputName" placeholder="Adınız" required>
+                <input type="email" id="userEmail" name="email" data-i18n="modal.inputEmail"
+                    placeholder="Email ünvanınız" required>
+                <button type="submit" class="btn btn-primary" data-i18n="modal.btnSend">Göndər</button>
+            </form>
+            <p class="privacy-note" data-i18n="modal.privacy">🔒 Məlumatlarınız təhlükəsizdir və paylaşılmır</p>
+        </div>
+    </div>
+
+    <script src="scripts/i18n.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/pricing.js"></script>
+</body>
+
+</html>

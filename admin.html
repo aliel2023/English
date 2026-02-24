@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — Alielenglish</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="styles/admin.css">
+</head>
+
+<body>
+
+    <!-- ===== ACCESS DENIED (Firebase auth yoxlanana qədər) ===== -->
+    <div id="accessDenied" class="access-denied">
+        <div class="admin-spinner"></div>
+        <p style="color:#888">Giriş yoxlanılır...</p>
+    </div>
+
+    <!-- ===== ADMIN LAYOUT ===== -->
+    <div id="adminApp" class="admin-layout" style="display:none;">
+
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-icon">A</div>
+                <div>
+                    <div class="logo-text">Alielenglish</div>
+                    <div class="logo-badge">ADMIN</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">Əsas</div>
+                <div class="sidebar-nav-item active" onclick="showPanel('dashboard')">
+                    <span class="nav-icon">📊</span> İcmal
+                </div>
+                <div class="sidebar-nav-item" onclick="showPanel('users')">
+                    <span class="nav-icon">👥</span> İstifadəçilər
+                    <span class="nav-badge" id="usersCount">0</span>
+                </div>
+                <div class="sidebar-nav-item" onclick="showPanel('leads')">
+                    <span class="nav-icon">📬</span> Leads
+                    <span class="nav-badge" id="leadsCount">0</span>
+                </div>
+
+                <div class="nav-section-label" style="margin-top:0.5rem;">Analitika</div>
+                <div class="sidebar-nav-item" onclick="showPanel('progress')">
+                    <span class="nav-icon">📈</span> İrəliləyiş
+                </div>
+                <div class="sidebar-nav-item" onclick="showPanel('levels')">
+                    <span class="nav-icon">🎓</span> Səviyyələr
+                </div>
+
+                <div class="nav-section-label" style="margin-top:0.5rem;">Sistem</div>
+                <a href="index.html" class="sidebar-nav-item">
+                    <span class="nav-icon">🌐</span> Sayta Qayıt
+                </a>
+                <div class="sidebar-nav-item" onclick="confirmLogout()" style="color:#ff4757;">
+                    <span class="nav-icon">🚪</span> Çıxış
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="admin-user">
+                    <div class="admin-avatar" id="sidebarAvatar">A</div>
+                    <div>
+                        <div class="admin-name" id="sidebarName">Admin</div>
+                        <div class="admin-role">👑 Administrator</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="admin-main">
+            <div class="admin-topbar">
+                <div>
+                    <div class="topbar-title" id="panelTitle">📊 İcmal</div>
+                    <div class="topbar-subtitle" id="lastRefresh">Yüklənir...</div>
+                </div>
+                <div class="topbar-actions">
+                    <button class="topbar-refresh-btn" onclick="refreshCurrentPanel()">
+                        🔄 Yenilə
+                    </button>
+                </div>
+            </div>
+
+            <div class="admin-content">
+
+                <!-- ===== DASHBOARD PANEL ===== -->
+                <div id="panel-dashboard" class="admin-panel active">
+                    <div class="admin-stats-grid" id="statsGrid">
+                        <div class="admin-loading">
+                            <div class="admin-spinner"></div>
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.5rem;">
+                        <!-- Recent Users -->
+                        <div class="admin-table-card">
+                            <div class="table-header">
+                                <div class="table-title">👤 Son Qeydiyyatlar</div>
+                            </div>
+                            <div id="recentUsers">
+                                <div class="admin-loading">
+                                    <div class="admin-spinner"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Recent Leads -->
+                        <div class="admin-table-card">
+                            <div class="table-header">
+                                <div class="table-title">📬 Son Leads</div>
+                            </div>
+                            <div id="recentLeadsList">
+                                <div class="admin-loading">
+                                    <div class="admin-spinner"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Level Distribution -->
+                    <div class="admin-table-card">
+                        <div class="table-header">
+                            <div class="table-title">🎓 Səviyyə Paylanması</div>
+                        </div>
+                        <div id="levelDistribution" style="padding:1.5rem;">
+                            <div class="admin-loading">
+                                <div class="admin-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== USERS PANEL ===== -->
+                <div id="panel-users" class="admin-panel">
+                    <div class="admin-table-card">
+                        <div class="table-header">
+                            <div class="table-title">👥 Bütün İstifadəçilər</div>
+                            <input type="text" class="table-search" id="userSearchInput"
+                                placeholder="Ad, email axtar..." oninput="filterUsersTable()">
+                        </div>
+                        <div class="admin-table-wrap">
+                            <table class="admin-table" id="usersTable">
+                                <thead>
+                                    <tr>
+                                        <th>İstifadəçi</th>
+                                        <th>Səviyyə</th>
+                                        <th>Rol</th>
+                                        <th>Streak 🔥</th>
+                                        <th>Testlər</th>
+                                        <th>Qeydiyyat</th>
+                                        <th>Əməliyyat</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody">
+                                    <tr>
+                                        <td colspan="7">
+                                            <div class="admin-loading">
+                                                <div class="admin-spinner"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== LEADS PANEL ===== -->
+                <div id="panel-leads" class="admin-panel">
+                    <div class="admin-table-card">
+                        <div class="table-header">
+                            <div class="table-title">📬 Bütün Leads (Newsletter)</div>
+                            <input type="text" class="table-search" id="leadSearchInput"
+                                placeholder="Ad, email axtar..." oninput="filterLeadsTable()">
+                        </div>
+                        <div class="admin-table-wrap">
+                            <table class="admin-table" id="leadsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Ad</th>
+                                        <th>Email</th>
+                                        <th>Səviyyə</th>
+                                        <th>Mənbə</th>
+                                        <th>Tarix</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="leadsTableBody">
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="admin-loading">
+                                                <div class="admin-spinner"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== PROGRESS PANEL ===== -->
+                <div id="panel-progress" class="admin-panel">
+                    <div class="admin-table-card">
+                        <div class="table-header">
+                            <div class="table-title">📈 İstifadəçi İrəliləyişi</div>
+                        </div>
+                        <div class="admin-table-wrap">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>İstifadəçi</th>
+                                        <th>Cari Streak</th>
+                                        <th>Ən Uzun Streak</th>
+                                        <th>Aktiv Gün</th>
+                                        <th>Testlər</th>
+                                        <th>Sevimlilər</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="progressTableBody">
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="admin-loading">
+                                                <div class="admin-spinner"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== LEVELS PANEL ===== -->
+                <div id="panel-levels" class="admin-panel">
+                    <div id="levelsContent">
+                        <div class="admin-loading">
+                            <div class="admin-spinner"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /admin-content -->
+        </main>
+    </div>
+
+    <!-- ===== USER DETAIL MODAL ===== -->
+    <div id="userDetailModal"
+        style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem;">
+        <div
+            style="background:#1a1a24;border:1px solid rgba(255,255,255,0.08);border-radius:20px;max-width:480px;width:100%;padding:2rem;max-height:80vh;overflow-y:auto;position:relative;">
+            <button onclick="closeUserModal()"
+                style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:#888;font-size:1.5rem;cursor:pointer;">&times;</button>
+            <div id="userModalContent"></div>
+        </div>
+    </div>
+
+    <!-- Firebase Module -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import {
+            getFirestore, collection, getDocs, doc, getDoc,
+            query, orderBy, limit, deleteDoc, updateDoc, where, Timestamp
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCxRMtHyTwee7cQuxcJ1eAWibxcyoUKIIs",
+            authDomain: "alielenglish.firebaseapp.com",
+            projectId: "alielenglish",
+            storageBucket: "alielenglish.firebasestorage.app",
+            messagingSenderId: "521948914743",
+            appId: "1:521948914743:web:613373aaadfe3addedcbb2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ===== Cache =====
+        let allUsersCache = [];
+        let allLeadsCache = [];
+
+        // ===== HTML Escape =====
+        function esc(s) {
+            return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // ===== Date Format =====
+        function fmtDate(val) {
+            if (!val) return '—';
+            if (val && typeof val.toDate === 'function') return val.toDate().toLocaleDateString('az-AZ');
+            const d = new Date(val);
+            return isNaN(d) ? '—' : d.toLocaleDateString('az-AZ');
+        }
+
+        // ===== Auth Guard =====
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                showAccessDenied('Daxil olmamısınız. <a href="index.html" style="color:#6c63ff">Ana Səhifə</a>');
+                return;
+            }
+
+            // Check admin role from Firestore
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (!userDoc.exists() || userDoc.data().role !== 'admin') {
+                showAccessDenied('Bu səhifəyə giriş icazəniz yoxdur. Yalnız admin daxil ola bilər.');
+                return;
+            }
+
+            // Access granted
+            const userData = userDoc.data();
+            document.getElementById('accessDenied').style.display = 'none';
+            document.getElementById('adminApp').style.display = 'grid';
+            document.getElementById('sidebarAvatar').textContent = (userData.name || 'A').charAt(0).toUpperCase();
+            document.getElementById('sidebarName').textContent = userData.name || 'Admin';
+
+            // Load initial data
+            await Promise.all([loadAllUsers(), loadAllLeads()]);
+            loadDashboard();
+
+            // Expose data loading functions to global scope
+            window._db = db;
+            window._allUsersCache = allUsersCache;
+            window._allLeadsCache = allLeadsCache;
+            window._auth = auth;
+            window._signOut = signOut;
+            window._deleteDoc = deleteDoc;
+            window._doc = doc;
+            window._fmtDate = fmtDate;
+            window._esc = esc;
+        });
+
+        // ===== Load All Users =====
+        async function loadAllUsers() {
+            try {
+                const snap = await getDocs(query(collection(db, "users"), orderBy("createdAt", "desc")));
+                allUsersCache = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
+                window._allUsersCache = allUsersCache;
+
+                document.getElementById('usersCount').textContent = allUsersCache.length;
+                renderUsersTable(allUsersCache);
+                renderProgressTable(allUsersCache);
+                return allUsersCache;
+            } catch (e) {
+                console.error('loadAllUsers error:', e);
+                return [];
+            }
+        }
+
+        // ===== Load All Leads =====
+        async function loadAllLeads() {
+            try {
+                const snap = await getDocs(query(collection(db, "leads"), orderBy("createdAt", "desc")));
+                allLeadsCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                window._allLeadsCache = allLeadsCache;
+
+                document.getElementById('leadsCount').textContent = allLeadsCache.length;
+                renderLeadsTable(allLeadsCache);
+                return allLeadsCache;
+            } catch (e) {
+                console.error('loadAllLeads error:', e);
+                return [];
+            }
+        }
+
+        // ===== DASHBOARD =====
+        function loadDashboard() {
+            const users = allUsersCache;
+            const leads = allLeadsCache;
+
+            // Stats
+            const totalTests = users.reduce((s, u) => s + (u.testHistory || []).length, 0);
+            const avgStreak = users.length ? Math.round(users.reduce((s, u) => s + (u.currentStreak || 0), 0) / users.length) : 0;
+            const activeToday = users.filter(u => u.lastActiveDate === new Date().toDateString()).length;
+
+            document.getElementById('statsGrid').innerHTML = `
+        <div class="admin-stat-card blue">
+            <span class="stat-icon">👥</span>
+            <div class="stat-value">${users.length}</div>
+            <div class="stat-label">Ümumi İstifadəçi</div>
+        </div>
+        <div class="admin-stat-card green">
+            <span class="stat-icon">🟢</span>
+            <div class="stat-value">${activeToday}</div>
+            <div class="stat-label">Bu gün aktiv</div>
+        </div>
+        <div class="admin-stat-card orange">
+            <span class="stat-icon">📬</span>
+            <div class="stat-value">${leads.length}</div>
+            <div class="stat-label">Leads</div>
+        </div>
+        <div class="admin-stat-card purple">
+            <span class="stat-icon">🎯</span>
+            <div class="stat-value">${totalTests}</div>
+            <div class="stat-label">Test sayı (cəmi)</div>
+        </div>
+        <div class="admin-stat-card red">
+            <span class="stat-icon">🔥</span>
+            <div class="stat-value">${avgStreak}</div>
+            <div class="stat-label">Ortalama Streak</div>
+        </div>
+    `;
+
+            // Recent Users
+            const recent5 = users.slice(0, 5);
+            document.getElementById('recentUsers').innerHTML = recent5.length ? recent5.map(u => `
+        <div class="lead-item">
+            <div class="table-avatar">${esc((u.name || '?').charAt(0).toUpperCase())}</div>
+            <div class="lead-info">
+                <div class="lead-name">${esc(u.name || '—')}</div>
+                <div class="lead-email">${esc(u.email || '—')}</div>
+            </div>
+            <span class="level-badge">${esc(u.level || 'A1')}</span>
+        </div>
+    `).join('') : '<div class="admin-empty"><div class="empty-icon">👤</div><p>İstifadəçi yoxdur</p></div>';
+
+            // Recent Leads
+            const recent5L = leads.slice(0, 5);
+            document.getElementById('recentLeadsList').innerHTML = recent5L.length ? recent5L.map(l => `
+        <div class="lead-item">
+            <div class="lead-avatar">${esc((l.name || '?').charAt(0).toUpperCase())}</div>
+            <div class="lead-info">
+                <div class="lead-name">${esc(l.name || '—')}</div>
+                <div class="lead-email">${esc(l.email || '—')}</div>
+            </div>
+            <div class="lead-date">${fmtDate(l.createdAt)}</div>
+        </div>
+    `).join('') : '<div class="admin-empty"><div class="empty-icon">📬</div><p>Lead yoxdur</p></div>';
+
+            // Level Distribution
+            const levels = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 };
+            users.forEach(u => { if (levels[u.level] !== undefined) levels[u.level]++; });
+            const maxL = Math.max(...Object.values(levels), 1);
+            document.getElementById('levelDistribution').innerHTML = `
+        <div style="display:flex;gap:1rem;align-items:flex-end;height:120px;">
+            ${Object.entries(levels).map(([lvl, cnt]) => `
+                <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:0.4rem;">
+                    <div style="font-size:0.75rem;font-weight:700;color:#f0f0f5;">${cnt}</div>
+                    <div style="width:100%;background:#6c63ff;border-radius:6px 6px 0 0;height:${Math.max(8, (cnt / maxL) * 80)}px;transition:height 0.5s;"></div>
+                    <div style="font-size:0.7rem;font-weight:700;color:#888898;">${lvl}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+            // Update last refresh
+            document.getElementById('lastRefresh').textContent = `Son yenilənmə: ${new Date().toLocaleTimeString('az-AZ')}`;
+        }
+
+        // ===== USERS TABLE =====
+        function renderUsersTable(users) {
+            const tbody = document.getElementById('usersTableBody');
+            if (!users.length) {
+                tbody.innerHTML = '<tr><td colspan="7"><div class="admin-empty"><div class="empty-icon">👤</div><p>İstifadəçi tapılmadı</p></div></td></tr>';
+                return;
+            }
+            tbody.innerHTML = users.map(u => `
+        <tr>
+            <td>
+                <div class="user-cell">
+                    <div class="table-avatar">${esc((u.name || '?').charAt(0).toUpperCase())}</div>
+                    <div class="user-info">
+                        <div class="user-name-t">${esc(u.name || '—')}</div>
+                        <div class="user-email-t">${esc(u.email || '—')}</div>
+                    </div>
+                </div>
+            </td>
+            <td><span class="level-badge">${esc(u.level || 'A1')}</span></td>
+            <td><span class="role-badge ${u.role === 'admin' ? 'admin' : 'user'}">${u.role === 'admin' ? '👑 Admin' : '👤 User'}</span></td>
+            <td><span class="streak-pill">🔥 ${u.currentStreak || 0}</span></td>
+            <td>${(u.testHistory || []).length}</td>
+            <td>${fmtDate(u.createdAt)}</td>
+            <td style="display:flex;gap:0.4rem;">
+                <button class="action-btn view" onclick="openUserDetail('${esc(u.uid)}')">👁 Bax</button>
+            </td>
+        </tr>
+    `).join('');
+        }
+
+        // ===== LEADS TABLE =====
+        function renderLeadsTable(leads) {
+            const tbody = document.getElementById('leadsTableBody');
+            if (!leads.length) {
+                tbody.innerHTML = '<tr><td colspan="5"><div class="admin-empty"><div class="empty-icon">📬</div><p>Lead tapılmadı</p></div></td></tr>';
+                return;
+            }
+            tbody.innerHTML = leads.map(l => `
+        <tr>
+            <td><strong>${esc(l.name || '—')}</strong></td>
+            <td>${esc(l.email || '—')}</td>
+            <td>${l.level ? `<span class="level-badge">${esc(l.level)}</span>` : '—'}</td>
+            <td style="font-size:0.78rem;color:#888;">${esc(l.source || '/')}</td>
+            <td>${fmtDate(l.createdAt)}</td>
+        </tr>
+    `).join('');
+        }
+
+        // ===== PROGRESS TABLE =====
+        function renderProgressTable(users) {
+            const tbody = document.getElementById('progressTableBody');
+            if (!users.length) {
+                tbody.innerHTML = '<tr><td colspan="6"><div class="admin-empty"><p>Məlumat yoxdur</p></div></td></tr>';
+                return;
+            }
+            const sorted = [...users].sort((a, b) => (b.currentStreak || 0) - (a.currentStreak || 0));
+            tbody.innerHTML = sorted.map(u => `
+        <tr>
+            <td>
+                <div class="user-cell">
+                    <div class="table-avatar" style="width:28px;height:28px;font-size:0.75rem;">${esc((u.name || '?').charAt(0).toUpperCase())}</div>
+                    <div class="user-info">
+                        <div class="user-name-t" style="font-size:0.82rem;">${esc(u.name || '—')}</div>
+                    </div>
+                </div>
+            </td>
+            <td>🔥 ${u.currentStreak || 0}</td>
+            <td>🏆 ${u.longestStreak || 0}</td>
+            <td>${u.activeDays || 0}</td>
+            <td>${(u.testHistory || []).length}</td>
+            <td>${((u.favorites && u.favorites.words) || []).length}</td>
+        </tr>
+    `).join('');
+        }
+
+        // ===== LEVELS PANEL =====
+        function loadLevelsPanel() {
+            const users = allUsersCache;
+            const levels = { A1: [], A2: [], B1: [], B2: [], C1: [], C2: [] };
+            users.forEach(u => { if (levels[u.level]) levels[u.level].push(u); });
+
+            document.getElementById('levelsContent').innerHTML = Object.entries(levels).map(([lvl, uList]) => `
+        <div class="admin-table-card" style="margin-bottom:1.25rem;">
+            <div class="table-header">
+                <div class="table-title">
+                    <span class="level-badge">${lvl}</span>
+                    &nbsp;${lvl} Səviyyəsi — ${uList.length} istifadəçi
+                </div>
+            </div>
+            ${uList.length === 0 ? `<div class="admin-empty"><p>Bu səviyyədə istifadəçi yoxdur</p></div>` : `
+            <div style="padding:0.5rem 0;">
+                ${uList.slice(0, 5).map(u => `
+                    <div class="lead-item">
+                        <div class="table-avatar" style="width:30px;height:30px;font-size:0.8rem;">${esc((u.name || '?').charAt(0).toUpperCase())}</div>
+                        <div class="lead-info">
+                            <div class="lead-name">${esc(u.name || '—')}</div>
+                            <div class="lead-email">${esc(u.email || '—')}</div>
+                        </div>
+                        <span style="font-size:0.75rem;color:#888;">🔥${u.currentStreak || 0}</span>
+                    </div>
+                `).join('')}
+                ${uList.length > 5 ? `<div style="text-align:center;padding:0.75rem;color:#888;font-size:0.8rem;">+${uList.length - 5} daha çox</div>` : ''}
+            </div>`}
+        </div>
+    `).join('');
+        }
+
+        // ===== USER DETAIL MODAL =====
+        window.openUserDetail = function (uid) {
+            const u = allUsersCache.find(u => u.uid === uid);
+            if (!u) return;
+
+            document.getElementById('userModalContent').innerHTML = `
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+            <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#6c63ff,#a855f7);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;">
+                ${esc((u.name || '?').charAt(0).toUpperCase())}
+            </div>
+            <div>
+                <div style="font-size:1.1rem;font-weight:700;">${esc(u.name || '—')}</div>
+                <div style="color:#888;font-size:0.85rem;">${esc(u.email || '—')}</div>
+                <div style="margin-top:0.3rem;display:flex;gap:0.5rem;">
+                    <span class="level-badge">${esc(u.level || 'A1')}</span>
+                    <span class="role-badge ${u.role === 'admin' ? 'admin' : 'user'}">${u.role === 'admin' ? '👑 Admin' : '👤 User'}</span>
+                </div>
+            </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.25rem;">
+            ${[
+                    ['🔥 Streak', u.currentStreak || 0],
+                    ['🏆 Ən Uzun', u.longestStreak || 0],
+                    ['📅 Aktiv Gün', u.activeDays || 0],
+                    ['🎯 Testlər', (u.testHistory || []).length],
+                    ['❤️ Sevimlilər', ((u.favorites && u.favorites.words) || []).length],
+                    ['📅 Qeydiyyat', fmtDate(u.createdAt)],
+                ].map(([l, v]) => `
+                <div style="background:#13131a;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:0.75rem;">
+                    <div style="font-size:0.75rem;color:#888;margin-bottom:0.2rem;">${l}</div>
+                    <div style="font-size:1rem;font-weight:700;">${v}</div>
+                </div>
+            `).join('')}
+        </div>
+        ${u.testHistory && u.testHistory.length ? `
+            <div>
+                <div style="font-size:0.85rem;font-weight:600;margin-bottom:0.5rem;color:#888;">Test Tarixçəsi (son 3)</div>
+                ${[...u.testHistory].reverse().slice(0, 3).map(t => `
+                    <div style="background:#13131a;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:0.6rem 0.9rem;margin-bottom:0.4rem;display:flex;justify-content:space-between;font-size:0.82rem;">
+                        <span>${esc(t.level)} — ${t.score || 0}/${t.total || 0}</span>
+                        <span style="color:#888;">${fmtDate(t.date)}</span>
+                    </div>
+                `).join('')}
+            </div>
+        ` : ''}
+    `;
+
+            const modal = document.getElementById('userDetailModal');
+            modal.style.display = 'flex';
+        };
+
+        // ===== EXPOSE GLOBALS =====
+        window.loadDashboard = loadDashboard;
+        window.loadLevelsPanel = loadLevelsPanel;
+        window.loadAllUsers = loadAllUsers;
+        window.loadAllLeads = loadAllLeads;
+        window.renderUsersTable = renderUsersTable;
+        window.renderLeadsTable = renderLeadsTable;
+
+        // Filter functions
+        window.filterUsersTable = function () {
+            const q = document.getElementById('userSearchInput').value.toLowerCase();
+            const filtered = allUsersCache.filter(u =>
+                (u.name || '').toLowerCase().includes(q) ||
+                (u.email || '').toLowerCase().includes(q)
+            );
+            renderUsersTable(filtered);
+        };
+
+        window.filterLeadsTable = function () {
+            const q = document.getElementById('leadSearchInput').value.toLowerCase();
+            const filtered = allLeadsCache.filter(l =>
+                (l.name || '').toLowerCase().includes(q) ||
+                (l.email || '').toLowerCase().includes(q)
+            );
+            renderLeadsTable(filtered);
+        };
+
+        window.confirmLogout = async function () {
+            if (confirm('Admin paneldən çıxmaq istəyirsiniz?')) {
+                await signOut(auth);
+                window.location.href = 'index.html';
+            }
+        };
+
+    </script>
+
+    <script>
+        // ===== NON-MODULE GLOBALS =====
+        let currentPanel = 'dashboard';
+
+        function showPanel(name) {
+            document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.sidebar-nav-item').forEach(i => i.classList.remove('active'));
+            event && event.currentTarget && event.currentTarget.classList.add('active');
+
+            const titles = {
+                dashboard: '📊 İcmal',
+                users: '👥 İstifadəçilər',
+                leads: '📬 Leads',
+                progress: '📈 İrəliləyiş',
+                levels: '🎓 Səviyyələr'
+            };
+
+            document.getElementById(`panel-${name}`).classList.add('active');
+            document.getElementById('panelTitle').textContent = titles[name] || name;
+            currentPanel = name;
+
+            if (name === 'levels' && typeof window.loadLevelsPanel === 'function') {
+                window.loadLevelsPanel();
+            }
+        }
+
+        function refreshCurrentPanel() {
+            if (typeof window.loadAllUsers === 'function') {
+                window.loadAllUsers().then(() => {
+                    if (currentPanel === 'dashboard' && typeof window.loadDashboard === 'function') {
+                        window.loadDashboard();
+                    }
+                    if (currentPanel === 'levels' && typeof window.loadLevelsPanel === 'function') {
+                        window.loadLevelsPanel();
+                    }
+                });
+            }
+            if (typeof window.loadAllLeads === 'function') {
+                window.loadAllLeads();
+            }
+        }
+
+        function showAccessDenied(msg) {
+            document.getElementById('accessDenied').innerHTML = `
+        <div class="icon">🔒</div>
+        <h1>Giriş Rədd Edildi</h1>
+        <p>${msg}</p>
+        <a href="index.html" style="margin-top:1rem;display:inline-block;background:#6c63ff;color:white;padding:0.75rem 1.5rem;border-radius:10px;text-decoration:none;font-weight:600;">Ana Səhifəyə Qayıt</a>
+    `;
+            document.getElementById('accessDenied').style.display = 'flex';
+            document.getElementById('accessDenied').className = 'access-denied';
+        }
+
+        function closeUserModal() {
+            document.getElementById('userDetailModal').style.display = 'none';
+        }
+
+        // Close modal on backdrop click
+        document.getElementById('userDetailModal').addEventListener('click', function (e) {
+            if (e.target === this) closeUserModal();
+        });
+    </script>
+
+</body>
+
+</html>

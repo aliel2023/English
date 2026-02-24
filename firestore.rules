@@ -1,0 +1,72 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ============================================================
+    // USERS COLLECTION
+    // ============================================================
+    match /users/{userId} {
+      // İstifadəçi yalnız ÖZ məlumatını oxuya/yaza bilər
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      // Admin (role == 'admin') BÜTÜN istifadəçiləri oxuya bilər
+      // Lakin YAZA BİLMƏZ — məlumat bütövlüyü üçün
+      allow read: if request.auth != null
+                  && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+
+      // Admin-in user məlumatını dəyişdirməsi üçün (isteğe bağlı)
+      // allow write: if request.auth != null
+      //              && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // ============================================================
+    // LEADS COLLECTION
+    // ============================================================
+    match /leads/{leadId} {
+      // Yalnız LOGIN OLMUŞ istifadəçi lead əlavə edə bilər (bot spamının qarşısı)
+      allow create: if request.auth != null
+                    && request.resource.data.keys().hasAll(['name', 'email', 'createdAt'])
+                    && request.resource.data.name is string
+                    && request.resource.data.email is string
+                    && request.resource.data.name.size() >= 2
+                    && request.resource.data.name.size() <= 100;
+
+      // Yalnız admin oxuya bilər
+      allow read: if request.auth != null
+                  && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+
+      // Heç kəs lead-i dəyişdirə/silə bilməz (audit log kimi saxlanır)
+      allow update, delete: if false;
+    }
+
+    // ============================================================
+    // LESSONS COLLECTION (gələcək üçün)
+    // ============================================================
+    match /lessons/{lessonId} {
+      // Hər kəs dərsi oxuya bilər
+      allow read: if true;
+
+      // Yalnız admin yeni dərs əlavə edə bilər
+      allow write: if request.auth != null
+                   && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // ============================================================
+    // PROGRESS COLLECTION (gələcək üçün)
+    // ============================================================
+    match /progress/{progressId} {
+      allow read, write: if request.auth != null
+                         && request.auth.uid == resource.data.userId;
+
+      allow read: if request.auth != null
+                  && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // ============================================================
+    // DEFAULT: Digər heç bir koleksiyaya icazə yoxdur
+    // ============================================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

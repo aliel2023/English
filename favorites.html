@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sevilmiş sözlər, qrammatika qaydaları və ifadələr - Alielenglish">
+    <title>Sevimlilər - Alielenglish</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/favorites.css">
+    <link rel="stylesheet" href="styles/auth.css">
+    <script>
+        // Firebase auth event-ə əsaslanır — localStorage YOX
+        // favorites.js alielAuthReady event-i gəldəndə content göstərəcek
+        window.addEventListener('DOMContentLoaded', function () {
+            var favContent = document.getElementById('favContent');
+            var favAuth = document.getElementById('favAuthRequired');
+            if (favContent) favContent.classList.add('hidden');
+            if (favAuth) favAuth.classList.add('hidden');
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <nav class="main-nav">
+            <div class="nav-container">
+                <div class="logo-section">
+                    <div class="logo"><span class="logo-icon">A</span></div>
+                    <span class="brand-name">Alielenglish</span>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
+                    <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
+                    <li><a href="speaking.html" data-i18n="nav.speaking">Danışıq Pratikası</a></li>
+                    <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
+                    <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
+                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
+                    <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="lang-dropdown nav-item">
+                        <button class="lang-btn current-lang" id="currentLangBtn"
+                            onclick="toggleLangDropdown()">AZ</button>
+                        <div class="lang-menu" id="langMenu">
+                            <button class="lang-option" onclick="switchLanguage('az', event)">AZ</button>
+                            <button class="lang-option" onclick="switchLanguage('en', event)">EN</button>
+                        </div>
+                    </div>
+                    <button class="mobile-toggle" onclick="toggleMobileMenu()">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="fav-hero">
+        <div class="container">
+            <h1 class="section-title">❤️ Sevimlilər</h1>
+            <p class="fav-subtitle">Əlavə etdiyiniz sözlər, qrammatika qaydaları və ifadələr burada saxlanılır</p>
+            <div id="favStats" class="fav-stats-bar"></div>
+        </div>
+    </section>
+
+    <!-- Auth Required Message -->
+    <div id="favAuthRequired" class="auth-required hidden">
+        <div class="container">
+            <div class="auth-prompt-card">
+                <div class="auth-prompt-icon">🔐</div>
+                <h2>Hesaba Daxil Olun</h2>
+                <p>Sevimlilərinizi görmək üçün hesabınıza daxil olun və ya yeni hesab yaradın.</p>
+                <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="openAuthModal('login')">Daxil Ol</button>
+                    <button class="btn btn-secondary" onclick="openAuthModal('register')">Qeydiyyat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Favorites Content -->
+    <div id="favContent" class="hidden">
+        <!-- Tabs -->
+        <div class="fav-tabs-wrapper">
+            <div class="container">
+                <div class="fav-tabs">
+                    <button class="fav-tab-btn active" onclick="switchFavTab('words', this)">
+                        📚 Sözlər <span class="fav-tab-count" id="wordCount">0</span>
+                    </button>
+                    <button class="fav-tab-btn" onclick="switchFavTab('grammars', this)">
+                        📝 Qrammatika <span class="fav-tab-count" id="grammarCount">0</span>
+                    </button>
+                    <button class="fav-tab-btn" onclick="switchFavTab('phrases', this)">
+                        💬 İfadələr <span class="fav-tab-count" id="phraseCount">0</span>
+                    </button>
+                </div>
+                <div class="fav-search-wrap">
+                    <input type="text" id="favSearch" placeholder="🔍 Axtar..." oninput="filterFavorites()"
+                        class="fav-search">
+                </div>
+            </div>
+        </div>
+
+        <!-- Words Tab -->
+        <section id="tab_words" class="fav-section">
+            <div class="container">
+                <div id="wordsGrid" class="favorites-grid"></div>
+                <div id="wordsEmpty" class="fav-empty hidden">
+                    <div class="fav-empty-icon">📚</div>
+                    <p>Hələ heç bir söz sevimlilərə əlavə edilməyib.</p>
+                    <a href="daily-word.html" class="btn btn-primary">Günün Sözünə Get</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Grammars Tab -->
+        <section id="tab_grammars" class="fav-section hidden">
+            <div class="container">
+                <div id="grammarsGrid" class="favorites-grid"></div>
+                <div id="grammarsEmpty" class="fav-empty hidden">
+                    <div class="fav-empty-icon">📝</div>
+                    <p>Hələ heç bir qrammatika qaydası sevimlilərə əlavə edilməyib.</p>
+                    <a href="resources.html" class="btn btn-primary">Resurslara Get</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phrases Tab -->
+        <section id="tab_phrases" class="fav-section hidden">
+            <div class="container">
+                <div id="phrasesGrid" class="favorites-grid"></div>
+                <div id="phrasesEmpty" class="fav-empty hidden">
+                    <div class="fav-empty-icon">💬</div>
+                    <p>Hələ heç bir ifadə sevimlilərə əlavə edilməyib.</p>
+                    <a href="resources.html" class="btn btn-primary">Resurslara Get</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Word Detail Modal -->
+    <div id="wordDetailModal" class="modal">
+        <div class="modal-content word-detail-modal">
+            <button class="modal-close" onclick="closeWordDetail()">×</button>
+            <div id="wordDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-bottom">
+                <p data-i18n="footer.rights">© 2025 Alielenglish. Bütün hüquqlar qorunur.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts/i18n.js"></script>
+    <script src="scripts/main.js"></script>
+    <script type="module" src="scripts/auth.js"></script>
+    <script src="scripts/favorites.js"></script>
+</body>
+
+</html>

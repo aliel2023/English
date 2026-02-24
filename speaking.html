@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Süni intellekt ilə səsli danışıq pratikası və tələffüz yoxlama">
+    <meta name="keywords" content="danışıq, speaking, pronunciation, tələffüz, ingilis dili">
+    <link rel="canonical" href="https://aliel2023.github.io/English2/speaking.html">
+    <title>Danışıq Pratikası - Alielenglish</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/speaking.css">
+    <link rel="stylesheet" href="styles/auth.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="main-nav">
+            <div class="nav-container">
+                <div class="logo-section">
+                    <div class="logo"><span class="logo-icon">A</span></div>
+                    <span class="brand-name">Alielenglish</span>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
+                    <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
+                    <li><a href="speaking.html" class="active" data-i18n="nav.speaking">Danışıq Pratikası</a></li>
+                    <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
+                    <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
+                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
+                    <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="lang-dropdown nav-item">
+                        <button class="lang-btn current-lang" id="currentLangBtn"
+                            onclick="toggleLangDropdown()">AZ</button>
+                        <div class="lang-menu" id="langMenu">
+                            <button class="lang-option" onclick="switchLanguage('az', event)">AZ</button>
+                            <button class="lang-option" onclick="switchLanguage('en', event)">EN</button>
+                        </div>
+                    </div>
+                    <button class="mobile-toggle" onclick="toggleMobileMenu()">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="speaking-hero">
+        <div class="container">
+            <h1 class="section-title" data-i18n="speaking.title">🎙️ Danışıq Pratikası</h1>
+            <p class="speaking-subtitle" data-i18n="speaking.subtitle">
+                Süni intellekt köməyi ilə tələffüzünüzü sıfır xəta və pulsuz olaraq inkişaf etdirin.
+            </p>
+        </div>
+    </section>
+
+    <section class="speaking-practice">
+        <div class="container">
+            <div class="speaking-card">
+                <div class="instructions" data-i18n="speaking.instructions">
+                    Aşağıdakı cümləni oxumaq üçün mikrofon düyməsini basın. Alqoritm tələffüzünüzü yoxlayacaq.
+                </div>
+
+                <div class="sentence-box">
+                    <h2 id="targetSentence">The weather is beautiful today and I feel great.</h2>
+                    <button class="btn-refresh-sentence" onclick="getNewSentence()" title="Yeni cümlə ver">🔄</button>
+                </div>
+
+                <div class="actions-container">
+                    <button id="micBtn" class="btn btn-mic" onclick="toggleRecording()">
+                        <span class="mic-icon">🎤</span>
+                        <span id="micText" data-i18n="speaking.btnStart">Danışmağa Başla</span>
+                    </button>
+                </div>
+
+                <div id="statusIndicator" class="recording-status hidden">
+                    <span data-i18n="speaking.listening">Dinlənilir...</span> <span class="wave"></span><span
+                        class="wave"></span><span class="wave"></span>
+                </div>
+
+                <div class="result-box hidden" id="resultBox">
+                    <h3 data-i18n="speaking.yourVoice">Sizin səsiniz:</h3>
+                    <p id="userSpeech" class="user-speech">...</p>
+
+                    <div class="accuracy-score">
+                        <span data-i18n="speaking.accuracy">Uyğunluq:</span> <span id="accuracyPercentage">0%</span>
+                    </div>
+
+                    <div class="feedback" id="feedbackMessage"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Alielenglish</h4>
+                    <p data-i18n="footer.about">2023-dən bəri minlərlə tələbəyə keyfiyyətli ingilis dili təhsili təqdim
+                        edirik.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. Bütün hüquqlar qorunur.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts/i18n.js"></script>
+    <script src="scripts/main.js"></script>
+    <script type="module" src="scripts/auth.js"></script>
+    <script src="scripts/speaking.js"></script>
+</body>
+
+</html>

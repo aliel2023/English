@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Alielenglish ilə əlaqə - Suallarınızı bizə yazın və ya sosial mediadan izləyin">
+    <meta name="keywords" content="əlaqə, contact, support, dəstək">
+    <link rel="canonical" href="https://aliel2023.github.io/English2/contact.html">
+    <title>Əlaqə - Alielenglish</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/contact.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="main-nav">
+            <div class="nav-container">
+                <div class="logo-section">
+                    <div class="logo"><span class="logo-icon">A</span></div>
+                    <span class="brand-name">Alielenglish</span>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
+                    <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
+                    <li><a href="speaking.html" data-i18n="nav.speaking">Danışıq Pratikası</a></li>
+                    <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
+                    <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
+                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
+                    <li><a href="contact.html" class="active" data-i18n="nav.contact">Əlaqə</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="lang-dropdown nav-item">
+                        <button class="lang-btn current-lang" id="currentLangBtn"
+                            onclick="toggleLangDropdown()">AZ</button>
+                        <div class="lang-menu" id="langMenu">
+                            <button class="lang-option" onclick="switchLanguage('az', event)">AZ</button>
+                            <button class="lang-option" onclick="switchLanguage('en', event)">EN</button>
+                        </div>
+                    </div>
+                    <button class="mobile-toggle" onclick="toggleMobileMenu()">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="contact-hero">
+        <div class="container">
+            <h1 class="section-title" data-i18n="contact.title">📧 Bizimlə Əlaqə</h1>
+            <p class="contact-subtitle" data-i18n="contact.subtitle">
+                Suallarınız varmı? Bizə yazın və ya sosial mediadan izləyin. 24 saat ərzində cavab veririk!
+            </p>
+        </div>
+    </section>
+
+    <section class="contact-content">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Contact Form -->
+                <div class="contact-form-section">
+                    <h2 data-i18n="contact.formTitle">✍️ Mesaj Göndər</h2>
+                    <p class="form-description" data-i18n="contact.formDesc">
+                        Formu doldurun və biz sizinlə ən qısa müddətdə əlaqə saxlayacağıq
+                    </p>
+
+                    <form id="contactForm" class="contact-form">
+                        <div class="success-alert" id="successAlert" data-i18n="contact.successMessage">
+                            ✅ Mesajınız uğurla göndərildi! Tezliklə sizinlə əlaqə saxlayacağıq.
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactName" data-i18n="contact.labelName">Ad və Soyad *</label>
+                                <input type="text" id="contactName" name="name" placeholder="Adınızı daxil edin"
+                                    required minlength="2">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail" data-i18n="contact.labelEmail">Email *</label>
+                                <input type="email" id="contactEmail" name="email" placeholder="email@example.com"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactPhone" data-i18n="contact.labelPhone">Telefon</label>
+                                <input type="tel" id="contactPhone" name="phone" placeholder="+994 XX XXX XX XX">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactSubject" data-i18n="contact.labelSubject">Mövzu *</label>
+                                <select id="contactSubject" name="subject" required>
+                                    <option value="" data-i18n="contact.selectSubject">Seçin...</option>
+                                    <option value="general" data-i18n="contact.subjectGeneral">Ümumi sual</option>
+                                    <option value="technical" data-i18n="contact.subjectTechnical">Texniki dəstək
+                                    </option>
+                                    <option value="payment" data-i18n="contact.subjectPayment">Ödəniş məsələsi</option>
+                                    <option value="course" data-i18n="contact.subjectCourse">Kurs haqqında</option>
+                                    <option value="partnership" data-i18n="contact.subjectPartnership">Əməkdaşlıq
+                                    </option>
+                                    <option value="other" data-i18n="contact.subjectOther">Digər</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contactMessage" data-i18n="contact.labelMessage">Mesajınız *</label>
+                            <textarea id="contactMessage" name="message" rows="6"
+                                placeholder="Mesajınızı buraya yazın..." required minlength="10"></textarea>
+                            <span class="char-count" id="charCount">0 / 500</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="agree" required>
+                                <span data-i18n="contact.checkboxPrivacy">
+                                    Məxfilik Siyasətini oxudum və qəbul edirəm
+                                </span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block" data-i18n="contact.btnSend">
+                            Göndər
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="contact-info-section">
+                    <h2>📞 Əlaqə Məlumatları</h2>
+
+                    <div class="info-card">
+                        <div class="info-icon">📱</div>
+                        <h3 data-i18n="contact.socialMedia">Sosial Media</h3>
+                        <div class="social-links-list">
+                            <a href="https://instagram.com/alielenglish" target="_blank" rel="noopener"
+                                class="social-item">
+                                <span class="social-icon"><img src="assets/instagram-1-svgrepo-com.svg" alt="Instagram"
+                                        style="width:32px;height:32px;"></span>
+                                <div>
+                                    <strong>Instagram</strong>
+                                    <p>@alielenglish</p>
+                                </div>
+                            </a>
+                            <a href="https://t.me/alielenglish" target="_blank" rel="noopener" class="social-item">
+                                <span class="social-icon"><img src="assets/telegram-svgrepo-com.svg" alt="Telegram"
+                                        style="width:32px;height:32px;"></span>
+                                <div>
+                                    <strong>Telegram</strong>
+                                    <p>@alielenglish</p>
+                                </div>
+                            </a>
+                            <a href="https://facebook.com/alielenglish" target="_blank" rel="noopener"
+                                class="social-item">
+                                <span class="social-icon"><img src="assets/facebook-1-svgrepo-com.svg" alt="Facebook"
+                                        style="width:32px;height:32px;"></span>
+                                <div>
+                                    <strong>Facebook</strong>
+                                    <p>Alielenglish</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">✉️</div>
+                        <h3 data-i18n="contact.emailTitle">Email</h3>
+                        <a href="mailto:englishaliel@gmail.com" class="info-link">
+                            englishaliel@gmail.com
+                        </a>
+                        <p class="info-text">
+                            Suallarınızı email ilə göndərə bilərsiniz. 24 saat ərzində cavab veririk.
+                        </p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">⏰</div>
+                        <h3 data-i18n="contact.workHours">İş Saatları</h3>
+                        <div class="work-hours">
+                            <div class="hour-item">
+                                <span>Bazar ertəsi - Cümə</span>
+                                <strong>09:00 - 18:00</strong>
+                            </div>
+                            <div class="hour-item">
+                                <span>Şənbə</span>
+                                <strong>10:00 - 16:00</strong>
+                            </div>
+                            <div class="hour-item">
+                                <span>Bazar</span>
+                                <strong>Bağlı</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">📍</div>
+                        <h3 data-i18n="contact.address">Ünvan</h3>
+                        <p class="info-text">
+                            Bakı, Azərbaycan<br>
+                            Online Platform
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Hələ sualınız var?</h2>
+                <p>Bizə yazın və ya sosial mediadan mesaj göndərin</p>
+                <button class="btn btn-light"
+                    onclick="document.getElementById('contactForm').scrollIntoView({behavior: 'smooth'})">
+                    Mesaj Göndər
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Alielenglish</h4>
+                    <p data-i18n="footer.about">2023-dən bəri minlərlə tələbəyə keyfiyyətli ingilis dili təhsili təqdim
+                        edirik.</p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/alielenglish" target="_blank" class="social-link" rel="noopener"
+                            title="Instagram">
+                            <img src="assets/instagram-1-svgrepo-com.svg" alt="Instagram">
+                        </a>
+                        <a href="https://t.me/alielenglish" target="_blank" class="social-link" rel="noopener"
+                            title="Telegram">
+                            <img src="assets/telegram-svgrepo-com.svg" alt="Telegram">
+                        </a>
+                        <a href="mailto:englishaliel@gmail.com" class="social-link" title="Gmail">
+                            <img src="assets/gmail-icon-logo-svgrepo-com.svg" alt="Email">
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4 data-i18n="footer.links">Keçidlər</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
+                        <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
+                        <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
+                        <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 data-i18n="footer.support">Dəstək</h4>
+                    <ul class="footer-links">
+                        <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
+                        <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#privacy">Məxfilik</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 data-i18n="footer.newsletter">Xəbər Bülleteni</h4>
+                    <p data-i18n="footer.newsletterDesc">Gündəlik dərs və xüsusi təkliflərdən xəbərdar olun</p>
+                    <button class="btn btn-primary btn-sm" onclick="openEmailModal()"
+                        data-i18n="footer.btnSubscribe">Abunə Ol</button>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. Bütün hüquqlar qorunur.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="emailModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeEmailModal()">&times;</button>
+            <h2 data-i18n="modal.welcome">🎉 Xoş gəlmisiniz!</h2>
+            <p data-i18n="modal.subtitle">Pulsuz e-kitab və bonus materiallar əldə etmək üçün qeydiyyatdan keçin</p>
+            <form id="emailForm" class="modal-form">
+                <input type="text" id="userName" name="name" data-i18n="modal.inputName" placeholder="Adınız" required>
+                <input type="email" id="userEmail" name="email" data-i18n="modal.inputEmail"
+                    placeholder="Email ünvanınız" required>
+                <button type="submit" class="btn btn-primary" data-i18n="modal.btnSend">Göndər</button>
+            </form>
+            <p class="privacy-note" data-i18n="modal.privacy">🔒 Məlumatlarınız təhlükəsizdir və paylaşılmır</p>
+        </div>
+    </div>
+
+    <script src="scripts/i18n.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/contact.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,288 @@
+/* ===== Resources Hero ===== */
+.resources-hero {
+    padding: 80px 5% 60px;
+    text-align: center;
+    background: linear-gradient(135deg, #0a0000, #000);
+}
+
+.resources-subtitle {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ===== Filter Tabs ===== */
+.filter-tabs {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.filter-tab {
+    padding: 0.8rem 1.5rem;
+    background: var(--secondary);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.filter-tab.active,
+.filter-tab:hover {
+    border-color: var(--primary);
+    background: rgba(230, 57, 70, 0.1);
+    color: var(--primary);
+}
+
+/* ===== Resources Grid ===== */
+.resources-content {
+    padding: 80px 5%;
+}
+
+.resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.resource-card {
+    background: var(--secondary);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    transition: var(--transition);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.resource-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.resource-card:hover::before {
+    transform: scaleX(1);
+}
+
+.resource-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-8px);
+    box-shadow: 0 10px 40px rgba(230, 57, 70, 0.3);
+}
+
+.resource-card.featured {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, var(--secondary), rgba(230, 57, 70, 0.05));
+}
+
+/* ===== Resource Badges ===== */
+.resource-badge {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.resource-badge.free {
+    background: var(--success);
+    color: white;
+}
+
+.resource-badge.premium {
+    background: var(--primary);
+    color: white;
+}
+
+/* ===== Resource Content ===== */
+.resource-icon {
+    font-size: 4rem;
+    margin: 2rem 0 1.5rem;
+}
+
+.resource-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.resource-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+/* ===== Resource Meta ===== */
+.resource-meta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+}
+
+.resource-meta span {
+    background: var(--bg-light);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+
+/* ===== Resource Stats ===== */
+.resource-stats {
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.download-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.download-count::before {
+    content: '📥';
+}
+
+/* ===== Resource Pricing ===== */
+.resource-price {
+    margin: 1.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+}
+
+.price-old {
+    text-decoration: line-through;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+}
+
+.price-new {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* ===== Upgrade CTA Section ===== */
+.upgrade-cta {
+    padding: 80px 5%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    text-align: center;
+    color: white;
+    margin-top: 4rem;
+}
+
+.upgrade-cta .cta-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.upgrade-cta .cta-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.cta-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem auto;
+    max-width: 900px;
+}
+
+.cta-feature {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+}
+
+/* ===== Premium Modal ===== */
+#premiumModal .modal-content {
+    max-width: 500px;
+}
+
+.premium-price {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 2rem 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .resources-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-tabs {
+        gap: 0.5rem;
+    }
+
+    .filter-tab {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .resource-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .resource-icon {
+        font-size: 3rem;
+    }
+
+    .resource-card h3 {
+        font-size: 1.3rem;
+    }
+
+    .resource-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .price-new {
+        font-size: 1.5rem;
+    }
+
+    .upgrade-cta .cta-content h2 {
+        font-size: 2rem;
+    }
+
+    .cta-features {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
