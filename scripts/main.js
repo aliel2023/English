@@ -350,58 +350,114 @@ function closeDocModal(modalId) {
     document.body.style.overflow = '';
 }
 
-// ===== GEMINI AI API =====
+// ===== GEMINI AI API — Enhanced =====
 const GEMINI_API_KEY = 'AIzaSyAaJUBEN3np_qtqomBokN5XVCxay6u1Jq8';
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
 
-const GEMINI_SYSTEM_PROMPT = `Sən Alielenglish platformasının AI köməkçisisən. Azərbaycan tələbələrinə ingilis dili öyrənməkdə kömək edirsən.
-Qaydalar:
-- Azərbaycanca sualları Azərbaycanca cavabla
-- İngilis dili sualları həm ingilis, həm Azərbaycanca izah et
-- Qrammatika, söz, tələffüz, ifadə haqqında kömək et
-- Cavablar qısa və aydın olsun (max 3-4 cümlə)
-- Emoji istifadə edə bilərsən`;
+// Get current page context to make AI answers contextual
+function getPageContext() {
+    const page = window.location.pathname.split('/').pop() || 'index.html';
+    const title = document.title || '';
+    const pageMap = {
+        'index.html': 'Ana Səhifə — ingilis dili öyrənmə platforması haqqında',
+        'daily-word.html': 'Günün Sözü — gündəlik ingilis sözləri öyrənmə',
+        'test.html': 'Seviyyə Testi — A1-C2 ingilis dili səviyyə testi',
+        'speaking.html': 'Danışıq Praktikası — tələffüz və danışıq bacarıqları',
+        'resources.html': 'Resurslar — PDF, kitablar, materiallar',
+        'favorites.html': 'Sevimlilər — saxlanılmış sözlər və ifadələr',
+        'dashboard.html': 'Dashboard — şəxsi irəliləyiş paneli',
+        'pricing.html': 'Qiymətlər — pulsuz və premium planlar',
+        'contact.html': 'Əlaqə — bizimlə əlaqə',
+    };
+    return pageMap[page] || `"${title}" səhifəsi`;
+}
+
+function getSystemPrompt() {
+    const ctx = getPageContext();
+    return `Sən Alielenglish platformasının AI köməkçisisən. Hazırda istifadəçi "${ctx}" üzərindədir.
+
+ƏSAS QAYDALAR:
+1. Azərbaycanca sualları Azərbaycanca cavabla
+2. İngilis dili suallarını həm ingilis, həm Azərbaycanca izah et
+3. Cari səhifə ilə əlaqəli suallar gəldikdə ƏTRAFLICAVAB ver
+4. Cavabları qısa, aydın saxla (max 4-5 cümlə)
+5. Qiymət, ödəniş, texniki problemlər haqqında suallar gəldikdə: "Daha ətraflı kömək üçün [Əlaqə](contact.html) bölməmizə müraciət edin və ya adminlə birbaşa əlaqə qurun" de
+6. Spesifik hesab problemlərini həll edə bilmirsənsə: kontakta yönləndir
+7. Emoji istifadə et amma həddindən artıq deyil
+
+CAVAB FORMATI: Sadə, oxunaqlı mətn. Markdown istifadə edə bilərsən.`;
+}
+
+// Conversation history for context
+const chatHistory = [];
 
 async function callGeminiAPI(userMessage) {
+    chatHistory.push({ role: 'user', text: userMessage });
+
     try {
+        // Build contents array with history (last 6 messages for context)
+        const recent = chatHistory.slice(-6);
+        const contents = recent.map(m => ({
+            role: m.role === 'user' ? 'user' : 'model',
+            parts: [{ text: m.role === 'user' ? m.text : m.text }]
+        }));
+
+        // Add system context to first message
+        if (contents.length > 0) {
+            contents[0].parts[0].text = getSystemPrompt() + '\n\n' + contents[0].parts[0].text;
+        }
+
         const response = await fetch(GEMINI_API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                contents: [
-                    {
-                        role: 'user',
-                        parts: [{ text: GEMINI_SYSTEM_PROMPT + '\n\nİstifadəçi sualı: ' + userMessage }]
-                    }
-                ],
+                contents,
                 generationConfig: {
                     temperature: 0.7,
-                    maxOutputTokens: 400
-                }
+                    maxOutputTokens: 500,
+                    topP: 0.9
+                },
+                safetySettings: [
+                    { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                    { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" }
+                ]
             })
         });
 
-        if (!response.ok) throw new Error('API error: ' + response.status);
+        if (!response.ok) throw new Error(`API ${response.status}`);
 
         const data = await response.json();
         const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (reply) return reply.replace(/\n/g, '<br>');
-        throw new Error('No content in response');
+        if (!reply) throw new Error('Empty response');
+
+        // Convert markdown links [text](url) to clickable
+        const formatted = reply
+            .replace(/\n/g, '<br>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color:#6c63ff">$1</a>');
+
+        chatHistory.push({ role: 'model', text: reply });
+        return formatted;
 
     } catch (error) {
         console.warn('Gemini API error:', error.message);
+        chatHistory.pop(); // remove failed user message
         return getFallbackResponse(userMessage);
     }
 }
 
-function getFallbackResponse(question) {
-    const q = question.toLowerCase();
-    if (q.includes('test') || q.includes('seviyye') || q.includes('səviyyə')) return '🎯 Səviyyə testimizə daxil olaraq dil biliklərinizi yoxlaya bilərsiniz!';
-    if (q.includes('qiymət') || q.includes('ödəniş')) return '💳 "Qiymətlər" bölməsində pulsuz və premium paketlərimizlə tanış ola bilərsiniz.';
-    if (q.includes('salam') || q.includes('hi') || q.includes('hello')) return '👋 Salam! Hansı İngilis dili mövzusunda kömək edə bilərəm?';
-    if (q.includes('söz') || q.includes('word')) return '📚 Günün Sözü bölməmizə baxın — hər gün yeni söz öyrənin!';
-    if (q.includes('qrammatika') || q.includes('grammar')) return '📝 Qrammatika sualınızı daha ətraflı yazın, izah edim!';
-    return '🤖 Sualınızı aldım! İnternet bağlantısı olmadan işləyirəm. Daha ətraflı sual ver, kömək edim.';
+function getFallbackResponse(q) {
+    const ql = q.toLowerCase();
+    if (/salam|hi\b|hello|xoş/.test(ql)) return '👋 Salam! İngilis dili ilə bağlı sualınızı soruşun.';
+    if (/test|seviyy|səviyy/.test(ql)) return '🎯 Səviyyə testini <a href="test.html" style="color:#6c63ff">buradan</a> edə bilərsiniz!';
+    if (/qiymət|pul|ödəni|premium/.test(ql)) return '💳 Qiymət planları üçün <a href="pricing.html" style="color:#6c63ff">Qiymətlər</a> səhifəsinə baxın.';
+    if (/əlaqə|contact|problem|kömək/.test(ql)) return '📬 Kömək üçün <a href="contact.html" style="color:#6c63ff">Əlaqə</a> səhifəmizə müraciət edin.';
+    if (/söz|word|lüğət/.test(ql)) return '📚 <a href="daily-word.html" style="color:#6c63ff">Günün Sözü</a> bölməmizə baxın!';
+    if (/qrammatika|grammar/.test(ql)) return '📝 Qrammatika sualınızı ətraflı yazın, kömək edim!';
+    if (/danışıq|speaking|tələffüz/.test(ql)) return '🎤 <a href="speaking.html" style="color:#6c63ff">Danışıq Praktikası</a> bölməmizə daxil olun!';
+    if (/resurs|material|pdf|kitab/.test(ql)) return '📖 <a href="resources.html" style="color:#6c63ff">Resurslar</a> bölməsindən materialları yükləyin.';
+    return '🤖 Sualınızı aldım. Daha ətraflı məlumat üçün <a href="contact.html" style="color:#6c63ff">adminlə əlaqə</a> qurun.';
 }
 
 function escapeHtml(text) {

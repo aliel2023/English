@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="Alielenglish — Pulsuz qeydiyyatdan keçin">
+    <meta name="robots" content="noindex">
+    <title>Qeydiyyat — Alielenglish</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/auth-page.css">
+</head>
+
+<body>
+
+    <!-- Animated Background -->
+    <div class="auth-bg">
+        <div class="auth-bg-orb orb-1" style="background:radial-gradient(circle,rgba(108,99,255,0.25),transparent 70%)">
+        </div>
+        <div class="auth-bg-orb orb-2" style="background:radial-gradient(circle,rgba(230,57,70,0.15),transparent 70%)">
+        </div>
+        <div class="auth-bg-orb orb-3" style="background:radial-gradient(circle,rgba(46,213,115,0.1),transparent 70%)">
+        </div>
+        <div class="auth-bg-grid"></div>
+    </div>
+
+    <!-- Back -->
+    <a href="index.html" class="auth-back-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        <span>Ana Səhifə</span>
+    </a>
+
+    <main class="auth-page-wrap">
+        <div class="auth-page-card auth-register-card" role="main">
+
+            <!-- Logo -->
+            <a href="index.html" class="auth-page-logo">
+                <div class="auth-logo-mark auth-logo-mark-purple">A</div>
+                <span class="auth-logo-text">Alielenglish</span>
+            </a>
+
+            <!-- Header -->
+            <div class="auth-page-header">
+                <h1 class="auth-page-title">Hesab Yarat</h1>
+                <p class="auth-page-sub">Pulsuz qeydiyyatdan keçin</p>
+            </div>
+
+            <!-- Alerts -->
+            <div id="authError" class="auth-alert auth-alert-error hidden" role="alert"></div>
+            <div id="authSuccess" class="auth-alert auth-alert-success hidden" role="status"></div>
+
+            <!-- Social -->
+            <div class="social-btns">
+                <button class="social-btn social-google" onclick="handleGoogleReg()" type="button" id="googleBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#4285F4"
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="#34A853"
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="#FBBC05"
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
+                        <path fill="#EA4335"
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                    </svg>
+                    Google ilə qeydiyyat
+                </button>
+                <button class="social-btn social-apple" onclick="handleAppleReg()" type="button" id="appleBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                    </svg>
+                    Apple ilə qeydiyyat
+                </button>
+            </div>
+
+            <div class="auth-divider-line"><span>və ya email ilə</span></div>
+
+            <!-- Register Form -->
+            <form id="registerForm" class="auth-form" onsubmit="handleRegisterSubmit(event)" novalidate>
+
+                <!-- Name + Level row -->
+                <div class="form-row-2">
+                    <div class="form-field">
+                        <label for="regName" class="form-label">👤 Ad Soyad</label>
+                        <input type="text" id="regName" class="form-input" placeholder="Əli Hüseynov" required
+                            minlength="2" maxlength="50" autocomplete="name">
+                    </div>
+                    <div class="form-field">
+                        <label for="regLevel" class="form-label">🎓 Səviyyə</label>
+                        <select id="regLevel" class="form-input form-select">
+                            <option value="A1">A1 — Başlanğıc</option>
+                            <option value="A2">A2 — Əsas</option>
+                            <option value="B1" selected>B1 — Orta</option>
+                            <option value="B2">B2 — Yuxarı Orta</option>
+                            <option value="C1">C1 — Təkmil</option>
+                            <option value="C2">C2 — Ustadlıq</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="regEmail" class="form-label">📧 Email</label>
+                    <input type="email" id="regEmail" class="form-input" placeholder="email@nümunə.com" required
+                        autocomplete="email" inputmode="email">
+                </div>
+
+                <div class="form-field">
+                    <label for="regPass" class="form-label">🔑 Şifrə</label>
+                    <div class="pw-field-wrap">
+                        <input type="password" id="regPass" class="form-input" placeholder="Min. 8 simvol" required
+                            minlength="8" autocomplete="new-password" oninput="updateStrength(this.value)">
+                        <button type="button" class="pw-eye-btn" onclick="toggleEye('regPass',this)">👁</button>
+                    </div>
+                    <!-- Strength bar -->
+                    <div class="strength-wrap" id="strengthWrap" style="display:none">
+                        <div class="strength-track">
+                            <div class="strength-bar" id="strengthBar"></div>
+                        </div>
+                        <span class="strength-label" id="strengthLabel"></span>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="regPassConfirm" class="form-label">🔑 Şifrəni Təkrarla</label>
+                    <div class="pw-field-wrap">
+                        <input type="password" id="regPassConfirm" class="form-input"
+                            placeholder="Şifrəni yenidən daxil edin" required autocomplete="new-password">
+                        <button type="button" class="pw-eye-btn" onclick="toggleEye('regPassConfirm',this)">👁</button>
+                    </div>
+                </div>
+
+                <!-- Terms -->
+                <label class="terms-row">
+                    <input type="checkbox" id="termsCheck" required>
+                    <span>
+                        <a href="#privacy" onclick="showPrivacy(event)">Gizlilik Siyasəti</a>
+                        və
+                        <a href="#terms" onclick="showTerms(event)">İstifadə Şərtlərini</a>
+                        qəbul edirəm
+                    </span>
+                </label>
+
+                <button type="submit" class="auth-submit-btn auth-submit-register" id="regSubmitBtn">
+                    <span id="regBtnText">Pulsuz Qeydiyyat</span>
+                    <span class="btn-spinner hidden" id="regSpinner"></span>
+                </button>
+            </form>
+
+            <div class="auth-page-footer">
+                <p class="auth-switch-text">
+                    Artıq hesabın var?
+                    <a href="login.html" class="auth-switch-link">Daxil ol →</a>
+                </p>
+            </div>
+
+            <div class="auth-security-note">
+                🔒 Firebase Auth · Şifrələr hash+salt · SSL şifrəli
+            </div>
+        </div>
+    </main>
+
+    <!-- Privacy / Terms mini modals -->
+    <div id="docModal" class="doc-modal-overlay hidden" onclick="if(event.target===this)this.classList.add('hidden')">
+        <div class="doc-modal-card">
+            <button class="doc-modal-close"
+                onclick="document.getElementById('docModal').classList.add('hidden')">×</button>
+            <div id="docModalContent"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import {
+            getAuth, createUserWithEmailAndPassword, updateProfile,
+            sendEmailVerification, GoogleAuthProvider, OAuthProvider,
+            signInWithPopup, onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import {
+            getFirestore, doc, setDoc, getDoc, addDoc, collection, serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCxRMtHyTwee7cQuxcJ1eAWibxcyoUKIIs",
+            authDomain: "alielenglish.firebaseapp.com",
+            projectId: "alielenglish",
+            storageBucket: "alielenglish.firebasestorage.app",
+            messagingSenderId: "521948914743",
+            appId: "1:521948914743:web:613373aaadfe3addedcbb2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Redirect if already logged in
+        onAuthStateChanged(auth, user => { if (user) window.location.replace('index.html'); });
+
+        // ─── Helpers ────────────────────────────────────────────
+        function showErr(msg) {
+            const el = document.getElementById('authError');
+            el.textContent = msg; el.classList.remove('hidden');
+            document.getElementById('authSuccess').classList.add('hidden');
+            el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        function showOk(msg) {
+            const el = document.getElementById('authSuccess');
+            el.textContent = msg; el.classList.remove('hidden');
+            document.getElementById('authError').classList.add('hidden');
+        }
+        function setLoading(on) {
+            document.getElementById('regSubmitBtn').disabled = on;
+            document.getElementById('regBtnText').textContent = on ? 'Qeydiyyat edilir...' : 'Pulsuz Qeydiyyat';
+            document.getElementById('regSpinner').classList.toggle('hidden', !on);
+        }
+        function sanitize(str) {
+            return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+        function getErrorMsg(code) {
+            const m = {
+                'auth/email-already-in-use': '📧 Bu email artıq qeydiyyatdan keçib. Daxil olmağa çalışın.',
+                'auth/weak-password': '🔑 Şifrə çox zəifdir.',
+                'auth/invalid-email': '📧 Email formatı yanlışdır.',
+                'auth/network-request-failed': '🌐 İnternet bağlantısını yoxlayın.',
+                'auth/popup-closed-by-user': '',
+                'auth/operation-not-allowed': '⚠️ Bu giriş üsulu aktiv deyil.',
+            };
+            return m[code] || '⚠️ Xəta baş verdi. Yenidən cəhd edin.';
+        }
+
+        // ─── Password Strength ───────────────────────────────────
+        window.updateStrength = function (val) {
+            const wrap = document.getElementById('strengthWrap');
+            const bar = document.getElementById('strengthBar');
+            const label = document.getElementById('strengthLabel');
+            if (!val) { wrap.style.display = 'none'; return; }
+            wrap.style.display = 'flex';
+            let s = 0;
+            if (val.length >= 8) s++;
+            if (val.length >= 12) s++;
+            if (/[A-Z]/.test(val)) s++;
+            if (/[0-9]/.test(val)) s++;
+            if (/[^A-Za-z0-9]/.test(val)) s++;
+            const cfgs = [
+                { w: '0%', c: '#ff4757', t: '' },
+                { w: '20%', c: '#ff4757', t: '🔴 Çox zəif' },
+                { w: '40%', c: '#ffa502', t: '🟠 Zəif' },
+                { w: '60%', c: '#eccc68', t: '🟡 Orta' },
+                { w: '80%', c: '#2ed573', t: '🟢 Güclü' },
+                { w: '100%', c: '#1e90ff', t: '💪 Mükəmməl' },
+            ];
+            const cfg = cfgs[s] || cfgs[0];
+            bar.style.width = cfg.w; bar.style.background = cfg.c;
+            label.textContent = cfg.t; label.style.color = cfg.c;
+        };
+
+        window.toggleEye = function (id, btn) {
+            const inp = document.getElementById(id);
+            if (!inp) return;
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+            btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+        };
+
+        // ─── Create user doc ─────────────────────────────────────
+        async function createUserDoc(uid, data) {
+            const userData = {
+                name: sanitize(data.name),
+                email: data.email,
+                level: data.level || 'A1',
+                role: 'user',
+                currentStreak: 0, longestStreak: 0,
+                lastActiveDate: new Date().toDateString(),
+                activeDays: 1, wordsLearned: 0, testsCompleted: 0,
+                badges: ['🌱 Başlanğıc'],
+                favorites: { words: [], grammar: [], phrases: [] },
+                weeklyActivity: [false, false, false, false, false, false, false],
+                testHistory: [],
+                createdAt: serverTimestamp(),
+                provider: data.provider || 'email'
+            };
+            await setDoc(doc(db, "users", uid), userData);
+            try {
+                await addDoc(collection(db, "leads"), {
+                    name: sanitize(data.name), email: data.email,
+                    level: data.level, source: '/register.html',
+                    createdAt: serverTimestamp()
+                });
+            } catch (_) { }
+            return userData;
+        }
+
+        // ─── Email Register ──────────────────────────────────────
+        window.handleRegisterSubmit = async function (e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const pass = document.getElementById('regPass').value;
+            const confirm = document.getElementById('regPassConfirm').value;
+            const level = document.getElementById('regLevel').value;
+            const terms = document.getElementById('termsCheck').checked;
+
+            if (!terms) { showErr('Şərtləri qəbul etməlisiniz.'); return; }
+            if (name.length < 2) { showErr('Ad ən azı 2 hərf olmalıdır.'); return; }
+            if (pass.length < 8) { showErr('🔑 Şifrə minimum 8 simvol olmalıdır.'); return; }
+            if (pass !== confirm) { showErr('🔑 Şifrələr uyğun gəlmir.'); return; }
+
+            setLoading(true);
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                await updateProfile(cred.user, { displayName: name });
+                try { await sendEmailVerification(cred.user); } catch (_) { }
+                await createUserDoc(cred.user.uid, { name, email, level, provider: 'email' });
+                showOk('🎉 Qeydiyyat uğurlu! Xoş gəldiniz! Yönləndirilirsiniz...');
+                setTimeout(() => window.location.replace('index.html'), 1500);
+            } catch (err) {
+                const msg = getErrorMsg(err.code);
+                if (msg) showErr(msg);
+                setLoading(false);
+            }
+        };
+
+        // ─── Google Register ──────────────────────────────────────
+        window.handleGoogleReg = async function () {
+            const btn = document.getElementById('googleBtn');
+            btn.disabled = true;
+            try {
+                const provider = new GoogleAuthProvider();
+                const result = await signInWithPopup(auth, provider);
+                const snap = await getDoc(doc(db, "users", result.user.uid));
+                if (!snap.exists()) {
+                    await createUserDoc(result.user.uid, {
+                        name: result.user.displayName || 'İstifadəçi',
+                        email: result.user.email, level: 'A1', provider: 'google'
+                    });
+                }
+                showOk('✅ Google ilə uğurla qeydiyyatdan keçdiniz!');
+                setTimeout(() => window.location.replace('index.html'), 1200);
+            } catch (err) {
+                if (err.code !== 'auth/popup-closed-by-user') showErr(getErrorMsg(err.code));
+                btn.disabled = false;
+            }
+        };
+
+        // ─── Apple Register ───────────────────────────────────────
+        window.handleAppleReg = async function () {
+            const btn = document.getElementById('appleBtn');
+            btn.disabled = true;
+            try {
+                const appleProvider = new OAuthProvider('apple.com');
+                appleProvider.addScope('email');
+                appleProvider.addScope('name');
+                const result = await signInWithPopup(auth, appleProvider);
+                const snap = await getDoc(doc(db, "users", result.user.uid));
+                if (!snap.exists()) {
+                    await createUserDoc(result.user.uid, {
+                        name: result.user.displayName || 'İstifadəçi',
+                        email: result.user.email, level: 'A1', provider: 'apple'
+                    });
+                }
+                showOk('✅ Apple ilə uğurla qeydiyyatdan keçdiniz!');
+                setTimeout(() => window.location.replace('index.html'), 1200);
+            } catch (err) {
+                if (err.code === 'auth/operation-not-allowed') {
+                    showErr('🍎 Apple girişi hələ aktivləşdirilməyib. Google istifadə edin.');
+                } else if (err.code !== 'auth/popup-closed-by-user') {
+                    showErr(getErrorMsg(err.code));
+                }
+                btn.disabled = false;
+            }
+        };
+
+        // ─── Doc modals ───────────────────────────────────────────
+        window.showPrivacy = function (e) {
+            e.preventDefault();
+            document.getElementById('docModalContent').innerHTML = `
+        <h2>🔒 Gizlilik Siyasəti</h2>
+        <p>Biz yalnız tələb olunan məlumatları toplayırıq: adınız, email, tədris səviyyəsi.</p>
+        <h3>Məlumatların Saxlanması</h3>
+        <p>Bütün məlumatlar Firebase serverlərində şifrəli saxlanılır. Heç bir məlumat üçüncü tərəflərə satılmır.</p>
+        <h3>Məlumatların Silinməsi</h3>
+        <p>Hesabınızı istənilən vaxt silə bilərsiniz. Bütün məlumatlarınız tamamilə silinəcək.</p>`;
+            document.getElementById('docModal').classList.remove('hidden');
+        };
+        window.showTerms = function (e) {
+            e.preventDefault();
+            document.getElementById('docModalContent').innerHTML = `
+        <h2>📋 İstifadə Şərtləri</h2>
+        <p>Alielenglish platformasından istifadə edərək aşağıdakı şərtləri qəbul etmiş olursunuz:</p>
+        <ul style="margin:1rem 0;padding-left:1.5rem;line-height:2">
+            <li>Platformanı yalnız öz həddinizdə istifadə edin</li>
+            <li>Digər istifadəçilərə zərər verməyin</li>
+            <li>Saxta məlumat girməyin</li>
+            <li>Platformanın məzmununu kopyalamayın</li>
+        </ul>`;
+            document.getElementById('docModal').classList.remove('hidden');
+        };
+    </script>
+</body>
+
+</html>

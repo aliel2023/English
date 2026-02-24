@@ -379,8 +379,10 @@ function updateNavForUser(user) {
             }
         });
     } else {
+        // Point to dedicated login page instead of modal
+        const currentPage = encodeURIComponent(window.location.pathname.split('/').pop() || '');
         navActions.insertAdjacentHTML('afterbegin',
-            `<button class="btn btn-sm auth-nav-btn" onclick="openAuthModal('login')" style="padding:0.5rem 1rem;">Daxil Ol</button>`
+            `<a href="login.html${currentPage ? '?next=' + currentPage : ''}" class="btn btn-sm auth-nav-btn" style="padding:0.5rem 1rem;text-decoration:none;">Daxil Ol</a>`
         );
     }
 }
