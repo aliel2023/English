@@ -67,10 +67,16 @@
                     A1-dən C2-yə qədər strukturlu proqram, gündəlik canlı dərslər və 15,000+ aktiv tələbə ilə öyrənmə
                     səyahətinə başlayın
                 </p>
-                <div class="hero-actions">
-                    <button class="btn btn-primary" onclick="openEmailModal()" data-i18n="hero.btnStart">
+                <div class="hero-actions" id="heroCTAButtons">
+                    <!-- Giriş etməyənlər üçün: auth.js tərəfindən idarə olunur -->
+                    <button class="btn btn-primary hero-guest-btn" onclick="openEmailModal()" data-i18n="hero.btnStart"
+                        id="heroStartBtn">
                         Pulsuz Başla
                     </button>
+                    <!-- Login olmuş istifadəçilər üçün (gizli başlayır) -->
+                    <a href="dashboard.html" class="btn btn-primary hero-user-btn hidden" id="heroDashBtn">
+                        📊 Dashboard
+                    </a>
                     <a href="pricing.html" class="btn btn-secondary" data-i18n="hero.btnPlans">
                         Premium Planlara Bax
                     </a>

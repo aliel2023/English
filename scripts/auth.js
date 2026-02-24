@@ -110,8 +110,8 @@ onAuthStateChanged(auth, async (firebaseUser) => {
         currentUserData = await getUserData(firebaseUser.uid);
         updateNavForUser(currentUserData);
         updateUserStreak(firebaseUser.uid);
+        updateHeroCTA(true);  // Giriş olub → Pulsuz Başla gizlət
         document.dispatchEvent(new CustomEvent('alielAuthReady', { detail: { user: currentUserData } }));
-        // Admin auto-redirect
         if (window.location.pathname.includes('admin.html') && currentUserData && currentUserData.role !== 'admin') {
             window.location.href = 'index.html';
         }
@@ -119,12 +119,22 @@ onAuthStateChanged(auth, async (firebaseUser) => {
         currentUser = null;
         currentUserData = null;
         updateNavForUser(null);
+        updateHeroCTA(false); // Giriş yoxdur → Pulsuz Başla göstər
         document.dispatchEvent(new CustomEvent('alielAuthReady', { detail: { user: null } }));
         if (window.location.pathname.includes('admin.html')) {
             window.location.href = 'index.html';
         }
     }
 });
+
+// ===== Hero CTA visibility =====
+function updateHeroCTA(isLoggedIn) {
+    const guestBtn = document.getElementById('heroStartBtn');
+    const userBtn = document.getElementById('heroDashBtn');
+    if (!guestBtn && !userBtn) return; // Yalnız index.html-də mövcuddur
+    if (guestBtn) guestBtn.classList.toggle('hidden', isLoggedIn);
+    if (userBtn) userBtn.classList.toggle('hidden', !isLoggedIn);
+}
 
 // ===== Get User Data =====
 async function getUserData(uid) {
@@ -279,7 +289,12 @@ async function updateUserStreak(uid) {
 
 // ===== Favorites =====
 window.addToFavorites = async function (item, type = 'words') {
-    if (!currentUser) { openAuthModal('login'); return false; }
+    if (!currentUser) {
+        // Login səhifəsinə yönləndir
+        const back = encodeURIComponent(window.location.pathname.split('/').pop());
+        window.location.href = `login.html?next=${back}`;
+        return false;
+    }
     try {
         await updateDoc(doc(db, "users", currentUser.uid), { [`favorites.${type}`]: arrayUnion(item) });
         if (currentUserData?.favorites) {
