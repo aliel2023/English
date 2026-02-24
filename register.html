@@ -8,8 +8,7 @@
     <meta name="robots" content="noindex">
     <title>Qeydiyyat — Alielenglish</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet" href="styles/auth-page.css">
     <style>
         *,
         *::before,
@@ -22,7 +21,6 @@
         :root {
             --primary: #e63946;
             --primary-h: #c1121f;
-            --bg: #111827;
             --bg-card: #1c2333;
             --border: #2d3748;
             --border-f: #4a5568;
@@ -37,8 +35,6 @@
         body {
             height: 100%;
             font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
         }
 
         .duo-page {
@@ -535,6 +531,16 @@
 </head>
 
 <body>
+
+    <div class="auth-bg">
+        <div class="auth-bg-orb orb-1" style="background:radial-gradient(circle,rgba(108,99,255,0.25),transparent 70%)">
+        </div>
+        <div class="auth-bg-orb orb-2" style="background:radial-gradient(circle,rgba(230,57,70,0.15),transparent 70%)">
+        </div>
+        <div class="auth-bg-orb orb-3" style="background:radial-gradient(circle,rgba(46,213,115,0.1),transparent 70%)">
+        </div>
+        <div class="auth-bg-grid"></div>
+    </div>
 
     <!-- Top Bar -->
     <header class="duo-topbar">

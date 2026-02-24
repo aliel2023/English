@@ -426,12 +426,14 @@ function updateNavForUser(user) {
             );
         }
 
-        // ── Mobil menü: Daxil Ol + Qeydiyyat — tək sətirdə ──
+        // ── Mobil menü: Sadəcə 1 Daxil Ol ──
         if (navMenu) {
             navMenu.insertAdjacentHTML('beforeend', `
-                <li class="auth-nav-mobile auth-nav-btns-row">
-                    <a href="login.html${currentPage ? '?next=' + currentPage : ''}" class="mobile-auth-btn mobile-login-btn">🔑 Daxil Ol</a>
-                    <a href="register.html" class="mobile-auth-btn mobile-reg-btn">✨ Qeydiyyat</a>
+                <li class="auth-nav-mobile" style="border-top:1px solid rgba(255,255,255,.15);margin-top:.5rem;padding-top:.5rem;">
+                    <a href="login.html${currentPage ? '?next=' + currentPage : ''}"
+                       style="display:block;color:#e63946;font-weight:700;font-size:1rem;padding:0.5rem 0;">
+                        Daxil Ol
+                    </a>
                 </li>`);
         }
 
