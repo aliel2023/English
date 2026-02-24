@@ -1,17 +1,34 @@
 // ===== MAIN.JS - CORE FUNCTIONS =====
 
-// ===== Mobile Menu Toggle =====
+// ===== Mobile Menu Toggle (Sidebar style) =====
 function toggleMobileMenu() {
     const navMenu = document.getElementById('navMenu');
     const mobileToggle = document.querySelector('.mobile-toggle');
+    const isOpen = navMenu && navMenu.classList.contains('active');
 
-    if (navMenu) {
-        navMenu.classList.toggle('active');
-    }
-    if (mobileToggle) {
-        mobileToggle.classList.toggle('active');
+    if (isOpen) {
+        closeMobileMenu();
+    } else {
+        openMobileMenu();
     }
 }
+
+function openMobileMenu() {
+    const navMenu = document.getElementById('navMenu');
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    if (navMenu) navMenu.classList.add('active');
+    if (mobileToggle) mobileToggle.classList.add('active');
+    document.body.style.overflow = 'hidden'; // lock scroll
+}
+
+function closeMobileMenu() {
+    const navMenu = document.getElementById('navMenu');
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    if (navMenu) navMenu.classList.remove('active');
+    if (mobileToggle) mobileToggle.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
 
 // ===== Email Modal =====
 function openEmailModal() {
@@ -162,13 +179,13 @@ function toggleFAQ(element) {
 // ===== Keyboard Accessibility =====
 function initKeyboardAccessibility() {
     document.addEventListener('keydown', function (e) {
-        // Escape key closes modals
         if (e.key === 'Escape') {
+            // Close mobile menu
+            closeMobileMenu();
+            // Close email modal
             closeEmailModal();
-
-            // Close other modals if they exist
-            const modals = document.querySelectorAll('.modal.active');
-            modals.forEach(modal => {
+            // Close all other modals
+            document.querySelectorAll('.modal.active').forEach(modal => {
                 modal.classList.remove('active');
                 document.body.style.overflow = '';
             });
@@ -176,20 +193,47 @@ function initKeyboardAccessibility() {
     });
 }
 
-// ===== Close Mobile Menu on Outside Click =====
+// ===== Close Mobile Menu on Outside Click + Swipe =====
 function initMobileMenuClose() {
+    // Backdrop tap to close
     document.addEventListener('click', function (e) {
         const navMenu = document.getElementById('navMenu');
         const toggle = document.querySelector('.mobile-toggle');
 
-        if (navMenu && toggle) {
-            if (!navMenu.contains(e.target) && !toggle.contains(e.target) && !e.target.closest('.nav-menu')) {
-                navMenu.classList.remove('active');
-                toggle.classList.remove('active');
+        if (navMenu && navMenu.classList.contains('active')) {
+            if (!navMenu.contains(e.target) && toggle && !toggle.contains(e.target)) {
+                closeMobileMenu();
             }
         }
     });
+
+    // Close menu links on click (mobile navigation)
+    document.addEventListener('click', function (e) {
+        const link = e.target.closest('.nav-menu a');
+        if (link) {
+            const navMenu = document.getElementById('navMenu');
+            if (navMenu && navMenu.classList.contains('active')) {
+                // Let the link navigate, then close
+                setTimeout(closeMobileMenu, 150);
+            }
+        }
+    });
+
+    // Touch swipe-left to close menu
+    let touchStartX = 0;
+    document.addEventListener('touchstart', function (e) {
+        touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    document.addEventListener('touchend', function (e) {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        const navMenu = document.getElementById('navMenu');
+        if (diff > 60 && navMenu && navMenu.classList.contains('active')) {
+            closeMobileMenu();
+        }
+    }, { passive: true });
 }
+
 
 // ===== Initialize on DOM Load =====
 document.addEventListener('DOMContentLoaded', function () {
