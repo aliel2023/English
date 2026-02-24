@@ -358,8 +358,14 @@ function getErrorMessage(code) {
 // ===== Update Nav =====
 function updateNavForUser(user) {
     const navActions = document.querySelector('.nav-actions');
-    if (!navActions) return;
-    navActions.querySelectorAll('.auth-nav-btn, .user-nav-menu').forEach(el => el.remove());
+    const navMenu = document.getElementById('navMenu');
+
+    // Köhnə auth elementlərini təmizlə
+    if (navActions) navActions.querySelectorAll('.auth-nav-btn, .user-nav-menu').forEach(el => el.remove());
+    if (navMenu) navMenu.querySelectorAll('.auth-nav-mobile').forEach(el => el.remove());
+
+    const currentPage = encodeURIComponent(window.location.pathname.split('/').pop() || '');
+
     if (user) {
         const avatarLetter = sanitizeHTML((user.name || 'U').charAt(0).toUpperCase());
         const displayName = sanitizeHTML((user.name || '').split(' ')[0]);
@@ -367,40 +373,78 @@ function updateNavForUser(user) {
         const userLevel = sanitizeHTML(user.level || 'A1');
         const streak = parseInt(user.currentStreak) || 0;
         const admin = isAdminUser(user);
-        const html = `
-            <div class="user-nav-menu" id="userNavMenu">
-                <button class="user-avatar-btn" onclick="toggleUserDropdown()">
-                    <span class="user-avatar">${avatarLetter}</span>
-                    <span class="user-name-short">${displayName}</span>
-                    <span class="streak-badge">🔥${streak}</span>
-                </button>
-                <div class="user-dropdown" id="userDropdown">
-                    <div class="user-dropdown-header">
-                        <strong>${fullName}</strong>
-                        <span class="user-level-badge">${userLevel}</span>
+
+        // ── Desktop: avatar dropdown ──
+        if (navActions) {
+            navActions.insertAdjacentHTML('afterbegin', `
+                <div class="user-nav-menu" id="userNavMenu">
+                    <button class="user-avatar-btn" onclick="toggleUserDropdown()">
+                        <span class="user-avatar">${avatarLetter}</span>
+                        <span class="user-name-short">${displayName}</span>
+                        <span class="streak-badge">🔥${streak}</span>
+                    </button>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="user-dropdown-header">
+                            <strong>${fullName}</strong>
+                            <span class="user-level-badge">${userLevel}</span>
+                        </div>
+                        <a href="favorites.html" class="dropdown-item">❤️ Sevimlilər</a>
+                        <a href="dashboard.html" class="dropdown-item">📊 Dashboard</a>
+                        ${admin ? '<a href="admin.html" class="dropdown-item" style="color:#ffd700;font-weight:700;">👑 Admin Panel</a>' : ''}
+                        <button onclick="logoutUser()" class="dropdown-item logout-btn">🚪 Çıxış</button>
                     </div>
-                    <a href="favorites.html" class="dropdown-item">❤️ Sevimlilər</a>
-                    <a href="dashboard.html" class="dropdown-item">📊 Dashboard</a>
-                    ${admin ? '<a href="admin.html" class="dropdown-item" style="color:#ffd700;font-weight:700;">👑 Admin Panel</a>' : ''}
-                    <button onclick="logoutUser()" class="dropdown-item logout-btn">🚪 Çıxış</button>
-                </div>
-            </div>`;
-        navActions.insertAdjacentHTML('afterbegin', html);
-        document.addEventListener('click', (e) => {
-            const menu = document.getElementById('userNavMenu');
-            if (menu && !menu.contains(e.target)) {
-                const dd = document.getElementById('userDropdown');
-                if (dd) dd.classList.remove('show');
-            }
-        });
+                </div>`);
+            document.addEventListener('click', (e) => {
+                const menu = document.getElementById('userNavMenu');
+                if (menu && !menu.contains(e.target)) {
+                    const dd = document.getElementById('userDropdown');
+                    if (dd) dd.classList.remove('show');
+                }
+            });
+        }
+
+        // ── Mobil menü: istifadəçi linklər ──
+        if (navMenu) {
+            navMenu.insertAdjacentHTML('beforeend', `
+                <li class="auth-nav-mobile" style="border-top:1px solid rgba(255,255,255,.15);margin-top:.5rem;padding-top:.5rem;">
+                    <a href="dashboard.html">📊 Dashboard (${displayName})</a>
+                </li>
+                <li class="auth-nav-mobile">
+                    <a href="favorites.html">❤️ Sevimlilər</a>
+                </li>
+                ${admin ? `<li class="auth-nav-mobile"><a href="admin.html" style="color:#ffd700;font-weight:700;">👑 Admin Panel</a></li>` : ''}
+                <li class="auth-nav-mobile">
+                    <a href="#" onclick="logoutUser();closeMobileMenu();return false;" style="color:#ff6b6b;">🚪 Çıxış</a>
+                </li>`);
+        }
+
     } else {
-        // Point to dedicated login page instead of modal
-        const currentPage = encodeURIComponent(window.location.pathname.split('/').pop() || '');
-        navActions.insertAdjacentHTML('afterbegin',
-            `<a href="login.html${currentPage ? '?next=' + currentPage : ''}" class="btn btn-sm auth-nav-btn" style="padding:0.5rem 1rem;text-decoration:none;">Daxil Ol</a>`
-        );
+        // ── Desktop: Daxil Ol düyməsi ──
+        if (navActions) {
+            navActions.insertAdjacentHTML('afterbegin',
+                `<a href="login.html${currentPage ? '?next=' + currentPage : ''}" class="btn btn-sm auth-nav-btn" style="padding:0.5rem 1rem;text-decoration:none;">Daxil Ol</a>`
+            );
+        }
+
+        // ── Mobil menü: Daxil Ol + Qeydiyyat ──
+        if (navMenu) {
+            navMenu.insertAdjacentHTML('beforeend', `
+                <li class="auth-nav-mobile" style="border-top:1px solid rgba(255,255,255,.15);margin-top:.5rem;padding-top:.5rem;">
+                    <a href="login.html${currentPage ? '?next=' + currentPage : ''}"
+                       style="color:#6c63ff;font-weight:700;font-size:1rem;">
+                        🔑 Daxil Ol
+                    </a>
+                </li>
+                <li class="auth-nav-mobile">
+                    <a href="register.html"
+                       style="color:#2ed573;font-weight:700;font-size:1rem;">
+                        ✨ Qeydiyyat
+                    </a>
+                </li>`);
+        }
     }
 }
+
 
 window.toggleUserDropdown = function () {
     const dd = document.getElementById('userDropdown');
