@@ -30,22 +30,22 @@ function closeMobileMenu() {
 }
 
 
-// ===== Email Modal =====
+// ===== Email Modal → register.html yönləndirmə =====
 function openEmailModal() {
-    const modal = document.getElementById('emailModal');
-    if (modal) {
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
+    // Köhnə modal yerinə register səhifəsinə yönləndir
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    window.location.href = 'register.html';
 }
 
 function closeEmailModal() {
+    // Artıq modal yoxdur, amma köhnə çağırışlar üçün saxlanılır
     const modal = document.getElementById('emailModal');
     if (modal) {
         modal.classList.remove('active');
         document.body.style.overflow = '';
     }
 }
+
 
 // ===== Email Form Submission =====
 function handleEmailFormSubmit(e) {
