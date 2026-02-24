@@ -87,7 +87,7 @@ function showContactModal(planName, price, period) {
     removeModal();
 
     const whatsapp = 'https://wa.me/994XXXXXXXXX'; // WhatsApp nömrəni dəyişin
-    const telegram = 'https://t.me/alielenglish';
+    const telegram = 'https://t.me/alifarajovvv';
     const email = 'mailto:englishaliel@gmail.com?subject=Plan%20Sifariş%3A%20' + planName +
         '&body=Salam%2C%20' + planName + '%20planını%20(%20' + price + '%20%2F%20' + period + ')%20almaq%20istəyirəm.';
 
