@@ -45,16 +45,11 @@
                 <p class="auth-page-sub">Pulsuz qeydiyyatdan keçin</p>
             </div>
 
-            <!-- Redirect loading overlay -->
-            <div id="redirectLoading" class="redirect-loading hidden">
-                <div class="redirect-spinner"></div>
-                <p id="redirectMsg">Yüklənir...</p>
-            </div>
-
             <div id="authError" class="auth-alert auth-alert-error   hidden" role="alert"></div>
             <div id="authSuccess" class="auth-alert auth-alert-success hidden" role="status"></div>
 
-            <div class="social-btns" id="socialBtns">
+            <!-- Google signup -->
+            <div class="social-btns">
                 <button class="social-btn social-google" onclick="handleGoogleReg()" type="button" id="googleBtn">
                     <svg width="20" height="20" viewBox="0 0 24 24">
                         <path fill="#4285F4"
@@ -67,13 +62,6 @@
                             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                     </svg>
                     Google ilə qeydiyyat
-                </button>
-                <button class="social-btn social-apple" onclick="handleAppleReg()" type="button" id="appleBtn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                            d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-                    </svg>
-                    Apple ilə qeydiyyat
                 </button>
             </div>
 
@@ -172,10 +160,8 @@
             createUserWithEmailAndPassword,
             updateProfile,
             sendEmailVerification,
-            signInWithRedirect,
-            getRedirectResult,
+            signInWithPopup,
             GoogleAuthProvider,
-            OAuthProvider,
             onAuthStateChanged
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import {
@@ -183,7 +169,6 @@
             addDoc, collection, serverTimestamp
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // ── Firebase init ─────────────────────────────────────────
         const app = initializeApp({
             apiKey: "AIzaSyCxRMtHyTwee7cQuxcJ1eAWibxcyoUKIIs",
             authDomain: "alielenglish.firebaseapp.com",
@@ -194,9 +179,12 @@
         });
         const auth = getAuth(app);
         const db = getFirestore(app);
-
-        // ── UI Helpers ────────────────────────────────────────────
         const $ = id => document.getElementById(id);
+
+        // Redirect if already logged in
+        onAuthStateChanged(auth, user => {
+            if (user) window.location.replace('index.html');
+        });
 
         function showErr(msg) {
             $('authError').textContent = msg;
@@ -214,38 +202,25 @@
             $('regBtnText').textContent = on ? 'Qeydiyyat edilir...' : 'Pulsuz Qeydiyyat';
             $('regSpinner').classList.toggle('hidden', !on);
         }
-        function showRedirectLoading(msg) {
-            $('redirectLoading').classList.remove('hidden');
-            $('redirectMsg').textContent = msg;
-            $('socialBtns').style.opacity = '0.4';
-            $('socialBtns').style.pointerEvents = 'none';
-        }
-        function hideRedirectLoading() {
-            $('redirectLoading').classList.add('hidden');
-            $('socialBtns').style.opacity = '';
-            $('socialBtns').style.pointerEvents = '';
-        }
 
         function getErrMsg(code) {
             const m = {
-                'auth/email-already-in-use': '📧 Bu email artıq qeydiyyatdan keçib.',
-                'auth/weak-password': '🔑 Şifrə çox zəifdir. Daha güclü şifrə seçin.',
+                'auth/email-already-in-use': '📧 Bu email artıq qeydiyyatdan keçib. Daxil olmağa çalışın.',
+                'auth/weak-password': '🔑 Şifrə çox zəifdir.',
                 'auth/invalid-email': '📧 Email formatı yanlışdır.',
                 'auth/network-request-failed': '🌐 İnternet bağlantısını yoxlayın.',
-                'auth/operation-not-allowed': '⚠️ Bu giriş üsulu aktivləşdirilməyib.',
-                'auth/account-exists-with-different-credential':
-                    '⚠️ Bu email başqa üsulla qeydiyyatdadır.',
+                'auth/popup-blocked': '🚫 Popup bloklandı. Brauzer ayarlarınızda popup-a icazə verin.',
+                'auth/popup-closed-by-user': '',
+                'auth/cancelled-popup-request': '',
+                'auth/operation-not-allowed': '⚠️ Google girişi Firebase-də aktivləşdirilməyib.',
             };
-            return m[code] || `⚠️ Xəta: ${code || 'Yenidən cəhd edin.'}`;
+            return m[code] || `⚠️ Xəta: ${code}`;
         }
 
         function sanitize(s) {
-            return String(s || '')
-                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
-        // ── Create Firestore user document ────────────────────────
         async function createUserDoc(uid, { name, email, level = 'A1', provider = 'email' }) {
             const data = {
                 name: sanitize(name), email,
@@ -266,44 +241,6 @@
                 });
             } catch (_) { }
         }
-
-        // ── Redirect if already logged in ────────────────────────
-        let handlingRedirect = true;
-        onAuthStateChanged(auth, user => {
-            if (user && !handlingRedirect) window.location.replace('index.html');
-        });
-
-        // ── Handle redirect result (Google / Apple) ───────────────
-        (async () => {
-            try {
-                showRedirectLoading('Giriş yoxlanılır...');
-                const result = await getRedirectResult(auth);
-                if (result && result.user) {
-                    // Check if user doc already exists (might be returning user)
-                    const snap = await getDoc(doc(db, 'users', result.user.uid));
-                    if (!snap.exists()) {
-                        await createUserDoc(result.user.uid, {
-                            name: result.user.displayName || 'İstifadəçi',
-                            email: result.user.email || '',
-                            level: 'A1',
-                            provider: result.providerId || 'social'
-                        });
-                    }
-                    showOk('🎉 Uğurla qeydiyyatdan keçdiniz! Yönləndirilirsiniz...');
-                    setTimeout(() => window.location.replace('index.html'), 1200);
-                    return;
-                }
-            } catch (err) {
-                if (err.code === 'auth/operation-not-allowed') {
-                    showErr('Bu giriş üsulu aktivləşdirilməyib. Email ilə qeydiyyat edin.');
-                } else if (err.code && err.code !== 'auth/cancelled-popup-request') {
-                    showErr(getErrMsg(err.code));
-                }
-            } finally {
-                handlingRedirect = false;
-                hideRedirectLoading();
-            }
-        })();
 
         // ── Password strength ─────────────────────────────────────
         window.updateStrength = function (val) {
@@ -335,7 +272,7 @@
             btn.textContent = inp.type === 'password' ? '👁' : '🙈';
         };
 
-        // ── Email / Password Register ─────────────────────────────
+        // ── Email Register ────────────────────────────────────────
         window.handleRegisterSubmit = async function (e) {
             e.preventDefault();
             $('authError').classList.add('hidden');
@@ -359,46 +296,44 @@
                 await updateProfile(cred.user, { displayName: name });
                 try { await sendEmailVerification(cred.user); } catch (_) { }
                 await createUserDoc(cred.user.uid, { name, email, level, provider: 'email' });
-                showOk('🎉 Qeydiyyat uğurlu! Xoş gəldiniz! Yönləndirilirsiniz...');
-                setTimeout(() => window.location.replace('index.html'), 1500);
+                showOk('🎉 Qeydiyyat uğurlu! Xoş gəldiniz!');
+                setTimeout(() => window.location.replace('index.html'), 1200);
             } catch (err) {
-                showErr(getErrMsg(err.code));
+                const msg = getErrMsg(err.code);
+                if (msg) showErr(msg);
                 setRegLoading(false);
             }
         };
 
-        // ── Google Register (redirect) ────────────────────────────
+        // ── Google Register (Popup) ───────────────────────────────
         window.handleGoogleReg = async function () {
             $('authError').classList.add('hidden');
-            showRedirectLoading('Google hesabınıza yönləndirilir...');
+            const btn = $('googleBtn');
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+
             try {
                 const provider = new GoogleAuthProvider();
                 provider.setCustomParameters({ prompt: 'select_account' });
-                await signInWithRedirect(auth, provider);
-                // Page reloads → result handled in getRedirectResult
-            } catch (err) {
-                hideRedirectLoading();
-                showErr(getErrMsg(err.code));
-            }
-        };
+                const result = await signInWithPopup(auth, provider);
 
-        // ── Apple Register (redirect) ─────────────────────────────
-        window.handleAppleReg = async function () {
-            $('authError').classList.add('hidden');
-            showRedirectLoading('Apple hesabınıza yönləndirilir...');
-            try {
-                const provider = new OAuthProvider('apple.com');
-                provider.addScope('email');
-                provider.addScope('name');
-                await signInWithRedirect(auth, provider);
-                // Page reloads → result handled in getRedirectResult
-            } catch (err) {
-                hideRedirectLoading();
-                if (err.code === 'auth/operation-not-allowed') {
-                    showErr('🍎 Apple girişi hələ konfiqurasiya edilməyib. Google ilə qeydiyyat edin.');
-                } else {
-                    showErr(getErrMsg(err.code));
+                // Create user doc if new user
+                const snap = await getDoc(doc(db, 'users', result.user.uid));
+                if (!snap.exists()) {
+                    await createUserDoc(result.user.uid, {
+                        name: result.user.displayName || 'İstifadəçi',
+                        email: result.user.email || '',
+                        level: 'A1', provider: 'google'
+                    });
                 }
+
+                showOk('🎉 Google ilə uğurla qeydiyyatdan keçdiniz!');
+                setTimeout(() => window.location.replace('index.html'), 1000);
+            } catch (err) {
+                const msg = getErrMsg(err.code);
+                if (msg) showErr(msg);
+                btn.disabled = false;
+                btn.style.opacity = '';
             }
         };
 
@@ -407,7 +342,7 @@
             e.preventDefault();
             $('docModalContent').innerHTML = `<h2>🔒 Gizlilik Siyasəti</h2>
         <p>Biz yalnız tələb olunan məlumatları toplayırıq: adınız, email, tədris səviyyəsi.</p>
-        <h3>Məlumatların Saxlanması</h3>
+        <h3>Saxlanma</h3>
         <p>Bütün məlumatlar Firebase serverlərində şifrəli saxlanılır. Heç vaxt üçüncü tərəflərə satılmır.</p>`;
             $('docModal').classList.remove('hidden');
         };

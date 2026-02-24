@@ -42,16 +42,11 @@
                 <p class="auth-page-sub">Hesabınıza daxil olun</p>
             </div>
 
-            <!-- Loading overlay for redirects -->
-            <div id="redirectLoading" class="redirect-loading hidden">
-                <div class="redirect-spinner"></div>
-                <p id="redirectMsg">Yüklənir...</p>
-            </div>
-
-            <div id="authError" class="auth-alert auth-alert-error hidden" role="alert"></div>
+            <div id="authError" class="auth-alert auth-alert-error   hidden" role="alert"></div>
             <div id="authSuccess" class="auth-alert auth-alert-success hidden" role="status"></div>
 
-            <div class="social-btns" id="socialBtns">
+            <!-- Social Buttons -->
+            <div class="social-btns">
                 <button class="social-btn social-google" onclick="handleGoogleLogin()" type="button" id="googleBtn">
                     <svg width="20" height="20" viewBox="0 0 24 24">
                         <path fill="#4285F4"
@@ -64,13 +59,6 @@
                             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                     </svg>
                     Google ilə daxil ol
-                </button>
-                <button class="social-btn social-apple" onclick="handleAppleLogin()" type="button" id="appleBtn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                            d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-                    </svg>
-                    Apple ilə daxil ol
                 </button>
             </div>
 
@@ -114,17 +102,14 @@
         import {
             getAuth,
             signInWithEmailAndPassword,
-            signInWithRedirect,
-            getRedirectResult,
+            signInWithPopup,
             GoogleAuthProvider,
-            OAuthProvider,
             onAuthStateChanged
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import {
             getFirestore, doc, getDoc, setDoc, serverTimestamp
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // ── Firebase init ─────────────────────────────────────────
         const app = initializeApp({
             apiKey: "AIzaSyCxRMtHyTwee7cQuxcJ1eAWibxcyoUKIIs",
             authDomain: "alielenglish.firebaseapp.com",
@@ -136,8 +121,16 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // ── UI Helpers ────────────────────────────────────────────
         const $ = id => document.getElementById(id);
+
+        // Already logged in → redirect
+        onAuthStateChanged(auth, user => {
+            if (user) window.location.replace(getNextUrl());
+        });
+
+        function getNextUrl() {
+            return new URLSearchParams(location.search).get('next') || 'index.html';
+        }
 
         function showErr(msg) {
             $('authError').textContent = msg;
@@ -149,21 +142,10 @@
             $('authSuccess').classList.remove('hidden');
             $('authError').classList.add('hidden');
         }
-        function setEmailLoading(on) {
-            $('loginBtn').disabled = on;
-            $('loginBtnText').textContent = on ? 'Yüklənir...' : 'Daxil Ol';
-            $('loginSpinner').classList.toggle('hidden', !on);
-        }
-        function showRedirectLoading(msg = 'Google ilə yönləndirilir...') {
-            $('redirectLoading').classList.remove('hidden');
-            $('redirectMsg').textContent = msg;
-            $('socialBtns').style.opacity = '0.4';
-            $('socialBtns').style.pointerEvents = 'none';
-        }
-        function hideRedirectLoading() {
-            $('redirectLoading').classList.add('hidden');
-            $('socialBtns').style.opacity = '';
-            $('socialBtns').style.pointerEvents = '';
+        function setLoadingBtn(btnId, textId, spinnerId, on, label) {
+            $(btnId).disabled = on;
+            $(textId).textContent = on ? 'Yüklənir...' : label;
+            $(spinnerId).classList.toggle('hidden', !on);
         }
 
         function getErrMsg(code) {
@@ -174,18 +156,15 @@
                 'auth/invalid-email': '📧 Email formatı yanlışdır.',
                 'auth/too-many-requests': '⏳ Çox cəhd. Bir müddət gözləyin.',
                 'auth/network-request-failed': '🌐 İnternet bağlantısını yoxlayın.',
-                'auth/operation-not-allowed': '⚠️ Bu giriş üsulu aktivləşdirilməyib.',
-                'auth/account-exists-with-different-credential':
-                    '⚠️ Bu email ilə başqa üsulla hesab mövcuddur.',
+                'auth/popup-blocked': '🚫 Popup bloklandı. Brauzer ayarlarınızda popup-a icazə verin.',
+                'auth/popup-closed-by-user': '',
+                'auth/cancelled-popup-request': '',
+                'auth/operation-not-allowed': '⚠️ Google girişi Firebase-də aktivləşdirilməyib.',
             };
-            return m[code] || `⚠️ Xəta: ${code || 'Yenidən cəhd edin.'}`;
+            return m[code] || `⚠️ Xəta: ${code}`;
         }
 
-        function getNextUrl() {
-            return new URLSearchParams(location.search).get('next') || 'index.html';
-        }
-
-        // ── Ensure Firestore user doc ─────────────────────────────
+        // Ensure user doc in Firestore
         async function ensureUserDoc(user) {
             try {
                 const ref = doc(db, 'users', user.uid);
@@ -204,10 +183,10 @@
                         testHistory: [], createdAt: serverTimestamp()
                     });
                 }
-            } catch (e) { /* non-critical */ }
+            } catch (_) { }
         }
 
-        // ── Rate limiter ──────────────────────────────────────────
+        // Rate limiter
         const RL = { n: 0, until: 0, delays: [0, 0, 0, 30000, 120000, 900000] };
         let rlTimer = null;
         function checkRL() {
@@ -227,48 +206,12 @@
             el.textContent = `🔒 ${left}s sonra yenidən cəhd edə bilərsiniz`;
             rlTimer = setInterval(() => {
                 left--;
-                if (left <= 0) {
-                    clearInterval(rlTimer);
-                    el.classList.add('hidden');
-                    $('loginBtn').disabled = false;
-                } else {
-                    el.textContent = `🔒 ${left}s sonra yenidən cəhd edə bilərsiniz`;
-                }
+                if (left <= 0) { clearInterval(rlTimer); el.classList.add('hidden'); $('loginBtn').disabled = false; }
+                else el.textContent = `🔒 ${left}s sonra yenidən cəhd edə bilərsiniz`;
             }, 1000);
         }
 
-        // ── Already logged-in redirect ────────────────────────────
-        // NOTE: Don't redirect while getRedirectResult is running
-        let handlingRedirect = true;
-        onAuthStateChanged(auth, async user => {
-            if (user && !handlingRedirect) {
-                window.location.replace(getNextUrl());
-            }
-        });
-
-        // ── Handle redirect result on page load ──────────────────
-        (async () => {
-            try {
-                showRedirectLoading('Giriş yoxlanılır...');
-                const result = await getRedirectResult(auth);
-                if (result && result.user) {
-                    // Social login redirect came back with success
-                    await ensureUserDoc(result.user);
-                    showOk('✅ Uğurla daxil oldunuz! Yönləndirilirsiniz...');
-                    setTimeout(() => window.location.replace(getNextUrl()), 1200);
-                    return;
-                }
-            } catch (err) {
-                if (err.code !== 'auth/cancelled-popup-request') {
-                    showErr(getErrMsg(err.code));
-                }
-            } finally {
-                handlingRedirect = false;
-                hideRedirectLoading();
-            }
-        })();
-
-        // ── Email / Password Login ────────────────────────────────
+        // ── Email Login ───────────────────────────────────────────
         window.handleLoginSubmit = async function (e) {
             e.preventDefault();
             $('authError').classList.add('hidden');
@@ -280,54 +223,40 @@
             const pass = $('loginPassword').value;
             if (!email || !pass) { showErr('Bütün sahələri doldurun.'); return; }
 
-            setEmailLoading(true);
+            setLoadingBtn('loginBtn', 'loginBtnText', 'loginSpinner', true, 'Daxil Ol');
             try {
                 await signInWithEmailAndPassword(auth, email, pass);
                 resetRL();
-                showOk('✅ Uğurla daxil oldunuz! Yönləndirilirsiniz...');
-                setTimeout(() => window.location.replace(getNextUrl()), 1000);
+                showOk('✅ Uğurla daxil oldunuz!');
+                setTimeout(() => window.location.replace(getNextUrl()), 800);
             } catch (err) {
                 showErr(getErrMsg(err.code));
-                setEmailLoading(false);
+                setLoadingBtn('loginBtn', 'loginBtnText', 'loginSpinner', false, 'Daxil Ol');
             }
         };
 
-        // ── Google Login  (redirect — works on ALL browsers/mobile) ──
+        // ── Google Login (Popup) ──────────────────────────────────
         window.handleGoogleLogin = async function () {
             $('authError').classList.add('hidden');
-            showRedirectLoading('Google hesabınıza yönləndirilir...');
+            const btn = $('googleBtn');
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+
             try {
                 const provider = new GoogleAuthProvider();
                 provider.setCustomParameters({ prompt: 'select_account' });
-                await signInWithRedirect(auth, provider);
-                // Page will reload, result handled in getRedirectResult above
+                const result = await signInWithPopup(auth, provider);
+                await ensureUserDoc(result.user);
+                showOk('✅ Google ilə uğurla daxil oldunuz!');
+                setTimeout(() => window.location.replace(getNextUrl()), 800);
             } catch (err) {
-                hideRedirectLoading();
-                showErr(getErrMsg(err.code));
+                const msg = getErrMsg(err.code);
+                if (msg) showErr(msg);
+                btn.disabled = false;
+                btn.style.opacity = '';
             }
         };
 
-        // ── Apple Login (redirect) ────────────────────────────────
-        window.handleAppleLogin = async function () {
-            $('authError').classList.add('hidden');
-            showRedirectLoading('Apple hesabınıza yönləndirilir...');
-            try {
-                const provider = new OAuthProvider('apple.com');
-                provider.addScope('email');
-                provider.addScope('name');
-                await signInWithRedirect(auth, provider);
-                // Page will reload, result handled in getRedirectResult above
-            } catch (err) {
-                hideRedirectLoading();
-                if (err.code === 'auth/operation-not-allowed') {
-                    showErr('🍎 Apple girişi hələ konfiqurasiya edilməyib. Google ilə daxil olun.');
-                } else {
-                    showErr(getErrMsg(err.code));
-                }
-            }
-        };
-
-        // ── Toggle password visibility ────────────────────────────
         window.toggleEye = function (id, btn) {
             const inp = document.getElementById(id);
             if (!inp) return;
