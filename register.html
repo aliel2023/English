@@ -8,76 +8,578 @@
     <meta name="robots" content="noindex">
     <title>Qeydiyyat — Alielenglish</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/auth-page.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #e63946;
+            --primary-h: #c1121f;
+            --bg: #111827;
+            --bg-card: #1c2333;
+            --border: #2d3748;
+            --border-f: #4a5568;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --input-bg: #243047;
+            --success: #2ed573;
+            --radius: 12px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .duo-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        /* ── TOP BAR ── */
+        .duo-topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            z-index: 100;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .duo-close-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            transition: background .2s, color .2s;
+            text-decoration: none;
+            font-size: 1.4rem;
+            font-weight: 300;
+        }
+
+        .duo-close-btn:hover {
+            background: #2d3748;
+            color: var(--text);
+        }
+
+        .duo-topbar-logo {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            text-decoration: none;
+        }
+
+        .duo-logo-mark {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .duo-logo-text {
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: var(--text);
+            letter-spacing: -.3px;
+        }
+
+        .duo-login-btn {
+            padding: .5rem 1.2rem;
+            border-radius: 50px;
+            border: 2px solid var(--border-f);
+            background: transparent;
+            color: var(--text);
+            font-weight: 700;
+            font-size: .85rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: border-color .2s, background .2s;
+            letter-spacing: .3px;
+        }
+
+        .duo-login-btn:hover {
+            border-color: var(--primary);
+            background: rgba(230, 57, 70, .08);
+        }
+
+        /* ── CARD ── */
+        .duo-card {
+            width: 100%;
+            max-width: 440px;
+            margin-top: 64px;
+            padding: 2.25rem 2rem;
+            animation: fadeUp .4s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .duo-card-title {
+            font-size: 1.7rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            letter-spacing: -.5px;
+        }
+
+        /* ── ALERTS ── */
+        .duo-alert {
+            padding: .75rem 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            font-size: .88rem;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+
+        .duo-alert.show {
+            display: block;
+        }
+
+        .duo-alert-error {
+            background: rgba(230, 57, 70, .12);
+            border: 1px solid rgba(230, 57, 70, .35);
+            color: #fc8181;
+        }
+
+        .duo-alert-success {
+            background: rgba(46, 213, 115, .1);
+            border: 1px solid rgba(46, 213, 115, .3);
+            color: var(--success);
+        }
+
+        /* ── GOOGLE BUTTON ── */
+        .duo-google-btn {
+            width: 100%;
+            padding: .85rem 1rem;
+            border-radius: var(--radius);
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text);
+            font-weight: 700;
+            font-size: .95rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .75rem;
+            transition: border-color .2s, background .2s, transform .15s;
+            margin-bottom: .85rem;
+        }
+
+        .duo-google-btn:hover {
+            border-color: var(--border-f);
+            background: #243047;
+            transform: translateY(-1px);
+        }
+
+        .duo-google-btn:active {
+            transform: translateY(0);
+        }
+
+        .duo-google-btn:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ── DIVIDER ── */
+        .duo-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: .25rem 0 1rem;
+            color: var(--muted);
+            font-size: .8rem;
+            font-weight: 600;
+            letter-spacing: .8px;
+        }
+
+        .duo-divider::before,
+        .duo-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── FORM ── */
+        .duo-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .65rem;
+            margin-bottom: .65rem;
+        }
+
+        .duo-field {
+            position: relative;
+            margin-bottom: .65rem;
+        }
+
+        .duo-field:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .duo-input {
+            width: 100%;
+            padding: .85rem 1rem;
+            border-radius: var(--radius);
+            border: 2px solid var(--border);
+            background: var(--input-bg);
+            color: var(--text);
+            font-size: .92rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color .2s, box-shadow .2s;
+            outline: none;
+        }
+
+        .duo-input::placeholder {
+            color: var(--muted);
+        }
+
+        .duo-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, .15);
+        }
+
+        .duo-pw-wrap .duo-input {
+            padding-right: 5rem;
+        }
+
+        .duo-eye-btn {
+            position: absolute;
+            right: .85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            padding: .25rem .35rem;
+            border-radius: 4px;
+            transition: color .2s;
+        }
+
+        .duo-eye-btn:hover {
+            color: var(--text);
+        }
+
+        /* Password strength */
+        .duo-strength {
+            display: none;
+            margin-top: .4rem;
+            align-items: center;
+            gap: .6rem;
+        }
+
+        .duo-strength.show {
+            display: flex;
+        }
+
+        .duo-strength-track {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .duo-strength-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width .3s, background .3s;
+            width: 0;
+        }
+
+        .duo-strength-lbl {
+            font-size: .72rem;
+            font-weight: 700;
+            min-width: 80px;
+        }
+
+        /* Terms */
+        .duo-terms {
+            display: flex;
+            align-items: flex-start;
+            gap: .6rem;
+            margin: .85rem 0;
+            font-size: .82rem;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        .duo-terms input[type="checkbox"] {
+            margin-top: .15rem;
+            flex-shrink: 0;
+            accent-color: var(--primary);
+        }
+
+        .duo-terms a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .duo-terms a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── SUBMIT ── */
+        .duo-submit-btn {
+            width: 100%;
+            padding: .9rem 1rem;
+            border-radius: var(--radius);
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 800;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            letter-spacing: .3px;
+            transition: background .2s, transform .15s, box-shadow .2s;
+            box-shadow: 0 4px 16px rgba(230, 57, 70, .35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .6rem;
+        }
+
+        .duo-submit-btn:hover {
+            background: var(--primary-h);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 22px rgba(230, 57, 70, .45);
+        }
+
+        .duo-submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .duo-submit-btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .duo-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255, 255, 255, .35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+        }
+
+        .duo-spinner.hidden {
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Footer */
+        .duo-switch {
+            text-align: center;
+            margin-top: 1.25rem;
+            font-size: .87rem;
+            color: var(--muted);
+        }
+
+        .duo-switch a {
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+            margin-left: .3rem;
+        }
+
+        .duo-switch a:hover {
+            text-decoration: underline;
+        }
+
+        .duo-security {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: .72rem;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        /* Doc modal */
+        .doc-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .7);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .doc-overlay.show {
+            display: flex;
+        }
+
+        .doc-card {
+            background: #1c2333;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 480px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .doc-card h2 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .doc-card p,
+        .doc-card li {
+            font-size: .9rem;
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: .5rem;
+        }
+
+        .doc-card ul {
+            padding-left: 1.2rem;
+        }
+
+        .doc-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 480px) {
+            .duo-card {
+                padding: 1.75rem 1.25rem;
+            }
+
+            .duo-card-title {
+                font-size: 1.45rem;
+            }
+
+            .duo-topbar {
+                padding: 0 1rem;
+            }
+
+            .duo-logo-text {
+                display: none;
+            }
+
+            .duo-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="auth-bg">
-        <div class="auth-bg-orb orb-1" style="background:radial-gradient(circle,rgba(108,99,255,0.25),transparent 70%)">
-        </div>
-        <div class="auth-bg-orb orb-2" style="background:radial-gradient(circle,rgba(230,57,70,0.15),transparent 70%)">
-        </div>
-        <div class="auth-bg-orb orb-3" style="background:radial-gradient(circle,rgba(46,213,115,0.1),transparent 70%)">
-        </div>
-        <div class="auth-bg-grid"></div>
-    </div>
+    <!-- Top Bar -->
+    <header class="duo-topbar">
+        <a href="index.html" class="duo-close-btn" title="Bağla" aria-label="Ana Səhifəyə qayıt">×</a>
+        <a href="index.html" class="duo-topbar-logo">
+            <div class="duo-logo-mark">A</div>
+            <span class="duo-logo-text">Alielenglish</span>
+        </a>
+        <a href="login.html" class="duo-login-btn">DAXİL OL</a>
+    </header>
 
-    <a href="index.html" class="auth-back-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-            stroke-linecap="round">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-        </svg>
-        <span>Ana Səhifə</span>
-    </a>
+    <main class="duo-page">
+        <div class="duo-card" role="main">
 
-    <main class="auth-page-wrap">
-        <div class="auth-page-card auth-register-card" role="main">
+            <h1 class="duo-card-title">Hesab Yarat</h1>
 
-            <a href="index.html" class="auth-page-logo">
-                <div class="auth-logo-mark auth-logo-mark-purple">A</div>
-                <span class="auth-logo-text">Alielenglish</span>
-            </a>
+            <div id="authError" class="duo-alert duo-alert-error" role="alert" aria-live="assertive"></div>
+            <div id="authSuccess" class="duo-alert duo-alert-success" role="status" aria-live="polite"></div>
 
-            <div class="auth-page-header">
-                <h1 class="auth-page-title">Hesab Yarat</h1>
-                <p class="auth-page-sub">Pulsuz qeydiyyatdan keçin</p>
-            </div>
+            <!-- Google -->
+            <button class="duo-google-btn" onclick="handleGoogleReg()" type="button" id="googleBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="#4285F4"
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                    <path fill="#34A853"
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                    <path fill="#FBBC05"
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
+                    <path fill="#EA4335"
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                </svg>
+                Google ilə qeydiyyat
+            </button>
 
-            <div id="authError" class="auth-alert auth-alert-error   hidden" role="alert"></div>
-            <div id="authSuccess" class="auth-alert auth-alert-success hidden" role="status"></div>
+            <div class="duo-divider">VƏ YA</div>
 
-            <!-- Google signup -->
-            <div class="social-btns">
-                <button class="social-btn social-google" onclick="handleGoogleReg()" type="button" id="googleBtn">
-                    <svg width="20" height="20" viewBox="0 0 24 24">
-                        <path fill="#4285F4"
-                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                        <path fill="#34A853"
-                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                        <path fill="#FBBC05"
-                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
-                        <path fill="#EA4335"
-                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                    </svg>
-                    Google ilə qeydiyyat
-                </button>
-            </div>
+            <form id="registerForm" onsubmit="handleRegisterSubmit(event)" novalidate autocomplete="on">
 
-            <div class="auth-divider-line"><span>və ya email ilə</span></div>
-
-            <form id="registerForm" class="auth-form" onsubmit="handleRegisterSubmit(event)" novalidate>
-
-                <div class="form-row-2">
-                    <div class="form-field">
-                        <label for="regName" class="form-label">👤 Ad Soyad</label>
-                        <input type="text" id="regName" class="form-input" placeholder="Əli Hüseynov" required
-                            minlength="2" maxlength="50" autocomplete="name">
+                <div class="duo-row">
+                    <div class="duo-field">
+                        <input type="text" id="regName" class="duo-input" placeholder="Ad Soyad" required minlength="2"
+                            maxlength="50" autocomplete="name">
                     </div>
-                    <div class="form-field">
-                        <label for="regLevel" class="form-label">🎓 Səviyyə</label>
-                        <select id="regLevel" class="form-input form-select">
+                    <div class="duo-field">
+                        <select id="regLevel" class="duo-input">
                             <option value="A1">A1 — Başlanğıc</option>
                             <option value="A2">A2 — Əsas</option>
                             <option value="B1" selected>B1 — Orta</option>
@@ -88,81 +590,69 @@
                     </div>
                 </div>
 
-                <div class="form-field">
-                    <label for="regEmail" class="form-label">📧 Email</label>
-                    <input type="email" id="regEmail" class="form-input" placeholder="email@nümunə.com" required
+                <div class="duo-field">
+                    <input type="email" id="regEmail" class="duo-input" placeholder="Email" required
                         autocomplete="email" inputmode="email">
                 </div>
 
-                <div class="form-field">
-                    <label for="regPass" class="form-label">🔑 Şifrə</label>
-                    <div class="pw-field-wrap">
-                        <input type="password" id="regPass" class="form-input" placeholder="Min. 8 simvol" required
-                            minlength="8" autocomplete="new-password" oninput="updateStrength(this.value)">
-                        <button type="button" class="pw-eye-btn" onclick="toggleEye('regPass',this)">👁</button>
+                <div class="duo-field duo-pw-wrap">
+                    <input type="password" id="regPass" class="duo-input" placeholder="Şifrə (min. 8 simvol)" required
+                        minlength="8" autocomplete="new-password" oninput="updateStrength(this.value)">
+                    <button type="button" class="duo-eye-btn" onclick="toggleEye('regPass',this)">GÖSTƏR</button>
+                </div>
+                <div class="duo-strength" id="strengthWrap">
+                    <div class="duo-strength-track">
+                        <div class="duo-strength-bar" id="strengthBar"></div>
                     </div>
-                    <div class="strength-wrap" id="strengthWrap" style="display:none">
-                        <div class="strength-track">
-                            <div class="strength-bar" id="strengthBar"></div>
-                        </div>
-                        <span class="strength-label" id="strengthLabel"></span>
-                    </div>
+                    <span class="duo-strength-lbl" id="strengthLabel"></span>
                 </div>
 
-                <div class="form-field">
-                    <label for="regPassConfirm" class="form-label">🔑 Şifrəni Təkrarla</label>
-                    <div class="pw-field-wrap">
-                        <input type="password" id="regPassConfirm" class="form-input"
-                            placeholder="Şifrəni yenidən daxil edin" required autocomplete="new-password">
-                        <button type="button" class="pw-eye-btn" onclick="toggleEye('regPassConfirm',this)">👁</button>
-                    </div>
+                <div class="duo-field duo-pw-wrap" style="margin-top:.65rem">
+                    <input type="password" id="regPassConfirm" class="duo-input" placeholder="Şifrəni təkrarla" required
+                        autocomplete="new-password">
+                    <button type="button" class="duo-eye-btn" onclick="toggleEye('regPassConfirm',this)">GÖSTƏR</button>
                 </div>
 
-                <label class="terms-row">
+                <label class="duo-terms">
                     <input type="checkbox" id="termsCheck" required>
                     <span>
-                        <a href="#" onclick="showPrivacy(event)">Gizlilik Siyasəti</a>
+                        <a href="#" onclick="showDoc('privacy',event)">Gizlilik Siyasəti</a>
                         və
-                        <a href="#" onclick="showTerms(event)">İstifadə Şərtlərini</a>
+                        <a href="#" onclick="showDoc('terms',event)">İstifadə Şərtlərini</a>
                         qəbul edirəm
                     </span>
                 </label>
 
-                <button type="submit" class="auth-submit-btn auth-submit-register" id="regBtn">
-                    <span id="regBtnText">Pulsuz Qeydiyyat</span>
-                    <span class="btn-spinner hidden" id="regSpinner"></span>
+                <button type="submit" class="duo-submit-btn" id="regBtn">
+                    <span id="regBtnText">PULSUZ QEYDİYYAT</span>
+                    <span class="duo-spinner hidden" id="regSpinner"></span>
                 </button>
+
             </form>
 
-            <div class="auth-page-footer">
-                <p class="auth-switch-text">
-                    Artıq hesabın var?
-                    <a href="login.html" class="auth-switch-link">Daxil ol →</a>
-                </p>
+            <div class="duo-switch">
+                Artıq hesabın var?
+                <a href="login.html">Daxil ol →</a>
             </div>
-            <div class="auth-security-note">🔒 Firebase Auth · Şifrələr hash+salt · SSL şifrəli</div>
+
+            <p class="duo-security">🔒 Firebase Auth · Şifrələr hash+salt · SSL şifrəli</p>
         </div>
     </main>
 
-    <!-- Privacy / Terms modal -->
-    <div id="docModal" class="doc-modal-overlay hidden" onclick="if(event.target===this)this.classList.add('hidden')">
-        <div class="doc-modal-card">
-            <button class="doc-modal-close"
-                onclick="document.getElementById('docModal').classList.add('hidden')">×</button>
-            <div id="docModalContent"></div>
+    <!-- Doc modal -->
+    <div id="docOverlay" class="doc-overlay" onclick="if(event.target===this)closeDoc()">
+        <div class="doc-card">
+            <button class="doc-close" onclick="closeDoc()">×</button>
+            <div id="docContent"></div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import {
-            getAuth,
-            createUserWithEmailAndPassword,
-            updateProfile,
-            sendEmailVerification,
-            signInWithPopup,
-            GoogleAuthProvider,
-            onAuthStateChanged
+            getAuth, createUserWithEmailAndPassword,
+            updateProfile, sendEmailVerification,
+            signInWithPopup, GoogleAuthProvider, onAuthStateChanged
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import {
             getFirestore, doc, setDoc, getDoc,
@@ -181,50 +671,42 @@
         const db = getFirestore(app);
         const $ = id => document.getElementById(id);
 
-        // Redirect if already logged in
-        onAuthStateChanged(auth, user => {
-            if (user) window.location.replace('index.html');
-        });
+        onAuthStateChanged(auth, u => { if (u) window.location.replace('index.html'); });
 
         function showErr(msg) {
-            $('authError').textContent = msg;
-            $('authError').classList.remove('hidden');
-            $('authSuccess').classList.add('hidden');
-            $('authError').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            const el = $('authError');
+            el.textContent = msg; el.classList.add('show');
+            $('authSuccess').classList.remove('show');
+            el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
         function showOk(msg) {
-            $('authSuccess').textContent = msg;
-            $('authSuccess').classList.remove('hidden');
-            $('authError').classList.add('hidden');
+            const el = $('authSuccess');
+            el.textContent = msg; el.classList.add('show');
+            $('authError').classList.remove('show');
         }
-        function setRegLoading(on) {
+        function setLoading(on) {
             $('regBtn').disabled = on;
-            $('regBtnText').textContent = on ? 'Qeydiyyat edilir...' : 'Pulsuz Qeydiyyat';
+            $('regBtnText').textContent = on ? 'QEYDİYYAT...' : 'PULSUZ QEYDİYYAT';
             $('regSpinner').classList.toggle('hidden', !on);
         }
-
         function getErrMsg(code) {
             const m = {
-                'auth/email-already-in-use': '📧 Bu email artıq qeydiyyatdan keçib. Daxil olmağa çalışın.',
+                'auth/email-already-in-use': '📧 Bu email artıq qeydiyyatdan keçib.',
                 'auth/weak-password': '🔑 Şifrə çox zəifdir.',
                 'auth/invalid-email': '📧 Email formatı yanlışdır.',
                 'auth/network-request-failed': '🌐 İnternet bağlantısını yoxlayın.',
-                'auth/popup-blocked': '🚫 Popup bloklandı. Brauzer ayarlarınızda popup-a icazə verin.',
+                'auth/popup-blocked': '🚫 Popup bloklandı.',
                 'auth/popup-closed-by-user': '',
                 'auth/cancelled-popup-request': '',
-                'auth/operation-not-allowed': '⚠️ Google girişi Firebase-də aktivləşdirilməyib.',
             };
-            return m[code] || `⚠️ Xəta: ${code}`;
+            return m[code] ?? `⚠️ Xəta: ${code}`;
         }
-
         function sanitize(s) {
             return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
-
         async function createUserDoc(uid, { name, email, level = 'A1', provider = 'email' }) {
-            const data = {
-                name: sanitize(name), email,
-                level, role: 'user',
+            await setDoc(doc(db, 'users', uid), {
+                name: sanitize(name), email, level, role: 'user',
                 currentStreak: 0, longestStreak: 0,
                 lastActiveDate: new Date().toDateString(),
                 activeDays: 1, wordsLearned: 0, testsCompleted: 0,
@@ -232,21 +714,15 @@
                 favorites: { words: [], grammar: [], phrases: [] },
                 weeklyActivity: [false, false, false, false, false, false, false],
                 testHistory: [], createdAt: serverTimestamp(), provider
-            };
-            await setDoc(doc(db, 'users', uid), data);
-            try {
-                await addDoc(collection(db, 'leads'), {
-                    name: sanitize(name), email, level,
-                    source: '/register.html', createdAt: serverTimestamp()
-                });
-            } catch (_) { }
+            });
+            try { await addDoc(collection(db, 'leads'), { name: sanitize(name), email, level, source: '/register.html', createdAt: serverTimestamp() }); } catch (_) { }
         }
 
-        // ── Password strength ─────────────────────────────────────
+        // ── Password strength ──
         window.updateStrength = function (val) {
             const wrap = $('strengthWrap'), bar = $('strengthBar'), lbl = $('strengthLabel');
-            if (!val) { wrap.style.display = 'none'; return; }
-            wrap.style.display = 'flex';
+            if (!val) { wrap.classList.remove('show'); return; }
+            wrap.classList.add('show');
             let s = 0;
             if (val.length >= 8) s++;
             if (val.length >= 12) s++;
@@ -268,14 +744,15 @@
         window.toggleEye = function (id, btn) {
             const inp = document.getElementById(id);
             if (!inp) return;
-            inp.type = inp.type === 'password' ? 'text' : 'password';
-            btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+            const show = inp.type === 'password';
+            inp.type = show ? 'text' : 'password';
+            btn.textContent = show ? 'GİZLƏT' : 'GÖSTƏR';
         };
 
-        // ── Email Register ────────────────────────────────────────
+        // ── Email Register ──
         window.handleRegisterSubmit = async function (e) {
             e.preventDefault();
-            $('authError').classList.add('hidden');
+            $('authError').classList.remove('show');
 
             const name = $('regName').value.trim();
             const email = $('regEmail').value.trim();
@@ -287,10 +764,10 @@
             if (!terms) { showErr('Şərtləri qəbul etməlisiniz.'); return; }
             if (name.length < 2) { showErr('Ad ən azı 2 hərf olmalıdır.'); return; }
             if (!/\S+@\S+\.\S+/.test(email)) { showErr('Email formatı yanlışdır.'); return; }
-            if (pass.length < 8) { showErr('🔑 Şifrə minimum 8 simvol olmalıdır.'); return; }
-            if (pass !== confirm) { showErr('🔑 Şifrələr uyğun gəlmir.'); return; }
+            if (pass.length < 8) { showErr('Şifrə minimum 8 simvol olmalıdır.'); return; }
+            if (pass !== confirm) { showErr('Şifrələr uyğun gəlmir.'); return; }
 
-            setRegLoading(true);
+            setLoading(true);
             try {
                 const cred = await createUserWithEmailAndPassword(auth, email, pass);
                 await updateProfile(cred.user, { displayName: name });
@@ -301,23 +778,19 @@
             } catch (err) {
                 const msg = getErrMsg(err.code);
                 if (msg) showErr(msg);
-                setRegLoading(false);
+                setLoading(false);
             }
         };
 
-        // ── Google Register (Popup) ───────────────────────────────
+        // ── Google Register ──
         window.handleGoogleReg = async function () {
-            $('authError').classList.add('hidden');
+            $('authError').classList.remove('show');
             const btn = $('googleBtn');
-            btn.disabled = true;
-            btn.style.opacity = '0.7';
-
+            btn.disabled = true; btn.style.opacity = '.6';
             try {
                 const provider = new GoogleAuthProvider();
                 provider.setCustomParameters({ prompt: 'select_account' });
                 const result = await signInWithPopup(auth, provider);
-
-                // Create user doc if new user
                 const snap = await getDoc(doc(db, 'users', result.user.uid));
                 if (!snap.exists()) {
                     await createUserDoc(result.user.uid, {
@@ -326,37 +799,36 @@
                         level: 'A1', provider: 'google'
                     });
                 }
-
                 showOk('🎉 Google ilə uğurla qeydiyyatdan keçdiniz!');
                 setTimeout(() => window.location.replace('index.html'), 1000);
             } catch (err) {
                 const msg = getErrMsg(err.code);
                 if (msg) showErr(msg);
-                btn.disabled = false;
-                btn.style.opacity = '';
+                btn.disabled = false; btn.style.opacity = '';
             }
         };
 
-        // ── Doc modals ────────────────────────────────────────────
-        window.showPrivacy = function (e) {
-            e.preventDefault();
-            $('docModalContent').innerHTML = `<h2>🔒 Gizlilik Siyasəti</h2>
-        <p>Biz yalnız tələb olunan məlumatları toplayırıq: adınız, email, tədris səviyyəsi.</p>
-        <h3>Saxlanma</h3>
-        <p>Bütün məlumatlar Firebase serverlərində şifrəli saxlanılır. Heç vaxt üçüncü tərəflərə satılmır.</p>`;
-            $('docModal').classList.remove('hidden');
+        // ── Doc modal ──
+        const DOCS = {
+            privacy: `<h2>🔒 Gizlilik Siyasəti</h2>
+                <p>Biz yalnız tələb olunan məlumatları toplayırıq: adınız, email, tədris səviyyəsi.</p>
+                <h3 style="margin:1rem 0 .5rem;font-size:1rem;">Saxlanma</h3>
+                <p>Bütün məlumatlar Firebase serverlərində şifrəli saxlanılır. Heç vaxt üçüncü tərəflərə satılmır.</p>`,
+            terms: `<h2>📋 İstifadə Şərtləri</h2>
+                <ul style="margin:1rem 0;padding-left:1.2rem;line-height:2;color:#94a3b8">
+                    <li>Platformanı yalnız öz məqsədləriniz üçün istifadə edin</li>
+                    <li>Digər istifadəçilərə zərər verməyin</li>
+                    <li>Saxta məlumat girməyin</li>
+                </ul>`
         };
-        window.showTerms = function (e) {
+        window.showDoc = function (type, e) {
             e.preventDefault();
-            $('docModalContent').innerHTML = `<h2>📋 İstifadə Şərtləri</h2>
-        <ul style="margin:1rem 0;padding-left:1.25rem;line-height:2;color:#888898">
-            <li>Platformanı yalnız öz həddinizdə istifadə edin</li>
-            <li>Digər istifadəçilərə zərər verməyin</li>
-            <li>Saxta məlumat girməyin</li>
-        </ul>`;
-            $('docModal').classList.remove('hidden');
+            $('docContent').innerHTML = DOCS[type] || '';
+            $('docOverlay').classList.add('show');
         };
+        window.closeDoc = function () { $('docOverlay').classList.remove('show'); };
     </script>
+
 </body>
 
 </html>
