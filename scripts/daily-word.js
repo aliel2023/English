@@ -492,9 +492,10 @@ function addToFavorites() {
 
     const user = getCurrentUser();
     if (!user) {
-        openAuthModal('login');
+        window.location.href = 'login.html?next=daily-word.html';
         return;
     }
+
 
     const wordData = {
         word: todayWord.word,
