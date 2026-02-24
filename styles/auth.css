@@ -878,6 +878,11 @@
 }
 
 /* ===== RESPONSIVE ===== */
+/* Mobildə görünən auth elementlərini desktopda gizlət */
+.auth-nav-mobile {
+    display: none !important;
+}
+
 @media (max-width: 768px) {
     .daily-tip-banner {
         max-width: calc(100vw - 40px);
@@ -902,6 +907,10 @@
        Möbil hamburger menüdə ayrıca linkler var  */
     .auth-nav-btn {
         display: none !important;
+    }
+
+    .auth-nav-mobile {
+        display: block !important;
     }
 
     /* ── Hamburger menüdəki auth linklər ── */
