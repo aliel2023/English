@@ -36,11 +36,19 @@ function toggleBilling() {
     if (isYearly) showToast('💰 İllik planla 20% qənaət edirsiniz!', '#27ae60');
 }
 
-// ─── Plan seçimi → Modal aç ───────────────────────────────
+// ─── YENİ: premium-order.html-ə yönləndir ────────────────
+function goToOrder(planId) {
+    const isYearly = document.getElementById('billingToggle')?.checked;
+    const billing = isYearly ? 'yearly' : 'monthly';
+    const planKey = `${planId}_${billing}`;
+    window.location.href = `premium-order.html?plan=${planKey}&billing=${billing}`;
+}
+
+// ─── KÖHNƏ: selectPlan (uyğunluq üçün saxlanır) ──────────
 function selectPlan(planName, price, period) {
     const isYearly = document.getElementById('billingToggle')?.checked;
-    const planKey = planName.toLowerCase() + '_' + (isYearly ? 'yearly' : 'monthly');
-    openOrderModal(planName, price, isYearly ? 'illik' : 'aylıq', planKey);
+    const planId = planName.toLowerCase();
+    goToOrder(planId);
 }
 
 // ─── Order Modal ──────────────────────────────────────────

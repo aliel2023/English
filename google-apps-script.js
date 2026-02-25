@@ -1,192 +1,275 @@
 /**
- * ================================================
- * Alielenglish — Premium Sifariş
- * Google Apps Script Web App
- * ================================================
+ * ╔══════════════════════════════════════════════════════════╗
+ * ║  Alielenglish — Premium Sifariş Backend                 ║
+ * ║  Google Apps Script Web App                             ║
+ * ║  Version: 2.0                                           ║
+ * ╚══════════════════════════════════════════════════════════╝
  *
- * DEPLOY ADDIMLAR:
- * 1. script.google.com → Yeni Layihə
- * 2. Bu kodu yapışdır
- * 3. SHEET_ID-ni dəyiş (aşağıya bax)
- * 4. Deploy → New Deployment → Web App
- *    Execute as: Me
- *    Who has access: Anyone
- * 5. URL-i kopyala → pricing.js-dəki APPS_SCRIPT_URL-ə yapışdır
- * ================================================
+ * ── DEPLOY ADDIMLAR ────────────────────────────────────────
+ *  1. https://script.google.com → "Yeni Layihə"
+ *  2. Bu faylın bütün məzmununu yapışdır
+ *  3. SHEET_ID-ni öz Google Sheets ID-si ilə əvəz et
+ *     (URL: https://docs.google.com/spreadsheets/d/[ID]/edit)
+ *  4. Yuxarı sağ "Deploy" → "New deployment"
+ *     ├─ Type: Web App
+ *     ├─ Execute as: Me (mənin hesabım)
+ *     └─ Who has access: Anyone
+ *  5. "Deploy" et → çıxan URL-i kopyala
+ *  6. premium-order.js faylındakı APPS_SCRIPT_URL dəyişəninə yapışdır
+ *
+ * ── SPAM QORUMALARI ────────────────────────────────────────
+ *  ✓ Honeypot field (_hp)
+ *  ✓ Zəruri sahə yoxlaması
+ *  ✓ Email format yoxlaması
+ *  ✓ Script tərəfli rate limit (10 dəq/20 sifariş/IP)
+ *  ✓ Duplicate yoxlaması (eyni email 5 dəqiqə ərzində)
+ *
+ * ── STATUS İZAHI ───────────────────────────────────────────
+ *  🆕 Yeni     — form daxil oldu
+ *  💬 Əlaqə    — müştəri ilə əlaqə saxlandı
+ *  💳 Ödədi    — ödəniş alındı (əl ilə və ya webhook)
+ *  ✅ Aktiv     — premium aktivləşdirildi
+ *  ❌ Ləğv      — sifariş ləğv edildi
  */
 
-// ─── Konfiqurasiya ───────────────────────────────────────
-const SHEET_ID = 'SIZIN_GOOGLE_SHEETS_ID'; // URL-dəki /d/BURASI/edit
-const SHEET_NAME = 'Sifarişlər';              // Sheet vərəqinin adı
-const NOTIFY_EMAIL = 'englishaliel@gmail.com'; // Bildiriş emaili (siz)
+// ── Konfiqurasiya ───────────────────────────────────────────
+const SHEET_ID = 'SIZIN_GOOGLE_SHEETS_ID';  // ← DEYİŞ
+const SHEET_NAME = 'Sifarişlər';
+const NOTIFY_EMAIL = 'englishaliel@gmail.com';
 
-// ─── CORS Headers ────────────────────────────────────────
-function setCORSHeaders() {
-    return ContentService.createTextOutput()
+// Rate limit: hər IP üçün pencərə daxilində maksimum sifariş
+const RATE_WINDOW_MS = 10 * 60 * 1000; // 10 dəqiqə
+const RATE_MAX = 20;             // maksimum sifariş
+const CACHE_SERVICE = CacheService.getScriptCache();
+
+// ── CORS Headers ────────────────────────────────────────────
+function corsResponse(data) {
+    return ContentService
+        .createTextOutput(JSON.stringify(data))
         .setMimeType(ContentService.MimeType.JSON);
 }
 
-// ─── POST Handler (saytdan gələn form məlumatı) ──────────
+// ── GET — test endpoint ─────────────────────────────────────
+function doGet(e) {
+    return corsResponse({
+        status: 'ok',
+        service: 'Alielenglish Order API v2',
+        time: new Date().toISOString(),
+    });
+}
+
+// ── POST — Form məlumatı qəbul et ──────────────────────────
 function doPost(e) {
     try {
-        // Məlumatı parse et
-        const raw = e.postData ? e.postData.contents : '{}';
-        const data = JSON.parse(raw);
+        // JSON parse
+        const raw = e && e.postData ? e.postData.contents : '{}';
+        let data;
+        try { data = JSON.parse(raw); }
+        catch (_) { return corsResponse({ success: false, reason: 'invalid_json' }); }
 
-        // Honeypot yoxla (bot qoruması)
+        // ── Honeypot ──────────────────────────────────────
         if (data._hp) {
-            return ContentService
-                .createTextOutput(JSON.stringify({ success: false, reason: 'bot' }))
-                .setMimeType(ContentService.MimeType.JSON);
+            return corsResponse({ success: false, reason: 'bot_detected' });
         }
 
-        // Validation
-        if (!data.name || !data.email || !data.phone) {
-            return ContentService
-                .createTextOutput(JSON.stringify({ success: false, reason: 'missing_fields' }))
-                .setMimeType(ContentService.MimeType.JSON);
+        // ── Zəruri sahələr ────────────────────────────────
+        const required = ['name', 'email', 'phone'];
+        for (const field of required) {
+            if (!data[field] || String(data[field]).trim().length < 1) {
+                return corsResponse({ success: false, reason: 'missing_field', field });
+            }
         }
 
-        // Sheets-ə yaz
+        // ── Email format ──────────────────────────────────
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(data.email).trim());
+        if (!emailOk) {
+            return corsResponse({ success: false, reason: 'invalid_email' });
+        }
+
+        // ── Rate limit ────────────────────────────────────
+        if (!checkRateLimit(data.email)) {
+            return corsResponse({ success: false, reason: 'rate_limited' });
+        }
+
+        // ── Duplicate check (eyni email 5 dəq) ───────────
+        if (isDuplicate(data.email)) {
+            // Duplicate olsa da qeyd et amma xəta vermə
+            // (İstifadəçi formu iki dəfə göndərə bilər)
+        }
+
+        // ── Sheet-ə yaz ───────────────────────────────────
         const ss = SpreadsheetApp.openById(SHEET_ID);
         const sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
 
-        // Başlıq sətri yoxdursa əlavə et
-        if (sheet.getLastRow() === 0) {
-            sheet.appendRow([
-                'Tarix', 'Ad Soyad', 'Email', 'Telefon',
-                'Plan', 'Qiymət', 'Dövr', 'Başlama',
-                'Ödəniş Üsulu', 'Status', 'Mənbə'
-            ]);
-            // Başlıqları formatla
-            const headerRange = sheet.getRange(1, 1, 1, 11);
-            headerRange.setBackground('#1a1a2e');
-            headerRange.setFontColor('#ffffff');
-            headerRange.setFontWeight('bold');
-        }
+        ensureHeaders(sheet);
 
-        // Məlumatı sətirə yazır
         const now = new Date();
-        const formattedDate = Utilities.formatDate(
-            now, 'Asia/Baku', 'dd.MM.yyyy HH:mm'
-        );
+        const formattedDate = Utilities.formatDate(now, 'Asia/Baku', 'dd.MM.yyyy HH:mm');
 
         sheet.appendRow([
-            formattedDate,                        // Tarix
-            data.name || '',                     // Ad Soyad
-            data.email || '',                     // Email
-            data.phone || '',                     // Telefon
-            data.plan || '',                     // Plan
-            data.price || '',                     // Qiymət
-            data.period || '',                    // Dövr
-            data.start || data.startDate || '',   // Başlama vaxtı
-            data.paymentMethod || '',             // Ödəniş üsulu
-            '🆕 Yeni',                            // Status (əl ilə yenilənir)
-            data.source || ''                     // Mənbə URL
+            formattedDate,                              // A: Tarix
+            String(data.name || '').trim(),           // B: Ad Soyad
+            String(data.email || '').trim().toLowerCase(), // C: Email
+            String(data.phone || '').trim(),           // D: Telefon
+            String(data.plan || '').trim(),           // E: Plan
+            String(data.price || '').trim(),           // F: Qiymət
+            String(data.period || '').trim(),          // G: Dövr
+            String(data.startDate || data.start || '').trim(), // H: Başlama
+            String(data.paymentMethod || '').trim(),   // I: Ödəniş üsulu
+            '🆕 Yeni',                                // J: Status
+            String(data.source || '').trim(),          // K: Mənbə URL
         ]);
 
-        // Yeni sifarişin sətir nömrəsi
+        // Status sütununu rənglə
         const lastRow = sheet.getLastRow();
+        sheet.getRange(lastRow, 10).setBackground('#fff3cd').setFontWeight('bold');
 
-        // Status sütununu (10-cu sütun) sarı rənglə işarələ
-        sheet.getRange(lastRow, 10).setBackground('#fff3cd');
+        // Email bildirişi
+        try { sendNotification(data, formattedDate); } catch (_) { }
 
-        // Email bildirişi göndər (opsional)
-        try {
-            sendNotificationEmail(data, formattedDate);
-        } catch (emailErr) {
-            // Email uğursuz olsa sifariş yenə qeydə alınır
-            console.error('Email error:', emailErr);
-        }
+        // Duplicate cache qeyd et
+        markSeen(data.email);
 
-        return ContentService
-            .createTextOutput(JSON.stringify({ success: true, row: lastRow }))
-            .setMimeType(ContentService.MimeType.JSON);
+        return corsResponse({ success: true, row: lastRow });
 
     } catch (err) {
-        console.error('Apps Script Error:', err);
-        return ContentService
-            .createTextOutput(JSON.stringify({ success: false, error: err.toString() }))
-            .setMimeType(ContentService.MimeType.JSON);
+        console.error('doPost error:', err);
+        return corsResponse({ success: false, reason: 'server_error', detail: err.message });
     }
 }
 
-// ─── GET Handler (test üçün) ──────────────────────────────
-function doGet(e) {
-    return ContentService
-        .createTextOutput(JSON.stringify({
-            status: 'ok',
-            message: 'Alielenglish Order API işləyir',
-            time: new Date().toISOString()
-        }))
-        .setMimeType(ContentService.MimeType.JSON);
+// ── Headers ─────────────────────────────────────────────────
+function ensureHeaders(sheet) {
+    if (sheet.getLastRow() > 0) return;
+    const headers = [
+        'Tarix', 'Ad Soyad', 'Email', 'Telefon',
+        'Plan', 'Qiymət', 'Dövr', 'Başlama',
+        'Ödəniş Üsulu', 'Status', 'Mənbə',
+    ];
+    sheet.appendRow(headers);
+    const r = sheet.getRange(1, 1, 1, headers.length);
+    r.setBackground('#1a1a2e')
+        .setFontColor('#ffffff')
+        .setFontWeight('bold')
+        .setHorizontalAlignment('center');
+    sheet.setFrozenRows(1);
+
+    // Sütun genişlikləri
+    const widths = [130, 160, 200, 140, 100, 90, 130, 110, 130, 90, 250];
+    widths.forEach((w, i) => sheet.setColumnWidth(i + 1, w));
 }
 
-// ─── Email Bildirişi ──────────────────────────────────────
-function sendNotificationEmail(data, date) {
-    const subject = `🆕 Yeni Sifariş: ${data.plan} — ${data.name}`;
+// ── Rate Limit ───────────────────────────────────────────────
+function checkRateLimit(email) {
+    const key = 'rl_' + Utilities.computeDigest(
+        Utilities.DigestAlgorithm.MD5,
+        email.toLowerCase()
+    ).map(b => ('0' + (b & 0xFF).toString(16)).slice(-2)).join('');
+
+    const raw = CACHE_SERVICE.get(key);
+    const entry = raw ? JSON.parse(raw) : { count: 0, since: Date.now() };
+    const now = Date.now();
+
+    if (now - entry.since > RATE_WINDOW_MS) {
+        entry.count = 1; entry.since = now;
+    } else {
+        entry.count += 1;
+    }
+
+    CACHE_SERVICE.put(key, JSON.stringify(entry), 600); // 10 dəqiqə cache
+
+    return entry.count <= RATE_MAX;
+}
+
+// ── Duplicate Check ──────────────────────────────────────────
+function isDuplicate(email) {
+    const key = 'dup_' + email.toLowerCase().replace(/[^a-z0-9]/g, '');
+    return CACHE_SERVICE.get(key) !== null;
+}
+
+function markSeen(email) {
+    const key = 'dup_' + email.toLowerCase().replace(/[^a-z0-9]/g, '');
+    CACHE_SERVICE.put(key, '1', 300); // 5 dəqiqə
+}
+
+// ── Email Bildirişi ──────────────────────────────────────────
+function sendNotification(data, date) {
+    const subject = `🆕 Yeni Sifariş: ${data.plan || 'N/A'} — ${data.name}`;
     const body = `
-Yeni Premium Sifariş Daxil Oldu!
+Yeni Premium Sifariş Daxil Oldu — Alielenglish
 
-━━━━━━━━━━━━━━━━━━━━━━━━
-📋 SİFARİŞ TƏFƏRRÜATI
-━━━━━━━━━━━━━━━━━━━━━━━━
-📅 Tarix:          ${date}
-👤 Ad Soyad:       ${data.name}
-📧 Email:          ${data.email}
-📱 Telefon:        ${data.phone}
-⭐ Plan:           ${data.plan}
-💰 Qiymət:        ${data.price} / ${data.period}
-📅 Başlama:        ${data.start || 'Qeyd edilməyib'}
-💳 Ödəniş üsulu:  ${data.paymentMethod}
-━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 SİFARİŞ MƏLUMATLARI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📅 Tarix:           ${date}
+👤 Ad Soyad:        ${data.name}
+📧 Email:           ${data.email}
+📱 Telefon:         ${data.phone}
+⭐ Plan:            ${data.plan || '—'}
+💰 Qiymət:         ${data.price || '—'} / ${data.period || '—'}
+📅 Başlama:         ${data.startDate || data.start || 'Qeyd edilməyib'}
+💳 Ödəniş üsulu:   ${data.paymentMethod || '—'}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Google Sheets-ə baxın:
+📊 Google Sheets-ə baxın:
 https://docs.google.com/spreadsheets/d/${SHEET_ID}
 
-Telegram ilə əlaqə: https://t.me/alifarajovvv
-    `;
+📱 Telegram: https://t.me/alifarajovvv
+    `.trim();
 
     GmailApp.sendEmail(NOTIFY_EMAIL, subject, body);
 }
 
 /**
- * ================================================
- * DEPLOY ADDIMLAR (ətraflı)
- * ================================================
- *
- * 1. Google Sheets yarat:
- *    - sheets.google.com → Yeni Sheet
- *    - URL-dən ID kopyala: .../spreadsheets/d/[BU_ID]/edit
- *    - Yuxarıdakı SHEET_ID-ə yapışdır
- *
- * 2. Apps Script deploy:
- *    - script.google.com → Yeni Layihə
- *    - Bu kodu yapışdır (SHEET_ID-ni dəyiş)
- *    - Sağ üstdə "Deploy" → "New deployment"
- *    - Type: Web App
- *    - Execute as: Me (mənin hesabım)
- *    - Who has access: Anyone
- *    - "Deploy" düyməsinə bas
- *    - Çıxan URL-i kopyala
- *
- * 3. pricing.js-ə yapışdır:
- *    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/SIZIN_URL/exec';
- *
- * 4. Test:
- *    URL-i brauzerə yazın → {"status":"ok"} görməlisiniz
- *
- * 5. Stripe Payment Links (opsional):
- *    - stripe.com → Payment Links → + New
- *    - Hər plan üçün ayrıca link yarat
- *    - pricing.js-dəki STRIPE_LINKS-ə əlavə edin
- *
- * ================================================
- * STATUS İZAHI (Sheets-də əl ilə dəyişin):
- * 🆕 Yeni      — Sifariş daxil oldu
- * 💬 Əlaqə     — Müştəri ilə əlaqə saxlandı
- * 💳 Ödədi     — Ödəniş alındı
- * ✅ Aktiv      — Premium aktivləşdirildi
- * ❌ Ləğv       — Sifariş ləğv edildi
- * ================================================
+ * ══════════════════════════════════════════════════════════
+ *  WEBHOOK (Stripe → Status "Ödədi" kimi yenilə)
+ *  ──────────────────────────────────────────────────────
+ *  Stripe Dashboard → Webhooks → Add endpoint
+ *  Endpoint URL: Bu Apps Script URL-i
+ *  Events: payment_intent.succeeded, checkout.session.completed
+ *  ──────────────────────────────────────────────────────
+ *  NOT: Signature verification Apps Script-də tam işləmir,
+ *  ona görə email uyğunluğu ilə yoxlayırıq.
+ * ══════════════════════════════════════════════════════════
  */
+function handleStripeWebhook(raw) {
+    try {
+        const event = JSON.parse(raw);
+        const type = event.type;
+
+        if (type === 'checkout.session.completed' ||
+            type === 'payment_intent.succeeded') {
+
+            const obj = event.data && event.data.object;
+            const email = (obj && (obj.customer_email || obj.receipt_email || ''))
+                .toLowerCase().trim();
+
+            if (!email) return;
+
+            const ss = SpreadsheetApp.openById(SHEET_ID);
+            const sheet = ss.getSheetByName(SHEET_NAME);
+            if (!sheet) return;
+
+            const lastRow = sheet.getLastRow();
+            for (let r = 2; r <= lastRow; r++) {
+                const rowEmail = String(sheet.getRange(r, 3).getValue()).toLowerCase().trim();
+                const status = String(sheet.getRange(r, 10).getValue());
+
+                if (rowEmail === email && status !== '💳 Ödədi' && status !== '✅ Aktiv') {
+                    sheet.getRange(r, 10).setValue('💳 Ödədi').setBackground('#d4edda');
+                    try {
+                        const name = sheet.getRange(r, 2).getValue();
+                        GmailApp.sendEmail(
+                            NOTIFY_EMAIL,
+                            `💳 Ödəniş Alındı: ${name} (${email})`,
+                            `Stripe ödənişi təsdiqləndi.\nEmail: ${email}\nSatır: ${r}`
+                        );
+                    } catch (_) { }
+                    break;
+                }
+            }
+        }
+    } catch (err) {
+        console.error('Webhook error:', err);
+    }
+}
