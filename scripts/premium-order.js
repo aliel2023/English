@@ -72,8 +72,8 @@ const PLANS = {
     professional: {
         icon: '👑',
         name: 'Professional',
-        monthly: { price: '45 AZN', label: 'aylıq' },
-        yearly: { price: '432 AZN', label: 'illik (36 AZN/ay)' },
+        monthly: { price: '119 AZN', label: 'aylıq' },
+        yearly: { price: '1140 AZN', label: 'illik (95 AZN/ay)' },
         features: [
             'Bütün Premium xüsusiyyətlər',
             '1000+ premium material',
