@@ -24,8 +24,31 @@ function initFavorites(event) {
     updateFavStats(user);
 }
 
-// Yalnız Firebase event-ini dinlə
+// Firebase event-ini dinlə
 document.addEventListener('alielAuthReady', initFavorites);
+
+// Race condition fallback: əgər auth.js artıq işləyibsə və event keçirilib
+// bir neçə dəfə yoxla
+let _favCheckCount = 0;
+function _checkAuthForFavs() {
+    if (favInited) return;
+    _favCheckCount++;
+    if (_favCheckCount > 20) return; // max 2 saniyə
+
+    if (typeof getCurrentUser === 'function') {
+        const user = getCurrentUser();
+        if (user !== undefined) { // undefined = hələ yüklənmir, null = giriş yoxdur
+            initFavorites({ detail: { user: user } });
+            return;
+        }
+    }
+    setTimeout(_checkAuthForFavs, 100);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 300ms sonra yenə yoxla - auth.js module yüklənməsi üçün vaxt ver
+    setTimeout(_checkAuthForFavs, 300);
+});
 
 let currentFavTab = 'words';
 let allFavWords = [];

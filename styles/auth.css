@@ -735,6 +735,21 @@
     transform: translateY(-1px);
 }
 
+/* ===== NAV AUTH FLASH PREVENTION ===== */
+/* auth.js module yüklənənə qədər nav-ı gizlət, sonra fade-in */
+.nav-actions .auth-nav-btn,
+.nav-actions .user-nav-menu {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* Pending vəziyyətdə - görünməz et */
+.nav-auth-pending .auth-nav-btn,
+.nav-auth-pending .user-nav-menu {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
 /* ===== TOAST NOTIFICATIONS ===== */
 .aliel-toast {
     position: fixed;

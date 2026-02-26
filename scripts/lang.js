@@ -11,7 +11,7 @@ const translations = {
         
         // Hero Section
         'hero-title': 'İngilis Dilini <span class="gradient-text">Peşəkar</span> Səviyyədə Öyrən',
-        'hero-subtitle': 'A1-dən C2-yə qədər strukturlu proqram, gündəlik canlı dərslər və 15,000+ aktiv tələbə ilə öyrənmə səyahətinə başlayın',
+        'hero-subtitle': 'A1-dən C2-yə qədər strukturlu proqram, gündəlik canlı dərslər və 13,000+ aktiv tələbə ilə öyrənmə səyahətinə başlayın',
         'btn-free-start': 'Pulsuz Başla',
         'btn-view-plans': 'Premium Planlara Bax',
         'stat-students': 'Aktiv Tələbə',
@@ -128,7 +128,7 @@ const translations = {
         
         // Hero Section
         'hero-title': 'Learn English at a <span class="gradient-text">Professional</span> Level',
-        'hero-subtitle': 'Structured program from A1 to C2, live daily lessons and join 15,000+ active students on your learning journey',
+        'hero-subtitle': 'Structured program from A1 to C2, live daily lessons and join 13,000+ active students on your learning journey',
         'btn-free-start': 'Start Free',
         'btn-view-plans': 'View Premium Plans',
         'stat-students': 'Active Students',
@@ -245,7 +245,7 @@ const translations = {
         
         // Hero Section
         'hero-title': 'Изучайте английский на <span class="gradient-text">профессиональном</span> уровне',
-        'hero-subtitle': 'Структурированная программа от A1 до C2, ежедневные занятия и присоединяйтесь к 15,000+ активным студентам',
+        'hero-subtitle': 'Структурированная программа от A1 до C2, ежедневные занятия и присоединяйтесь к 13,000+ активным студентам',
         'btn-free-start': 'Начать бесплатно',
         'btn-view-plans': 'Посмотреть премиум планы',
         'stat-students': 'Активных студентов',
@@ -362,7 +362,7 @@ const translations = {
         
         // Hero Section
         'hero-title': 'İngilizceyi <span class="gradient-text">Profesyonel</span> Seviyede Öğrenin',
-        'hero-subtitle': 'A1\'den C2\'ye yapılandırılmış program, günlük canlı dersler ve 15.000+ aktif öğrenciyle öğrenme yolculuğunuza başlayın',
+        'hero-subtitle': 'A1\'den C2\'ye yapılandırılmış program, günlük canlı dersler ve 13.000+ aktif öğrenciyle öğrenme yolculuğunuza başlayın',
         'btn-free-start': 'Ücretsiz Başla',
         'btn-view-plans': 'Premium Planları Görüntüle',
         'stat-students': 'Aktif Öğrenci',

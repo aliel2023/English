@@ -29,6 +29,27 @@ function initDashboard(event) {
 // Yalnız Firebase auth event-ini dinlə
 document.addEventListener('alielAuthReady', initDashboard);
 
+// Race condition fallback: auth.js module əvvəl yüklənibsə event keçmiş ola bilər
+let _dashCheckCount = 0;
+function _checkAuthForDash() {
+    if (dashInited) return;
+    _dashCheckCount++;
+    if (_dashCheckCount > 20) return;
+
+    if (typeof getCurrentUser === 'function') {
+        const user = getCurrentUser();
+        if (user !== undefined) {
+            initDashboard({ detail: { user: user } });
+            return;
+        }
+    }
+    setTimeout(_checkAuthForDash, 100);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(_checkAuthForDash, 300);
+});
+
 function loadDashboard(user) {
     // Sanitize helper (auth.js-dən də əlaqili)
     const safe = typeof sanitizeHTML === 'function' ? sanitizeHTML : (s) => String(s || '');

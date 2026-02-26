@@ -38,16 +38,18 @@ service cloud.firestore {
       allow create: if isOwner(userId)
         && isValidString(request.resource.data.name, 2, 100)
         && isValidEmail(request.resource.data.email)
-        && request.resource.data.role == 'user'          // admin heç vaxt create-də qura bilməz
+        && (request.resource.data.role == 'user' || (request.resource.data.role == 'admin' && request.auth.token.email == 'englishaliel@gmail.com'))
         && request.resource.data.keys().hasAll(['name','email','level','role','createdAt']);
 
       allow update: if isOwner(userId)
-        // role sahəsini dəyişdirə BİLMƏZ
-        && (!('role' in request.resource.data) ||
-             request.resource.data.role == resource.data.role)
-        // email-i dəyişdirə BİLMƏZ
+        // role sahəsini dəyişdirə BİLMƏZ (englishaliel@gmail.com istisna olmaqla)
+        && (!('role' in request.resource.data) || 
+             request.resource.data.role == resource.data.role || 
+             request.auth.token.email == 'englishaliel@gmail.com')
+        // email-i dəyişdirə BİLMƏZ (englishaliel@gmail.com istisna olmaqla)
         && (!('email' in request.resource.data) ||
-             request.resource.data.email == resource.data.email);
+             request.resource.data.email == resource.data.email || 
+             request.auth.token.email == 'englishaliel@gmail.com');
 
       // Silmə yalnız admin
       allow delete: if isAdmin();

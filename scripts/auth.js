@@ -24,6 +24,28 @@ import {
     arrayRemove
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+// ===== NAV AUTH FLASH QARŞISINDAKİ CSS =====
+// Auth yüklənənə qədər nav-actions-dakı auth düymələrini gizlət
+// Bu Google girişindən sonra "Daxil Ol" düyməsinin anlıq görünməsini aradan qaldırır
+(function injectNavHideCSS() {
+    const style = document.createElement('style');
+    style.id = 'auth-nav-hide';
+    style.textContent = `
+        .nav-auth-pending .auth-nav-btn,
+        .nav-auth-pending .user-nav-menu {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transition: opacity 0.25s ease !important;
+        }
+    `;
+    document.head.appendChild(style);
+    // nav-actions-a pending class əlavə et
+    document.addEventListener('DOMContentLoaded', () => {
+        const navActions = document.querySelector('.nav-actions');
+        if (navActions) navActions.classList.add('nav-auth-pending');
+    });
+})();
+
 // ===== Firebase Config =====
 const firebaseConfig = {
     apiKey: "AIzaSyCxRMtHyTwee7cQuxcJ1eAWibxcyoUKIIs",
@@ -102,15 +124,58 @@ function isAdminUser(userData) {
 // ===== Current User State =====
 let currentUser = null;
 let currentUserData = null;
+let authInitialized = false;
+let _navRendered = false; // nav dublikatını əngəlləyən flag
 
 // ===== Auth State Listener =====
 onAuthStateChanged(auth, async (firebaseUser) => {
+    authInitialized = true;
     if (firebaseUser) {
         currentUser = firebaseUser;
-        currentUserData = await getUserData(firebaseUser.uid);
+        // Əvvəlcə Firebase User-dan displayName oxuyuruq (Google üçün vacibdir)
+        let userData = await getUserData(firebaseUser.uid);
+
+        // Əgər Firestore sənədi yoxdursa (ilk Google girişi), avtomatik yaradaq
+        if (userData === null) {
+            const isAdmin = firebaseUser.email === 'englishaliel@gmail.com';
+            const newUserData = {
+                name: sanitizeHTML(firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'İstifadəçi'),
+                email: firebaseUser.email || '',
+                level: 'A1',
+                role: isAdmin ? 'admin' : 'user',
+                currentStreak: 0, longestStreak: 0,
+                lastActiveDate: new Date().toDateString(),
+                activeDays: 1, wordsLearned: 0, testsCompleted: 0,
+                badges: ['🌱 Başlanğıc'],
+                favorites: { words: [], grammar: [], phrases: [] },
+                weeklyActivity: [false, false, false, false, false, false, false],
+                testHistory: [],
+                createdAt: serverTimestamp(),
+                privacy: { showProfile: false, showStreak: true },
+                aiUsage: { count: 0, lastReset: new Date().toISOString() }
+            };
+            await setDoc(doc(db, 'users', firebaseUser.uid), newUserData);
+            userData = { uid: firebaseUser.uid, ...newUserData };
+        } else if (userData && !userData.error) {
+            // Email admin üçün rolu yenilə
+            if (firebaseUser.email === 'englishaliel@gmail.com' && userData.role !== 'admin') {
+                await updateDoc(doc(db, 'users', firebaseUser.uid), { role: 'admin' });
+                userData.role = 'admin';
+            }
+            // Əgər adı yoxdursa, Firebase displayName-dən al
+            if ((!userData.name || userData.name === 'İstifadəçi') && firebaseUser.displayName) {
+                await updateDoc(doc(db, 'users', firebaseUser.uid), { name: sanitizeHTML(firebaseUser.displayName) });
+                userData.name = sanitizeHTML(firebaseUser.displayName);
+            }
+        }
+
+        currentUserData = userData;
+        _navRendered = false; // nav-ı yenidən render et (giriş vəziyyəti dəyişdi)
         updateNavForUser(currentUserData);
+        // Auth resolve oldu - nav-ı göstər (flash qarşısını al)
+        document.querySelector('.nav-actions')?.classList.remove('nav-auth-pending');
         updateUserStreak(firebaseUser.uid);
-        updateHeroCTA(true);  // Giriş olub → Pulsuz Başla gizlət
+        updateHeroCTA(true);
         document.dispatchEvent(new CustomEvent('alielAuthReady', { detail: { user: currentUserData } }));
         if (window.location.pathname.includes('admin.html') && currentUserData && currentUserData.role !== 'admin') {
             window.location.href = 'index.html';
@@ -118,8 +183,11 @@ onAuthStateChanged(auth, async (firebaseUser) => {
     } else {
         currentUser = null;
         currentUserData = null;
+        _navRendered = false;
         updateNavForUser(null);
-        updateHeroCTA(false); // Giriş yoxdur → Pulsuz Başla göstər
+        // Auth resolve oldu - nav-ı göstər
+        document.querySelector('.nav-actions')?.classList.remove('nav-auth-pending');
+        updateHeroCTA(false);
         document.dispatchEvent(new CustomEvent('alielAuthReady', { detail: { user: null } }));
         if (window.location.pathname.includes('admin.html')) {
             window.location.href = 'index.html';
@@ -141,10 +209,10 @@ async function getUserData(uid) {
     try {
         const snap = await getDoc(doc(db, "users", uid));
         if (snap.exists()) return { uid, ...snap.data() };
-        return null;
+        return null; // Sırf sənəd yoxdur
     } catch (e) {
-        console.error("getUserData:", e);
-        return null;
+        console.error("getUserData error:", e);
+        return { error: true, code: e.code }; // Xəta baş verdi
     }
 }
 
@@ -171,7 +239,7 @@ async function registerUser(name, email, password, level = 'A1') {
             name: sanitizeHTML(name),
             email: email,
             level: level,
-            role: 'user',
+            role: email === 'englishaliel@gmail.com' ? 'admin' : 'user',
             currentStreak: 0,
             longestStreak: 0,
             lastActiveDate: new Date().toDateString(),
@@ -222,32 +290,16 @@ async function loginUser(email, password) {
 window.signInWithGoogle = async function () {
     try {
         clearAuthMessages();
+        googleProvider.setCustomParameters({ prompt: 'select_account' });
         const result = await signInWithPopup(auth, googleProvider);
-        const user = result.user;
-        const existing = await getUserData(user.uid);
-        if (!existing) {
-            const userData = {
-                name: sanitizeHTML(user.displayName || 'İstifadəçi'),
-                email: user.email,
-                level: 'A1',
-                role: 'user',
-                currentStreak: 0, longestStreak: 0,
-                lastActiveDate: new Date().toDateString(),
-                activeDays: 1, wordsLearned: 0, testsCompleted: 0,
-                badges: ['🌱 Başlanğıc'],
-                favorites: { words: [], grammar: [], phrases: [] },
-                weeklyActivity: [false, false, false, false, false, false, false],
-                testHistory: [],
-                createdAt: serverTimestamp(),
-                privacy: { showProfile: false, showStreak: true },
-                aiUsage: { count: 0, lastReset: new Date().toISOString() }
-            };
-            await setDoc(doc(db, "users", user.uid), userData);
-        }
+        // onAuthStateChanged avtomatik işləyəcək və nav-ı yeniləyəcək
+        // Biz sadəcə uğur mesajı göstəririk
         showAuthSuccess('Google ilə uğurla daxil oldunuz! ✅');
         setTimeout(() => closeAuthModal(), 1200);
     } catch (e) {
-        showAuthError('Google girişi uğursuz oldu.');
+        if (e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') {
+            showAuthError('Google girişi uğursuz oldu: ' + (e.message || e.code));
+        }
     }
 };
 
@@ -351,6 +403,7 @@ function getErrorMessage(code) {
         'auth/invalid-credential': '❌ Email və ya şifrə yanlışdır.',
         'auth/network-request-failed': '🌐 İnternet bağlantısını yoxlayın.',
         'auth/popup-closed-by-user': '↩️ Google girişi ləğv edildi.',
+        'auth/unauthorized-domain': '⛔ Domen Xətası: Firebase Console-da (Authentication > Settings > Authorized domains) bu domen/IP ünvanını icazəli domenlərə əlavə etməlisiniz.',
     };
     return map[code] || '⚠️ Xəta baş verdi. Yenidən cəhd edin.';
 }
@@ -360,16 +413,18 @@ function updateNavForUser(user) {
     const navActions = document.querySelector('.nav-actions');
     const navMenu = document.getElementById('navMenu');
 
-    // Köhnə auth elementlərini təmizlə
-    if (navActions) navActions.querySelectorAll('.auth-nav-btn, .user-nav-menu').forEach(el => el.remove());
+    // Köhnə auth elementlərini təmizlə (dublikat olmaması üçün)
+    if (navActions) navActions.querySelectorAll('.auth-nav-btn, .user-nav-menu, .nav-auth-loading').forEach(el => el.remove());
     if (navMenu) navMenu.querySelectorAll('.auth-nav-mobile').forEach(el => el.remove());
 
     const currentPage = encodeURIComponent(window.location.pathname.split('/').pop() || '');
 
-    if (user) {
-        const avatarLetter = sanitizeHTML((user.name || 'U').charAt(0).toUpperCase());
-        const displayName = sanitizeHTML((user.name || '').split(' ')[0]);
-        const fullName = sanitizeHTML(user.name || 'İstifadəçi');
+    if (user && !user.error) {
+        // Ad: Firestore-dan al, yoxdursa Firebase displayName-dən
+        const rawName = user.name || (currentUser && currentUser.displayName) || 'İstifadəçi';
+        const avatarLetter = sanitizeHTML(rawName.charAt(0).toUpperCase());
+        const displayName = sanitizeHTML(rawName.split(' ')[0]);
+        const fullName = sanitizeHTML(rawName);
         const userLevel = sanitizeHTML(user.level || 'A1');
         const streak = parseInt(user.currentStreak) || 0;
         const admin = isAdminUser(user);
@@ -388,33 +443,37 @@ function updateNavForUser(user) {
                             <strong>${fullName}</strong>
                             <span class="user-level-badge">${userLevel}</span>
                         </div>
-                        <a href="favorites.html" class="dropdown-item">❤️ Sevimlilər</a>
-                        <a href="dashboard.html" class="dropdown-item">📊 Dashboard</a>
-                        ${admin ? '<a href="admin.html" class="dropdown-item" style="color:#ffd700;font-weight:700;">👑 Admin Panel</a>' : ''}
-                        <button onclick="logoutUser()" class="dropdown-item logout-btn">🚪 Çıxış</button>
+                        <a href="favorites.html" class="dropdown-item" data-i18n="nav.favorites">❤️ Sevimlilər</a>
+                        <a href="dashboard.html" class="dropdown-item" data-i18n="nav.dashboard">📊 Dashboard</a>
+                        ${admin ? '<a href="admin.html" class="dropdown-item" style="color:#ffd700;font-weight:700;" data-i18n="nav.admin">👑 Admin Panel</a>' : ''}
+                        <button onclick="logoutUser()" class="dropdown-item logout-btn" data-i18n="nav.logout">🚪 Çıxış</button>
                     </div>
                 </div>`);
-            document.addEventListener('click', (e) => {
-                const menu = document.getElementById('userNavMenu');
-                if (menu && !menu.contains(e.target)) {
-                    const dd = document.getElementById('userDropdown');
-                    if (dd) dd.classList.remove('show');
-                }
-            });
+            // Kənar klik ilə dropdown-u bağla (yalnız 1 dəfə əlavə et)
+            if (!navActions._dropdownListenerAdded) {
+                navActions._dropdownListenerAdded = true;
+                document.addEventListener('click', (e) => {
+                    const menu = document.getElementById('userNavMenu');
+                    if (menu && !menu.contains(e.target)) {
+                        const dd = document.getElementById('userDropdown');
+                        if (dd) dd.classList.remove('show');
+                    }
+                });
+            }
         }
 
         // ── Mobil menü: istifadəçi linklər ──
         if (navMenu) {
             navMenu.insertAdjacentHTML('beforeend', `
                 <li class="auth-nav-mobile" style="border-top:1px solid rgba(255,255,255,.15);margin-top:.5rem;padding-top:.5rem;">
-                    <a href="dashboard.html">📊 Dashboard (${displayName})</a>
+                    <a href="dashboard.html"><span data-i18n="nav.dashboard">📊 Dashboard</span> (${displayName})</a>
                 </li>
                 <li class="auth-nav-mobile">
-                    <a href="favorites.html">❤️ Sevimlilər</a>
+                    <a href="favorites.html" data-i18n="nav.favorites">❤️ Sevimlilər</a>
                 </li>
-                ${admin ? `<li class="auth-nav-mobile"><a href="admin.html" style="color:#ffd700;font-weight:700;">👑 Admin Panel</a></li>` : ''}
+                ${admin ? `<li class="auth-nav-mobile"><a href="admin.html" style="color:#ffd700;font-weight:700;" data-i18n="nav.admin">👑 Admin Panel</a></li>` : ''}
                 <li class="auth-nav-mobile">
-                    <a href="#" onclick="logoutUser();closeMobileMenu();return false;" style="color:#ff6b6b;">🚪 Çıxış</a>
+                    <a href="#" onclick="logoutUser();closeMobileMenu();return false;" style="color:#ff6b6b;" data-i18n="nav.logout">🚪 Çıxış</a>
                 </li>`);
         }
 
@@ -422,7 +481,7 @@ function updateNavForUser(user) {
         // ── Desktop: Daxil Ol düyməsi ──
         if (navActions) {
             navActions.insertAdjacentHTML('afterbegin',
-                `<a href="login.html${currentPage ? '?next=' + currentPage : ''}" class="btn btn-sm auth-nav-btn" style="padding:0.5rem 1rem;text-decoration:none;">Daxil Ol</a>`
+                `<a href="login.html${currentPage ? '?next=' + currentPage : ''}" class="btn btn-sm auth-nav-btn" style="padding:0.5rem 1rem;text-decoration:none;" data-i18n="nav.login">Daxil Ol</a>`
             );
         }
 
@@ -431,12 +490,15 @@ function updateNavForUser(user) {
             navMenu.insertAdjacentHTML('beforeend', `
                 <li class="auth-nav-mobile" style="border-top:1px solid rgba(255,255,255,.15);margin-top:.5rem;padding-top:.5rem;">
                     <a href="login.html${currentPage ? '?next=' + currentPage : ''}"
-                       style="display:block;color:#e63946;font-weight:700;font-size:1rem;padding:0.5rem 0;">
+                       style="display:block;color:#e63946;font-weight:700;font-size:1rem;padding:0.5rem 0;" data-i18n="nav.login">
                         Daxil Ol
                     </a>
                 </li>`);
         }
+    }
 
+    if (typeof window.translatePage === 'function') {
+        window.translatePage();
     }
 }
 
@@ -685,7 +747,6 @@ function clearAuthMessages() {
 }
 
 // ===== Init =====
-function initAuth() { injectAuthModal(); }
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAuth);
-} else { initAuth(); }
+// Modal yalnız ehtiyac olduqda inject edilir (openAuthModal çağırıldıqda)
+// initAuth() avtomatik çağırılmır ki, nav-da dublikat "Daxil Ol" görünməsin
+// onAuthStateChanged özü nav-ı idarə edir

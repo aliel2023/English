@@ -6,8 +6,8 @@ let translations = {};
 // ===== Inline fallback translations =====
 const INLINE_TRANSLATIONS = {
     az: {
-        nav: { home: "Ana Səhifə", daily: "Günün Sözü", speaking: "Danışıq Pratikası", test: "Səviyyə Testi", resources: "Resurslar", pricing: "Qiymətlər", contact: "Əlaqə" },
-        hero: { title: "İngilis Dilini <span class=\"gradient-text\">Peşəkar</span> Səviyyədə Öyrən", subtitle: "A1-dən C2-yə qədər strukturlu proqram, gündəlik canlı dərslər və 15,000+ aktiv tələbə ilə öyrənmə səyahətinə başlayın", btnStart: "Pulsuz Başla", btnPlans: "Premium Planlara Bax", statStudents: "Aktiv Tələbə", statLessons: "Dərs Materialu", statSatisfaction: "% Məmnuniyyət" },
+        nav: { home: "Ana Səhifə", daily: "Günün Sözü", speaking: "Danışıq Pratikası", test: "Səviyyə Testi", resources: "Resurslar", pricing: "Qiymətlər", contact: "Əlaqə", favorites: "❤️ Sevimlilər", dashboard: "📊 Dashboard", admin: "👑 Admin Panel", logout: "🚪 Çıxış", login: "Daxil Ol" },
+        hero: { title: "İngilis Dilini <span class=\"gradient-text\">Peşəkar</span> Səviyyədə Öyrən", subtitle: "A1-dən C2-yə qədər strukturlu proqram, gündəlik canlı dərslər və 13,000+ aktiv tələbə ilə öyrənmə səyahətinə başlayın", btnStart: "Pulsuz Başla", btnPlans: "Premium Planlara Bax", statStudents: "Aktiv Tələbə", statLessons: "Dərs Materialu", statSatisfaction: "% Məmnuniyyət" },
         features: { title: "Niyə Alielenglish?", daily: "Gündəlik Dərslər", dailyDesc: "Hər gün yeni söz, ifadə və qrammatika qaydaları ilə davamlı təlim", program: "Strukturlu Proqram", programDesc: "A1-dən C2-yə qədər CEFR standartlarına uyğun mərhələli öyrənmə", support: "Canlı Dəstək", supportDesc: "Suallarınıza 24/7 cavab və mentor dəstəyi ilə heç vaxt tək deyilsiniz" },
         cta: { title: "Daha Gözləməyin - İndi Başlayın!", subtitle: "İlk 100 qeydiyyatçıya <strong>50% endirim</strong> və <strong>pulsuz</strong> bonus material paketimiz", btnRegister: "Qeydiyyatdan Keç" },
         footer: { about: "2023-dən bəri minlərlə tələbəyə keyfiyyətli ingilis dili təhsili təqdim edirik.", links: "Keçidlər", support: "Dəstək", newsletter: "Xəbər Bülleteni", newsletterDesc: "Gündəlik dərs və xüsusi təkliflərdən xəbərdar olun", btnSubscribe: "Abunə Ol", rights: "© 2025 Alielenglish. Bütün hüquqlar qorunur." },
@@ -20,8 +20,8 @@ const INLINE_TRANSLATIONS = {
         pricing: { title: "Sizə Uyğun Planı Seçin", subtitle: "Hər səviyyə və büdcə üçün ideal həll.", monthly: "Aylıq", yearly: "İllik", saveBadge: "20% QƏNAƏT", planFree: "Pulsuz", planPremium: "Premium", planProfessional: "Professional", perMonth: "/ ay", perYear: "/ il", feature1: "Günün sözü", feature2: "Səviyyə testi", feature3: "Əsas qrammatika", btnStart: "Başla", btnSelect: "Seç", faqTitle: "❓ Tez-tez Verilən Suallar", mostPopular: "ƏN POPULYAR" }
     },
     en: {
-        nav: { home: "Home", daily: "Word of the Day", speaking: "Speaking Practice", test: "Level Test", resources: "Resources", pricing: "Pricing", contact: "Contact" },
-        hero: { title: "Learn English at a <span class=\"gradient-text\">Professional</span> Level", subtitle: "Start your learning journey with a structured program from A1 to C2, daily live lessons and 15,000+ active students", btnStart: "Start Free", btnPlans: "View Premium Plans", statStudents: "Active Students", statLessons: "Lesson Materials", statSatisfaction: "% Satisfaction" },
+        nav: { home: "Home", daily: "Word of the Day", speaking: "Speaking Practice", test: "Level Test", resources: "Resources", pricing: "Pricing", contact: "Contact", favorites: "\u2764\ufe0f Favorites", dashboard: "\ud83d\udcca Dashboard", admin: "\ud83d\udc51 Admin Panel", logout: "\ud83d\udeaa Logout", login: "Login" },
+        hero: { title: "Learn English at a <span class=\"gradient-text\">Professional</span> Level", subtitle: "Start your learning journey with a structured program from A1 to C2, daily live lessons and 13,000+ active students", btnStart: "Start Free", btnPlans: "View Premium Plans", statStudents: "Active Students", statLessons: "Lesson Materials", statSatisfaction: "% Satisfaction" },
         features: { title: "Why Alielenglish?", daily: "Daily Lessons", dailyDesc: "Continuous training with new words, phrases and grammar rules every day", program: "Structured Program", programDesc: "Staged learning according to CEFR standards from A1 to C2", support: "Live Support", supportDesc: "You are never alone with 24/7 answers to your questions and mentor support" },
         cta: { title: "Don't Wait - Start Now!", subtitle: "For the first 100 registrants <strong>50% discount</strong> and <strong>free</strong> bonus material package", btnRegister: "Register" },
         footer: { about: "Since 2023, we have been providing quality English education to thousands of students.", links: "Links", support: "Support", newsletter: "Newsletter", newsletterDesc: "Stay informed about daily lessons and special offers", btnSubscribe: "Subscribe", rights: "© 2025 Alielenglish. All rights reserved." },
@@ -101,7 +101,14 @@ function translatePage() {
             }
         }
     });
+
+    // Dil dəyişməsi hadisəsini dispatch et (digər skriptlər dinləyə bilsin)
+    document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang: currentLang } }));
 }
+
+// Qlobal olaraq əlçatan et
+window.translatePage = translatePage;
+window.getTranslation = getNestedTranslation;
 
 // ===== Get Nested Translation (e.g., "nav.home") =====
 function getNestedTranslation(key) {

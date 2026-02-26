@@ -662,7 +662,7 @@
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import {
             getFirestore, doc, setDoc, getDoc,
-            addDoc, collection, serverTimestamp
+            addDoc, collection, serverTimestamp, updateDoc
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const app = initializeApp({
@@ -677,7 +677,14 @@
         const db = getFirestore(app);
         const $ = id => document.getElementById(id);
 
-        onAuthStateChanged(auth, u => { if (u) window.location.replace('index.html'); });
+        // Google prosesi zamanı redirect-i bloklayan flag
+        let googleInProgress = false;
+
+        onAuthStateChanged(auth, u => {
+            // Əgər Google girişi hələ davam edirsə, redirect etmə
+            if (googleInProgress) return;
+            if (u) window.location.replace('index.html');
+        });
 
         function showErr(msg) {
             const el = $('authError');
@@ -704,6 +711,7 @@
                 'auth/popup-blocked': '🚫 Popup bloklandı.',
                 'auth/popup-closed-by-user': '',
                 'auth/cancelled-popup-request': '',
+                'auth/unauthorized-domain': '⛔ Domen Xətası: Firebase Console-da (Authentication > Settings > Authorized domains) bu ünvanı əlavə edin.',
             };
             return m[code] ?? `⚠️ Xəta: ${code}`;
         }
@@ -711,8 +719,10 @@
             return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
         async function createUserDoc(uid, { name, email, level = 'A1', provider = 'email' }) {
+            const userRole = (email === 'englishaliel@gmail.com') ? 'admin' : 'user';
+
             await setDoc(doc(db, 'users', uid), {
-                name: sanitize(name), email, level, role: 'user',
+                name: sanitize(name), email, level, role: userRole,
                 currentStreak: 0, longestStreak: 0,
                 lastActiveDate: new Date().toDateString(),
                 activeDays: 1, wordsLearned: 0, testsCompleted: 0,
@@ -793,21 +803,33 @@
             $('authError').classList.remove('show');
             const btn = $('googleBtn');
             btn.disabled = true; btn.style.opacity = '.6';
+            // Google prosesi başlayır - onAuthStateChanged-i bloklaya
+            googleInProgress = true;
             try {
                 const provider = new GoogleAuthProvider();
                 provider.setCustomParameters({ prompt: 'select_account' });
                 const result = await signInWithPopup(auth, provider);
-                const snap = await getDoc(doc(db, 'users', result.user.uid));
+                const user = result.user;
+
+                // Firestore sənədi yarat (yoxdursa)
+                const ref = doc(db, 'users', user.uid);
+                const snap = await getDoc(ref);
                 if (!snap.exists()) {
-                    await createUserDoc(result.user.uid, {
-                        name: result.user.displayName || 'İstifadəçi',
-                        email: result.user.email || '',
+                    await createUserDoc(user.uid, {
+                        name: user.displayName || 'İstifadəçi',
+                        email: user.email || '',
                         level: 'A1', provider: 'google'
                     });
+                } else if (user.email === 'englishaliel@gmail.com' && snap.data().role !== 'admin') {
+                    await updateDoc(ref, { role: 'admin' });
                 }
+
                 showOk('🎉 Google ilə uğurla qeydiyyatdan keçdiniz!');
-                setTimeout(() => window.location.replace('index.html'), 1000);
+                // Bütün işlər bitdikdən sonra yönləndir
+                googleInProgress = false;
+                setTimeout(() => window.location.replace('index.html'), 800);
             } catch (err) {
+                googleInProgress = false;
                 const msg = getErrMsg(err.code);
                 if (msg) showErr(msg);
                 btn.disabled = false; btn.style.opacity = '';

@@ -446,12 +446,17 @@ function loadWordOfDay() {
 
 // ===== UPDATE FAVORITE BUTTON =====
 function updateFavoriteButton() {
-    const favBtn = document.querySelector('[onclick="addToFavorites()"]');
+    const favBtn = document.querySelector('[onclick="addWordToFavBtn()"]');
     if (!favBtn) return;
 
-    if (typeof isFavorite === 'function' && isFavorite('word', todayWord.word)) {
-        favBtn.innerHTML = '❤️ Sevimlilərə Əlavə Edilib';
+    const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+    const alreadyFav = user && user.favorites && user.favorites.words &&
+        user.favorites.words.some(w => (typeof w === 'object' ? w.word : w) === todayWord.word);
+
+    if (alreadyFav) {
+        favBtn.innerHTML = '❤️ Sevimlilərdir';
         favBtn.style.opacity = '0.7';
+        favBtn.disabled = true;
     }
 }
 
@@ -477,25 +482,16 @@ function playAudio(e) {
     }
 }
 
-// ===== ADD TO FAVORITES (FIXED - uses today's word) =====
-function addToFavorites() {
-    if (typeof addToFavorites_auth === 'function') {
-        addToFavorites_auth();
-        return;
-    }
+// ===== ADD TO FAVORITES BUTTON HANDLER =====
+// Bu funksiya HTML-dəki onclick="addWordToFavBtn()" ilə çağırılır.
+// auth.js-in window.addToFavorites ilə ad təsadüfü etməsin deyə fərqli ad verildi.
+function addWordToFavBtn() {
+    const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
 
-    // Auth system integration
-    if (typeof addToFavorites === 'undefined' || typeof getCurrentUser === 'undefined') {
-        _addToLocalFavorites();
-        return;
-    }
-
-    const user = getCurrentUser();
     if (!user) {
         window.location.href = 'login.html?next=daily-word.html';
         return;
     }
-
 
     const wordData = {
         word: todayWord.word,
@@ -509,17 +505,41 @@ function addToFavorites() {
         savedAt: new Date().toISOString()
     };
 
-    const added = addToFavorites('word', wordData);
-    if (added) updateFavoriteButton();
+    // auth.js-dən window.addToFavorites-i çağır (Firestore-a yazacaq)
+    if (typeof window.addToFavorites === 'function') {
+        window.addToFavorites('words', wordData).then(added => {
+            if (added !== false) {
+                const btn = document.querySelector('[onclick="addWordToFavBtn()"]');
+                if (btn) {
+                    btn.innerHTML = '❤️ Sevimlilərdir';
+                    btn.style.opacity = '0.7';
+                    btn.disabled = true;
+                }
+                if (typeof showToast === 'function') {
+                    showToast('✅ Söz sevimlilərə əlavə edildi!', 'success');
+                } else {
+                    alert('✅ Söz sevimlilərə əlavə edildi!');
+                }
+            }
+        }).catch(() => {
+            alert('⚠️ Sevimlilərə əlavə edilmədi. Yenidən cəhd edin.');
+        });
+    } else {
+        _addToLocalFavorites();
+    }
 }
 
 function _addToLocalFavorites() {
     const favorites = JSON.parse(localStorage.getItem('favoriteWords') || '[]');
-    if (favorites.includes(todayWord.word)) {
+    if (favorites.find(f => (typeof f === 'object' ? f.word : f) === todayWord.word)) {
         alert('❤️ Bu söz artıq sevimlilərinizdədir!');
         return;
     }
-    favorites.push(todayWord.word);
+    const wordData = {
+        word: todayWord.word, level: todayWord.level,
+        translation: todayWord.translation, savedAt: new Date().toISOString()
+    };
+    favorites.push(wordData);
     localStorage.setItem('favoriteWords', JSON.stringify(favorites));
     alert('✅ Söz sevimlilərə əlavə edildi!');
     const countEl = document.getElementById('favoriteCount');
