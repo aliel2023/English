@@ -79,7 +79,7 @@ const PLANS = {
             '1000+ premium material',
             'Limitsiz video dərs',
             '1-on-1 mentor dəstəyi',
-            'Rəsmi sertifikat',
+            'Fərdi öyrənmə yolu',
             'IELTS hazırlıq',
         ],
         featured: false,
