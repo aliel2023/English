@@ -363,6 +363,9 @@ function showPaymentStep(orderData) {
     // Qəbz
     const receipt = $('orderReceipt');
     if (receipt) {
+        const sanitize = (str) => String(str || '').replace(/[&<>'"]/g,
+            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
+
         receipt.innerHTML = [
             ['Plan', orderData.plan],
             ['Qiymət', `${orderData.price} / ${orderData.period}`],
@@ -373,7 +376,7 @@ function showPaymentStep(orderData) {
             ['Ödəniş üsulu', orderData.paymentMethod],
         ].map(([k, v]) =>
             `<div class="po-receipt-row">
-                <span>${k}</span><span>${v || '—'}</span>
+                <span>${k}</span><span>${sanitize(v) || '—'}</span>
             </div>`
         ).join('');
     }
