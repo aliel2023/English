@@ -1,14 +1,14 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="az">
 
 <head>
-    <!-- KÄ°BER TÆHLÃœKÆSÄ°ZLÄ°K QATI (Security Enforcements) -->
+    <!-- KİBER TƏHLÜKƏSİZLİK QATI (Security Enforcements) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <!-- Clickjacking / Iframe QorumasÄ± (Framebusting) -->
+    <!-- Clickjacking / Iframe Qoruması (Framebusting) -->
     <style id="antiClickjack">body{display:none !important;}</style>
     <script>
         if (self === top) {
@@ -20,14 +20,18 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sevilmiş sözlər, qrammatika qaydaları və ifadələr - Alielenglish">
-    <title>Sevimlilər - Alielenglish</title>
+    <meta name="description" content="Sevilmis s�zl?r, qrammatika qaydalari v? ifad?l?r - Alielenglish">
+    <title>Sevimlil?r - Alielenglish</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap">
+    <link rel="stylesheet" href="styles/design-system.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/favorites.css">
     <link rel="stylesheet" href="styles/auth.css">
     <script>
-        // Firebase auth event-ə əsaslanır — localStorage YOX
-        // favorites.js alielAuthReady event-i gəldəndə content göstərəcek
+        // Firebase auth event-? ?saslanir � localStorage YOX
+        // favorites.js alielAuthReady event-i g?ld?nd? content g�st?r?cek
         window.addEventListener('DOMContentLoaded', function () {
             var favContent = document.getElementById('favContent');
             var favAuth = document.getElementById('favAuthRequired');
@@ -47,13 +51,13 @@
                     <span class="brand-name">Alielenglish</span>
                 </div>
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
-                    <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
-                    <li><a href="speaking.html" data-i18n="nav.speaking">Danışıq Pratikası</a></li>
-                    <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
+                    <li><a href="index.html" data-i18n="nav.home">Ana S?hif?</a></li>
+                    <li><a href="daily-word.html" data-i18n="nav.daily">G�n�n S�z�</a></li>
+                    <li><a href="speaking.html" data-i18n="nav.speaking">Danisiq Pratikasi</a></li>
+                    <li><a href="test.html" data-i18n="nav.test">S?viyy? Testi</a></li>
                     <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
-                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
-                    <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
+                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiym?tl?r</a></li>
+                    <li><a href="contact.html" data-i18n="nav.contact">?laq?</a></li>
                 </ul>
                 <div class="nav-actions">
                     <div class="lang-dropdown nav-item">
@@ -75,8 +79,8 @@
     <!-- Page Hero -->
     <section class="fav-hero">
         <div class="container">
-            <h1 class="section-title">❤️ Sevimlilər</h1>
-            <p class="fav-subtitle">Əlavə etdiyiniz sözlər, qrammatika qaydaları və ifadələr burada saxlanılır</p>
+            <h1 class="section-title">?? Sevimlil?r</h1>
+            <p class="fav-subtitle">?lav? etdiyiniz s�zl?r, qrammatika qaydalari v? ifad?l?r burada saxlanilir</p>
             <div id="favStats" class="fav-stats-bar"></div>
         </div>
     </section>
@@ -85,9 +89,9 @@
     <div id="favAuthRequired" class="auth-required hidden">
         <div class="container">
             <div class="auth-prompt-card">
-                <div class="auth-prompt-icon">🔐</div>
+                <div class="auth-prompt-icon">??</div>
                 <h2>Hesaba Daxil Olun</h2>
-                <p>Sevimlilərinizi görmək üçün hesabınıza daxil olun və ya yeni hesab yaradın.</p>
+                <p>Sevimlil?rinizi g�rm?k ���n hesabiniza daxil olun v? ya yeni hesab yaradin.</p>
                 <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
                     <a href="login.html?next=favorites.html" class="btn btn-primary">Daxil Ol</a>
                     <a href="register.html" class="btn btn-secondary">Qeydiyyat</a>
@@ -103,17 +107,17 @@
             <div class="container">
                 <div class="fav-tabs">
                     <button class="fav-tab-btn active" onclick="switchFavTab('words', this)">
-                        📚 Sözlər <span class="fav-tab-count" id="wordCount">0</span>
+                        ?? S�zl?r <span class="fav-tab-count" id="wordCount">0</span>
                     </button>
                     <button class="fav-tab-btn" onclick="switchFavTab('grammars', this)">
-                        📝 Qrammatika <span class="fav-tab-count" id="grammarCount">0</span>
+                        ?? Qrammatika <span class="fav-tab-count" id="grammarCount">0</span>
                     </button>
                     <button class="fav-tab-btn" onclick="switchFavTab('phrases', this)">
-                        💬 İfadələr <span class="fav-tab-count" id="phraseCount">0</span>
+                        ?? Ifad?l?r <span class="fav-tab-count" id="phraseCount">0</span>
                     </button>
                 </div>
                 <div class="fav-search-wrap">
-                    <input type="text" id="favSearch" placeholder="🔍 Axtar..." oninput="filterFavorites()"
+                    <input type="text" id="favSearch" placeholder="?? Axtar..." oninput="filterFavorites()"
                         class="fav-search">
                 </div>
             </div>
@@ -124,9 +128,9 @@
             <div class="container">
                 <div id="wordsGrid" class="favorites-grid"></div>
                 <div id="wordsEmpty" class="fav-empty hidden">
-                    <div class="fav-empty-icon">📚</div>
-                    <p>Hələ heç bir söz sevimlilərə əlavə edilməyib.</p>
-                    <a href="daily-word.html" class="btn btn-primary">Günün Sözünə Get</a>
+                    <div class="fav-empty-icon">??</div>
+                    <p>H?l? he� bir s�z sevimlil?r? ?lav? edilm?yib.</p>
+                    <a href="daily-word.html" class="btn btn-primary">G�n�n S�z�n? Get</a>
                 </div>
             </div>
         </section>
@@ -136,8 +140,8 @@
             <div class="container">
                 <div id="grammarsGrid" class="favorites-grid"></div>
                 <div id="grammarsEmpty" class="fav-empty hidden">
-                    <div class="fav-empty-icon">📝</div>
-                    <p>Hələ heç bir qrammatika qaydası sevimlilərə əlavə edilməyib.</p>
+                    <div class="fav-empty-icon">??</div>
+                    <p>H?l? he� bir qrammatika qaydasi sevimlil?r? ?lav? edilm?yib.</p>
                     <a href="resources.html" class="btn btn-primary">Resurslara Get</a>
                 </div>
             </div>
@@ -148,8 +152,8 @@
             <div class="container">
                 <div id="phrasesGrid" class="favorites-grid"></div>
                 <div id="phrasesEmpty" class="fav-empty hidden">
-                    <div class="fav-empty-icon">💬</div>
-                    <p>Hələ heç bir ifadə sevimlilərə əlavə edilməyib.</p>
+                    <div class="fav-empty-icon">??</div>
+                    <p>H?l? he� bir ifad? sevimlil?r? ?lav? edilm?yib.</p>
                     <a href="resources.html" class="btn btn-primary">Resurslara Get</a>
                 </div>
             </div>
@@ -159,7 +163,7 @@
     <!-- Word Detail Modal -->
     <div id="wordDetailModal" class="modal">
         <div class="modal-content word-detail-modal">
-            <button class="modal-close" onclick="closeWordDetail()">×</button>
+            <button class="modal-close" onclick="closeWordDetail()">�</button>
             <div id="wordDetailContent"></div>
         </div>
     </div>
@@ -168,11 +172,12 @@
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-bottom">
-                <p data-i18n="footer.rights">© 2025 Alielenglish. Bütün hüquqlar qorunur.</p>
+                <p data-i18n="footer.rights">� 2025 Alielenglish. B�t�n h�quqlar qorunur.</p>
             </div>
         </div>
     </footer>
 
+    <script src="scripts/design-system.js"></script>
     <script src="scripts/i18n.js"></script>
     <script src="scripts/main.js"></script>
     <script type="module" src="scripts/auth.js"></script>

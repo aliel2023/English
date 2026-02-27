@@ -1,14 +1,14 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="az">
 
 <head>
-    <!-- KÄ°BER TÆHLÃœKÆSÄ°ZLÄ°K QATI (Security Enforcements) -->
+    <!-- KİBER TƏHLÜKƏSİZLİK QATI (Security Enforcements) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <!-- Clickjacking / Iframe QorumasÄ± (Framebusting) -->
+    <!-- Clickjacking / Iframe Qoruması (Framebusting) -->
     <style id="antiClickjack">body{display:none !important;}</style>
     <script>
         if (self === top) {
@@ -20,10 +20,14 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Alielenglish ilə əlaqə - Suallarınızı bizə yazın və ya sosial mediadan izləyin">
-    <meta name="keywords" content="əlaqə, contact, support, dəstək">
+    <meta name="description" content="Alielenglish il? ?laq? - Suallarinizi biz? yazin v? ya sosial mediadan izl?yin">
+    <meta name="keywords" content="?laq?, contact, support, d?st?k">
     <link rel="canonical" href="https://aliel2023.github.io/English2/contact.html">
-    <title>Əlaqə - Alielenglish</title>
+    <title>?laq? - Alielenglish</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap">
+    <link rel="stylesheet" href="styles/design-system.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/contact.css">
 </head>
@@ -37,13 +41,13 @@
                     <span class="brand-name">Alielenglish</span>
                 </div>
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
-                    <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
-                    <li><a href="speaking.html" data-i18n="nav.speaking">Danışıq Pratikası</a></li>
-                    <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
+                    <li><a href="index.html" data-i18n="nav.home">Ana S?hif?</a></li>
+                    <li><a href="daily-word.html" data-i18n="nav.daily">G�n�n S�z�</a></li>
+                    <li><a href="speaking.html" data-i18n="nav.speaking">Danisiq Pratikasi</a></li>
+                    <li><a href="test.html" data-i18n="nav.test">S?viyy? Testi</a></li>
                     <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
-                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
-                    <li><a href="contact.html" class="active" data-i18n="nav.contact">Əlaqə</a></li>
+                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiym?tl?r</a></li>
+                    <li><a href="contact.html" class="active" data-i18n="nav.contact">?laq?</a></li>
                 </ul>
                 <div class="nav-actions">
                     <div class="lang-dropdown nav-item">
@@ -64,9 +68,9 @@
 
     <section class="contact-hero">
         <div class="container">
-            <h1 class="section-title" data-i18n="contact.title">📧 Bizimlə Əlaqə</h1>
+            <h1 class="section-title" data-i18n="contact.title">?? Biziml? ?laq?</h1>
             <p class="contact-subtitle" data-i18n="contact.subtitle">
-                Suallarınız varmı? Bizə yazın və ya sosial mediadan izləyin. 24 saat ərzində cavab veririk!
+                Suallariniz varmi? Biz? yazin v? ya sosial mediadan izl?yin. 24 saat ?rzind? cavab veririk!
             </p>
         </div>
     </section>
@@ -76,20 +80,20 @@
             <div class="contact-grid">
                 <!-- Contact Form -->
                 <div class="contact-form-section">
-                    <h2 data-i18n="contact.formTitle">✍️ Mesaj Göndər</h2>
+                    <h2 data-i18n="contact.formTitle">?? Mesaj G�nd?r</h2>
                     <p class="form-description" data-i18n="contact.formDesc">
-                        Formu doldurun və biz sizinlə ən qısa müddətdə əlaqə saxlayacağıq
+                        Formu doldurun v? biz sizinl? ?n qisa m�dd?td? ?laq? saxlayacagiq
                     </p>
 
                     <form id="contactForm" class="contact-form">
                         <div class="success-alert" id="successAlert" data-i18n="contact.successMessage">
-                            ✅ Mesajınız uğurla göndərildi! Tezliklə sizinlə əlaqə saxlayacağıq.
+                            ? Mesajiniz ugurla g�nd?rildi! Tezlikl? sizinl? ?laq? saxlayacagiq.
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="contactName" data-i18n="contact.labelName">Ad və Soyad *</label>
-                                <input type="text" id="contactName" name="name" placeholder="Adınızı daxil edin"
+                                <label for="contactName" data-i18n="contact.labelName">Ad v? Soyad *</label>
+                                <input type="text" id="contactName" name="name" placeholder="Adinizi daxil edin"
                                     required minlength="2">
                             </div>
                             <div class="form-group">
@@ -105,25 +109,25 @@
                                 <input type="tel" id="contactPhone" name="phone" placeholder="+994 XX XXX XX XX">
                             </div>
                             <div class="form-group">
-                                <label for="contactSubject" data-i18n="contact.labelSubject">Mövzu *</label>
+                                <label for="contactSubject" data-i18n="contact.labelSubject">M�vzu *</label>
                                 <select id="contactSubject" name="subject" required>
-                                    <option value="" data-i18n="contact.selectSubject">Seçin...</option>
-                                    <option value="general" data-i18n="contact.subjectGeneral">Ümumi sual</option>
-                                    <option value="technical" data-i18n="contact.subjectTechnical">Texniki dəstək
+                                    <option value="" data-i18n="contact.selectSubject">Se�in...</option>
+                                    <option value="general" data-i18n="contact.subjectGeneral">�mumi sual</option>
+                                    <option value="technical" data-i18n="contact.subjectTechnical">Texniki d?st?k
                                     </option>
-                                    <option value="payment" data-i18n="contact.subjectPayment">Ödəniş məsələsi</option>
-                                    <option value="course" data-i18n="contact.subjectCourse">Kurs haqqında</option>
-                                    <option value="partnership" data-i18n="contact.subjectPartnership">Əməkdaşlıq
+                                    <option value="payment" data-i18n="contact.subjectPayment">�d?nis m?s?l?si</option>
+                                    <option value="course" data-i18n="contact.subjectCourse">Kurs haqqinda</option>
+                                    <option value="partnership" data-i18n="contact.subjectPartnership">?m?kdasliq
                                     </option>
-                                    <option value="other" data-i18n="contact.subjectOther">Digər</option>
+                                    <option value="other" data-i18n="contact.subjectOther">Dig?r</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="contactMessage" data-i18n="contact.labelMessage">Mesajınız *</label>
+                            <label for="contactMessage" data-i18n="contact.labelMessage">Mesajiniz *</label>
                             <textarea id="contactMessage" name="message" rows="6"
-                                placeholder="Mesajınızı buraya yazın..." required minlength="10"></textarea>
+                                placeholder="Mesajinizi buraya yazin..." required minlength="10"></textarea>
                             <span class="char-count" id="charCount">0 / 500</span>
                         </div>
 
@@ -131,23 +135,23 @@
                             <label class="checkbox-label">
                                 <input type="checkbox" name="agree" required>
                                 <span data-i18n="contact.checkboxPrivacy">
-                                    Məxfilik Siyasətini oxudum və qəbul edirəm
+                                    M?xfilik Siyas?tini oxudum v? q?bul edir?m
                                 </span>
                             </label>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-block" data-i18n="contact.btnSend">
-                            Göndər
+                            G�nd?r
                         </button>
                     </form>
                 </div>
 
                 <!-- Contact Info -->
                 <div class="contact-info-section">
-                    <h2>📞 Əlaqə Məlumatları</h2>
+                    <h2>?? ?laq? M?lumatlari</h2>
 
                     <div class="info-card">
-                        <div class="info-icon">📱</div>
+                        <div class="info-icon">??</div>
                         <h3 data-i18n="contact.socialMedia">Sosial Media</h3>
                         <div class="social-links-list">
                             <a href="https://instagram.com/alielenglish" target="_blank" rel="noopener"
@@ -180,40 +184,40 @@
                     </div>
 
                     <div class="info-card">
-                        <div class="info-icon">✉️</div>
+                        <div class="info-icon">??</div>
                         <h3 data-i18n="contact.emailTitle">Email</h3>
                         <a href="mailto:englishaliel@gmail.com" class="info-link">
                             englishaliel@gmail.com
                         </a>
                         <p class="info-text">
-                            Suallarınızı email ilə göndərə bilərsiniz. 24 saat ərzində cavab veririk.
+                            Suallarinizi email il? g�nd?r? bil?rsiniz. 24 saat ?rzind? cavab veririk.
                         </p>
                     </div>
 
                     <div class="info-card">
-                        <div class="info-icon">⏰</div>
-                        <h3 data-i18n="contact.workHours">İş Saatları</h3>
+                        <div class="info-icon">?</div>
+                        <h3 data-i18n="contact.workHours">Is Saatlari</h3>
                         <div class="work-hours">
                             <div class="hour-item">
-                                <span>Bazar ertəsi - Cümə</span>
+                                <span>Bazar ert?si - C�m?</span>
                                 <strong>09:00 - 18:00</strong>
                             </div>
                             <div class="hour-item">
-                                <span>Şənbə</span>
+                                <span>S?nb?</span>
                                 <strong>10:00 - 16:00</strong>
                             </div>
                             <div class="hour-item">
                                 <span>Bazar</span>
-                                <strong>Bağlı</strong>
+                                <strong>Bagli</strong>
                             </div>
                         </div>
                     </div>
 
                     <div class="info-card">
-                        <div class="info-icon">📍</div>
-                        <h3 data-i18n="contact.address">Ünvan</h3>
+                        <div class="info-icon">??</div>
+                        <h3 data-i18n="contact.address">�nvan</h3>
                         <p class="info-text">
-                            Bakı, Azərbaycan<br>
+                            Baki, Az?rbaycan<br>
                             Online Platform
                         </p>
                     </div>
@@ -226,11 +230,11 @@
     <section class="cta-section">
         <div class="container">
             <div class="cta-content">
-                <h2>Hələ sualınız var?</h2>
-                <p>Bizə yazın və ya sosial mediadan mesaj göndərin</p>
+                <h2>H?l? sualiniz var?</h2>
+                <p>Biz? yazin v? ya sosial mediadan mesaj g�nd?rin</p>
                 <button class="btn btn-light"
                     onclick="document.getElementById('contactForm').scrollIntoView({behavior: 'smooth'})">
-                    Mesaj Göndər
+                    Mesaj G�nd?r
                 </button>
             </div>
         </div>
@@ -241,7 +245,7 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <h4>Alielenglish</h4>
-                    <p data-i18n="footer.about">2023-dən bəri minlərlə tələbəyə keyfiyyətli ingilis dili təhsili təqdim
+                    <p data-i18n="footer.about">2023-d?n b?ri minl?rl? t?l?b?y? keyfiyy?tli ingilis dili t?hsili t?qdim
                         edirik.</p>
                     <div class="social-links">
                         <a href="https://instagram.com/alielenglish" target="_blank" class="social-link" rel="noopener"
@@ -258,32 +262,32 @@
                     </div>
                 </div>
                 <div class="footer-col">
-                    <h4 data-i18n="footer.links">Keçidlər</h4>
+                    <h4 data-i18n="footer.links">Ke�idl?r</h4>
                     <ul class="footer-links">
-                        <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
-                        <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
-                        <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
+                        <li><a href="index.html" data-i18n="nav.home">Ana S?hif?</a></li>
+                        <li><a href="daily-word.html" data-i18n="nav.daily">G�n�n S�z�</a></li>
+                        <li><a href="test.html" data-i18n="nav.test">S?viyy? Testi</a></li>
                         <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4 data-i18n="footer.support">Dəstək</h4>
+                    <h4 data-i18n="footer.support">D?st?k</h4>
                     <ul class="footer-links">
-                        <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
-                        <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
+                        <li><a href="pricing.html" data-i18n="nav.pricing">Qiym?tl?r</a></li>
+                        <li><a href="contact.html" data-i18n="nav.contact">?laq?</a></li>
                         <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#privacy">Məxfilik</a></li>
+                        <li><a href="#privacy">M?xfilik</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4 data-i18n="footer.newsletter">Xəbər Bülleteni</h4>
-                    <p data-i18n="footer.newsletterDesc">Gündəlik dərs və xüsusi təkliflərdən xəbərdar olun</p>
+                    <h4 data-i18n="footer.newsletter">X?b?r B�lleteni</h4>
+                    <p data-i18n="footer.newsletterDesc">G�nd?lik d?rs v? x�susi t?klifl?rd?n x?b?rdar olun</p>
                     <button class="btn btn-primary btn-sm" onclick="openEmailModal()"
-                        data-i18n="footer.btnSubscribe">Abunə Ol</button>
+                        data-i18n="footer.btnSubscribe">Abun? Ol</button>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. Bütün hüquqlar qorunur.</p>
+                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. B�t�n h�quqlar qorunur.</p>
             </div>
         </div>
     </footer>
@@ -291,18 +295,19 @@
     <div id="emailModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeEmailModal()">&times;</button>
-            <h2 data-i18n="modal.welcome">🎉 Xoş gəlmisiniz!</h2>
-            <p data-i18n="modal.subtitle">Pulsuz e-kitab və bonus materiallar əldə etmək üçün qeydiyyatdan keçin</p>
+            <h2 data-i18n="modal.welcome">?? Xos g?lmisiniz!</h2>
+            <p data-i18n="modal.subtitle">Pulsuz e-kitab v? bonus materiallar ?ld? etm?k ���n qeydiyyatdan ke�in</p>
             <form id="emailForm" class="modal-form">
-                <input type="text" id="userName" name="name" data-i18n="modal.inputName" placeholder="Adınız" required>
+                <input type="text" id="userName" name="name" data-i18n="modal.inputName" placeholder="Adiniz" required>
                 <input type="email" id="userEmail" name="email" data-i18n="modal.inputEmail"
-                    placeholder="Email ünvanınız" required>
-                <button type="submit" class="btn btn-primary" data-i18n="modal.btnSend">Göndər</button>
+                    placeholder="Email �nvaniniz" required>
+                <button type="submit" class="btn btn-primary" data-i18n="modal.btnSend">G�nd?r</button>
             </form>
-            <p class="privacy-note" data-i18n="modal.privacy">🔒 Məlumatlarınız təhlükəsizdir və paylaşılmır</p>
+            <p class="privacy-note" data-i18n="modal.privacy">?? M?lumatlariniz t?hl�k?sizdir v? paylasilmir</p>
         </div>
     </div>
 
+    <script src="scripts/design-system.js"></script>
     <script src="scripts/i18n.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/contact.js"></script>

@@ -1,14 +1,14 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="az">
 
 <head>
-    <!-- KÄ°BER TÆHLÃœKÆSÄ°ZLÄ°K QATI (Security Enforcements) -->
+    <!-- KİBER TƏHLÜKƏSİZLİK QATI (Security Enforcements) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <!-- Clickjacking / Iframe QorumasÄ± (Framebusting) -->
+    <!-- Clickjacking / Iframe Qoruması (Framebusting) -->
     <style id="antiClickjack">body{display:none !important;}</style>
     <script>
         if (self === top) {
@@ -20,10 +20,14 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Hər gün yeni ingilis sözü, tələffüz və nümunə cümlələr ilə öyrənin">
-    <meta name="keywords" content="günün sözü, ingilis dili, vocabulary, daily word">
+    <meta name="description" content="H?r g�n yeni ingilis s�z�, t?l?ff�z v? n�mun? c�ml?l?r il? �yr?nin">
+    <meta name="keywords" content="g�n�n s�z�, ingilis dili, vocabulary, daily word">
     <link rel="canonical" href="https://aliel2023.github.io/English2/daily-word.html">
-    <title>Günün Sözü - Alielenglish</title>
+    <title>G�n�n S�z� - Alielenglish</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap">
+    <link rel="stylesheet" href="styles/design-system.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/daily-word.css">
     <link rel="stylesheet" href="styles/auth.css">
@@ -38,13 +42,13 @@
                     <span class="brand-name">Alielenglish</span>
                 </div>
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
-                    <li><a href="daily-word.html" class="active" data-i18n="nav.daily">Günün Sözü</a></li>
-                    <li><a href="speaking.html" data-i18n="nav.speaking">Danışıq Pratikası</a></li>
-                    <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
+                    <li><a href="index.html" data-i18n="nav.home">Ana S?hif?</a></li>
+                    <li><a href="daily-word.html" class="active" data-i18n="nav.daily">G�n�n S�z�</a></li>
+                    <li><a href="speaking.html" data-i18n="nav.speaking">Danisiq Pratikasi</a></li>
+                    <li><a href="test.html" data-i18n="nav.test">S?viyy? Testi</a></li>
                     <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
-                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
-                    <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
+                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiym?tl?r</a></li>
+                    <li><a href="contact.html" data-i18n="nav.contact">?laq?</a></li>
                 </ul>
                 <div class="nav-actions">
                     <div class="lang-dropdown nav-item">
@@ -65,9 +69,9 @@
 
     <section class="daily-hero">
         <div class="container">
-            <h1 class="section-title" data-i18n="daily.title">📅 Günün Sözü</h1>
+            <h1 class="section-title" data-i18n="daily.title">?? G�n�n S�z�</h1>
             <p class="daily-subtitle" data-i18n="daily.subtitle">
-                Hər gün yeni söz öyrənin və lüğət ehtiyatınızı artırın
+                H?r g�n yeni s�z �yr?nin v? l�g?t ehtiyatinizi artirin
             </p>
             <div class="daily-date" id="dailyDate"></div>
         </div>
@@ -80,29 +84,29 @@
 
                 <div class="word-main-content">
                     <h2 class="word-title" id="wordTitle">ACCOMPLISH</h2>
-                    <p class="word-pronunciation" id="wordPronunciation">/əˈkʌmplɪʃ/</p>
+                    <p class="word-pronunciation" id="wordPronunciation">/?'k?mpl??/</p>
                     <p class="word-type" id="wordType">verb</p>
                 </div>
 
                 <div class="word-translation">
-                    <h3 data-i18n="daily.translation">Tərcümə:</h3>
-                    <p id="wordTranslation">Başarmaq, həyata keçirmək, nail olmaq</p>
+                    <h3 data-i18n="daily.translation">T?rc�m?:</h3>
+                    <p id="wordTranslation">Basarmaq, h?yata ke�irm?k, nail olmaq</p>
                 </div>
 
                 <div class="word-definition">
-                    <h3 data-i18n="daily.definition">Təyinat:</h3>
+                    <h3 data-i18n="daily.definition">T?yinat:</h3>
                     <p id="wordDefinition">To succeed in doing or completing something, especially something difficult
                     </p>
                 </div>
 
                 <div class="word-examples">
-                    <h3 data-i18n="daily.examples">Nümunə cümlələr:</h3>
+                    <h3 data-i18n="daily.examples">N�mun? c�ml?l?r:</h3>
                     <div class="example-item">
                         <p class="example-en" id="example1En">
                             "She accomplished her goal of learning English in one year."
                         </p>
                         <p class="example-az" id="example1Az">
-                            "O, bir il ərzində ingilis dili öyrənmək məqsədinə çatdı."
+                            "O, bir il ?rzind? ingilis dili �yr?nm?k m?qs?din? �atdi."
                         </p>
                     </div>
                     <div class="example-item">
@@ -110,13 +114,13 @@
                             "The team accomplished a lot during the project."
                         </p>
                         <p class="example-az" id="example2Az">
-                            "Komanda layihə zamanı çox şey bacardı."
+                            "Komanda layih? zamani �ox sey bacardi."
                         </p>
                     </div>
                 </div>
 
                 <div class="word-synonyms">
-                    <h3 data-i18n="daily.synonyms">Sinonimlər:</h3>
+                    <h3 data-i18n="daily.synonyms">Sinoniml?r:</h3>
                     <div class="synonym-tags">
                         <span class="tag">achieve</span>
                         <span class="tag">complete</span>
@@ -127,13 +131,13 @@
 
                 <div class="word-actions">
                     <button class="btn btn-primary" onclick="playAudio(event)" data-i18n="daily.btnAudio">
-                        🔊 Səsləndirmə
+                        ?? S?sl?ndirm?
                     </button>
                     <button class="btn btn-secondary" onclick="addWordToFavBtn()" data-i18n="daily.btnFavorite">
-                        ❤️ Sevimlilərə Əlavə Et
+                        ?? Sevimlil?r? ?lav? Et
                     </button>
                     <button class="btn btn-secondary" onclick="shareWord()" data-i18n="daily.btnShare">
-                        📤 Paylaş
+                        ?? Paylas
                     </button>
                 </div>
             </div>
@@ -145,19 +149,19 @@
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-box">
-                    <div class="stat-icon">📚</div>
+                    <div class="stat-icon">??</div>
                     <div class="stat-number" id="totalWordsLearned">0</div>
-                    <div class="stat-label" data-i18n="daily.wordsLearned">Öyrənilmiş Söz</div>
+                    <div class="stat-label" data-i18n="daily.wordsLearned">�yr?nilmis S�z</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-icon">🔥</div>
+                    <div class="stat-icon">??</div>
                     <div class="stat-number" id="currentStreak">0</div>
-                    <div class="stat-label" data-i18n="daily.currentStreak">Günlük Sıra</div>
+                    <div class="stat-label" data-i18n="daily.currentStreak">G�nl�k Sira</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-icon">❤️</div>
+                    <div class="stat-icon">??</div>
                     <div class="stat-number" id="favoriteCount">0</div>
-                    <div class="stat-label" data-i18n="daily.favoriteCount">Sevimli Söz</div>
+                    <div class="stat-label" data-i18n="daily.favoriteCount">Sevimli S�z</div>
                 </div>
             </div>
         </div>
@@ -166,18 +170,18 @@
     <!-- Word Archive -->
     <section class="word-archive">
         <div class="container">
-            <h2 class="section-title" data-i18n="daily.archive">📚 Arxiv</h2>
-            <p class="archive-subtitle" data-i18n="daily.archiveSubtitle">Əvvəlki günlərin sözlərinə baxın</p>
+            <h2 class="section-title" data-i18n="daily.archive">?? Arxiv</h2>
+            <p class="archive-subtitle" data-i18n="daily.archiveSubtitle">?vv?lki g�nl?rin s�zl?rin? baxin</p>
 
             <div class="archive-filters">
                 <button class="filter-btn active" onclick="filterArchive('all', event)"
-                    data-i18n="daily.filterAll">Hamısı</button>
+                    data-i18n="daily.filterAll">Hamisi</button>
                 <button class="filter-btn" onclick="filterArchive('A1', event)">A1</button>
                 <button class="filter-btn" onclick="filterArchive('A2', event)">A2</button>
                 <button class="filter-btn" onclick="filterArchive('B1', event)">B1</button>
                 <button class="filter-btn" onclick="filterArchive('B2', event)">B2</button>
                 <button class="filter-btn" onclick="filterArchive('favorites', event)"
-                    data-i18n="daily.filterFavorites">❤️ Sevimlilər</button>
+                    data-i18n="daily.filterFavorites">?? Sevimlil?r</button>
             </div>
 
             <div class="archive-grid" id="archiveGrid">
@@ -186,7 +190,7 @@
 
             <button class="btn btn-secondary" onclick="loadMoreArchive()" id="loadMoreBtn"
                 data-i18n="daily.btnLoadMore">
-                Daha Çox Yüklə
+                Daha �ox Y�kl?
             </button>
         </div>
     </section>
@@ -195,14 +199,14 @@
     <section class="premium-cta">
         <div class="container">
             <div class="cta-content">
-                <h2>🚀 Daha Sürətli Öyrənin!</h2>
-                <p>Premium üzvlüklə <strong>günün sözü</strong> ilə yanaşı 500+ əlavə söz, audio və video dərslərlə
-                    öyrənin</p>
+                <h2>?? Daha S�r?tli �yr?nin!</h2>
+                <p>Premium �zvl�kl? <strong>g�n�n s�z�</strong> il? yanasi 500+ ?lav? s�z, audio v? video d?rsl?rl?
+                    �yr?nin</p>
                 <div class="cta-features">
-                    <div class="cta-feature">✓ Audio tələffüz</div>
-                    <div class="cta-feature">✓ Video izahlar</div>
-                    <div class="cta-feature">✓ Flashcard-lar</div>
-                    <div class="cta-feature">✓ Quiz testləri</div>
+                    <div class="cta-feature">? Audio t?l?ff�z</div>
+                    <div class="cta-feature">? Video izahlar</div>
+                    <div class="cta-feature">? Flashcard-lar</div>
+                    <div class="cta-feature">? Quiz testl?ri</div>
                 </div>
                 <button class="btn btn-light" onclick="window.location.href='pricing.html'">
                     Premium Planlara Bax
@@ -216,7 +220,7 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <h4>Alielenglish</h4>
-                    <p data-i18n="footer.about">2023-dən bəri minlərlə tələbəyə keyfiyyətli ingilis dili təhsili təqdim
+                    <p data-i18n="footer.about">2023-d?n b?ri minl?rl? t?l?b?y? keyfiyy?tli ingilis dili t?hsili t?qdim
                         edirik.</p>
                     <div class="social-links">
                         <a href="https://instagram.com/alielenglish" target="_blank" class="social-link" rel="noopener"
@@ -233,32 +237,32 @@
                     </div>
                 </div>
                 <div class="footer-col">
-                    <h4 data-i18n="footer.links">Keçidlər</h4>
+                    <h4 data-i18n="footer.links">Ke�idl?r</h4>
                     <ul class="footer-links">
-                        <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
-                        <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
-                        <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
+                        <li><a href="index.html" data-i18n="nav.home">Ana S?hif?</a></li>
+                        <li><a href="daily-word.html" data-i18n="nav.daily">G�n�n S�z�</a></li>
+                        <li><a href="test.html" data-i18n="nav.test">S?viyy? Testi</a></li>
                         <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4 data-i18n="footer.support">Dəstək</h4>
+                    <h4 data-i18n="footer.support">D?st?k</h4>
                     <ul class="footer-links">
-                        <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
-                        <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
+                        <li><a href="pricing.html" data-i18n="nav.pricing">Qiym?tl?r</a></li>
+                        <li><a href="contact.html" data-i18n="nav.contact">?laq?</a></li>
                         <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#privacy">Məxfilik</a></li>
+                        <li><a href="#privacy">M?xfilik</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4 data-i18n="footer.newsletter">Xəbər Bülleteni</h4>
-                    <p data-i18n="footer.newsletterDesc">Gündəlik dərs və xüsusi təkliflərdən xəbərdar olun</p>
+                    <h4 data-i18n="footer.newsletter">X?b?r B�lleteni</h4>
+                    <p data-i18n="footer.newsletterDesc">G�nd?lik d?rs v? x�susi t?klifl?rd?n x?b?rdar olun</p>
                     <button class="btn btn-primary btn-sm" onclick="openEmailModal()"
-                        data-i18n="footer.btnSubscribe">Abunə Ol</button>
+                        data-i18n="footer.btnSubscribe">Abun? Ol</button>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. Bütün hüquqlar qorunur.</p>
+                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. B�t�n h�quqlar qorunur.</p>
             </div>
         </div>
     </footer>
@@ -266,18 +270,19 @@
     <div id="emailModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeEmailModal()">&times;</button>
-            <h2 data-i18n="modal.welcome">🎉 Xoş gəlmisiniz!</h2>
-            <p data-i18n="modal.subtitle">Pulsuz e-kitab və bonus materiallar əldə etmək üçün qeydiyyatdan keçin</p>
+            <h2 data-i18n="modal.welcome">?? Xos g?lmisiniz!</h2>
+            <p data-i18n="modal.subtitle">Pulsuz e-kitab v? bonus materiallar ?ld? etm?k ���n qeydiyyatdan ke�in</p>
             <form id="emailForm" class="modal-form">
-                <input type="text" id="userName" name="name" data-i18n="modal.inputName" placeholder="Adınız" required>
+                <input type="text" id="userName" name="name" data-i18n="modal.inputName" placeholder="Adiniz" required>
                 <input type="email" id="userEmail" name="email" data-i18n="modal.inputEmail"
-                    placeholder="Email ünvanınız" required>
-                <button type="submit" class="btn btn-primary" data-i18n="modal.btnSend">Göndər</button>
+                    placeholder="Email �nvaniniz" required>
+                <button type="submit" class="btn btn-primary" data-i18n="modal.btnSend">G�nd?r</button>
             </form>
-            <p class="privacy-note" data-i18n="modal.privacy">🔒 Məlumatlarınız təhlükəsizdir və paylaşılmır</p>
+            <p class="privacy-note" data-i18n="modal.privacy">?? M?lumatlariniz t?hl�k?sizdir v? paylasilmir</p>
         </div>
     </div>
 
+    <script src="scripts/design-system.js"></script>
     <script src="scripts/i18n.js"></script>
     <script src="scripts/main.js"></script>
     <script type="module" src="scripts/auth.js"></script>

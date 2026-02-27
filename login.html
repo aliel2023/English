@@ -1,14 +1,14 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="az">
 
 <head>
-    <!-- KÄ°BER TÆHLÃœKÆSÄ°ZLÄ°K QATI (Security Enforcements) -->
+    <!-- KİBER TƏHLÜKƏSİZLİK QATI (Security Enforcements) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <!-- Clickjacking / Iframe QorumasÄ± (Framebusting) -->
+    <!-- Clickjacking / Iframe Qoruması (Framebusting) -->
     <style id="antiClickjack">body{display:none !important;}</style>
     <script>
         if (self === top) {
@@ -20,10 +20,12 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <meta name="description" content="Alielenglish — Hesabınıza daxil olun">
+    <meta name="description" content="Alielenglish � Hesabiniza daxil olun">
     <meta name="robots" content="noindex">
-    <title>Daxil Ol — Alielenglish</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <title>Daxil Ol � Alielenglish</title>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap">
+    <link rel="stylesheet" href="styles/design-system.css">
     <link rel="stylesheet" href="styles/auth-page.css">
     <style>
         *,
@@ -53,7 +55,7 @@
             font-family: 'Inter', -apple-system, sans-serif;
         }
 
-        /* ── LAYOUT (Duolingo-style: tam ekran, mərkəz kart) ── */
+        /* -- LAYOUT (Duolingo-style: tam ekran, m?rk?z kart) -- */
         .duo-page {
             min-height: 100vh;
             display: flex;
@@ -64,7 +66,7 @@
             position: relative;
         }
 
-        /* ── TOP BAR ── */
+        /* -- TOP BAR -- */
         .duo-topbar {
             position: fixed;
             top: 0;
@@ -148,7 +150,7 @@
             background: rgba(230, 57, 70, .08);
         }
 
-        /* ── CARD ── */
+        /* -- CARD -- */
         .duo-card {
             width: 100%;
             max-width: 420px;
@@ -178,7 +180,7 @@
             letter-spacing: -.5px;
         }
 
-        /* ── ALERTS ── */
+        /* -- ALERTS -- */
         .duo-alert {
             padding: .75rem 1rem;
             border-radius: var(--radius);
@@ -205,7 +207,7 @@
             color: var(--success);
         }
 
-        /* ── GOOGLE BUTTON ── */
+        /* -- GOOGLE BUTTON -- */
         .duo-google-btn {
             width: 100%;
             padding: .85rem 1rem;
@@ -242,7 +244,7 @@
             transform: none;
         }
 
-        /* ── DIVIDER ── */
+        /* -- DIVIDER -- */
         .duo-divider {
             display: flex;
             align-items: center;
@@ -262,7 +264,7 @@
             background: var(--border);
         }
 
-        /* ── FORM INPUTS ── */
+        /* -- FORM INPUTS -- */
         .duo-field {
             position: relative;
             margin-bottom: .75rem;
@@ -321,7 +323,7 @@
             color: var(--text);
         }
 
-        /* ── SUBMIT BUTTON ── */
+        /* -- SUBMIT BUTTON -- */
         .duo-submit-btn {
             width: 100%;
             padding: .9rem 1rem;
@@ -389,7 +391,7 @@
             min-height: 1.2rem;
         }
 
-        /* ── FOOTER LINKS ── */
+        /* -- FOOTER LINKS -- */
         .duo-switch {
             text-align: center;
             margin-top: 1.5rem;
@@ -416,7 +418,7 @@
             line-height: 1.6;
         }
 
-        /* ── RESPONSIVE ── */
+        /* -- RESPONSIVE -- */
         @media (max-width: 480px) {
             .duo-card {
                 padding: 2rem 1.25rem;
@@ -448,12 +450,12 @@
 
     <!-- Top Bar (Duolingo-style) -->
     <header class="duo-topbar">
-        <a href="index.html" class="duo-close-btn" title="Bağla" aria-label="Ana Səhifəyə qayıt">×</a>
+        <a href="index.html" class="duo-close-btn" title="Bagla" aria-label="Ana S?hif?y? qayit">�</a>
         <a href="index.html" class="duo-topbar-logo">
             <div class="duo-logo-mark">A</div>
             <span class="duo-logo-text">Alielenglish</span>
         </a>
-        <a href="register.html" class="duo-signup-btn">QEYDİYYAT</a>
+        <a href="register.html" class="duo-signup-btn">QEYDIYYAT</a>
     </header>
 
     <!-- Main Card -->
@@ -478,11 +480,11 @@
                     <path fill="#EA4335"
                         d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                 </svg>
-                Google ilə daxil ol
+                Google il? daxil ol
             </button>
 
             <!-- Divider -->
-            <div class="duo-divider">VƏ YA</div>
+            <div class="duo-divider">V? YA</div>
 
             <!-- Email/Password Form -->
             <form id="loginForm" onsubmit="handleLoginSubmit(event)" novalidate autocomplete="on">
@@ -493,31 +495,31 @@
                 </div>
 
                 <div class="duo-field duo-pw-wrap">
-                    <input type="password" id="loginPassword" class="duo-input" placeholder="Şifrə" required
+                    <input type="password" id="loginPassword" class="duo-input" placeholder="Sifr?" required
                         autocomplete="current-password">
                     <button type="button" class="duo-forgot-btn" onclick="toggleEye('loginPassword', this)"
                         id="pwEyeBtn">
-                        GÖSTƏR
+                        G�ST?R
                     </button>
                 </div>
 
                 <div id="rateLimitMsg" class="duo-rate-msg"></div>
 
                 <button type="submit" class="duo-submit-btn" id="loginBtn">
-                    <span id="loginBtnText">DAXİL OL</span>
+                    <span id="loginBtnText">DAXIL OL</span>
                     <span class="duo-spinner hidden" id="loginSpinner"></span>
                 </button>
 
             </form>
 
             <div class="duo-switch">
-                Hesabın yoxdur?
-                <a href="register.html">Qeydiyyatdan keç →</a>
+                Hesabin yoxdur?
+                <a href="register.html">Qeydiyyatdan ke� ?</a>
             </div>
 
             <p class="duo-security">
-                🔒 Firebase Auth · 256-bit SSL<br>
-                Məlumatlarınız tam qorunur
+                ?? Firebase Auth � 256-bit SSL<br>
+                M?lumatlariniz tam qorunur
             </p>
 
         </div>
@@ -545,12 +547,12 @@
         const db = getFirestore(app);
         const $ = id => document.getElementById(id);
 
-        // Google prosesi zamanı redirect-i bloklayan flag
+        // Google prosesi zamani redirect-i bloklayan flag
         let googleInProgress = false;
 
-        // Artıq daxil olubsa → dərhal yönləndir
+        // Artiq daxil olubsa ? d?rhal y�nl?ndir
         onAuthStateChanged(auth, u => {
-            // Əgər Google girişi hələ davam edirsə, redirect etmə
+            // ?g?r Google girisi h?l? davam edirs?, redirect etm?
             if (googleInProgress) return;
             if (u) {
                 const googleBtn = $('googleBtn');
@@ -576,19 +578,19 @@
 
         function getErrMsg(code) {
             const m = {
-                'auth/user-not-found': '❌ Bu email ilə hesab tapılmadı.',
-                'auth/wrong-password': '🔑 Şifrə yanlışdır.',
-                'auth/invalid-credential': '❌ Email və ya şifrə yanlışdır.',
-                'auth/invalid-email': '📧 Email formatı yanlışdır.',
-                'auth/too-many-requests': '⏳ Çox cəhd. Bir müddət gözləyin.',
-                'auth/network-request-failed': '🌐 İnternet bağlantısını yoxlayın.',
-                'auth/popup-blocked': '🚫 Popup bloklandı. Brauzer parametrlərindən icazə verin.',
+                'auth/user-not-found': '? Bu email il? hesab tapilmadi.',
+                'auth/wrong-password': '?? Sifr? yanlisdir.',
+                'auth/invalid-credential': '? Email v? ya sifr? yanlisdir.',
+                'auth/invalid-email': '?? Email formati yanlisdir.',
+                'auth/too-many-requests': '? �ox c?hd. Bir m�dd?t g�zl?yin.',
+                'auth/network-request-failed': '?? Internet baglantisini yoxlayin.',
+                'auth/popup-blocked': '?? Popup bloklandi. Brauzer parametrl?rind?n icaz? verin.',
                 'auth/popup-closed-by-user': '',
                 'auth/cancelled-popup-request': '',
-                'auth/operation-not-allowed': '⚠️ Google girişi aktivləşdirilməyib.',
-                'auth/unauthorized-domain': '⛔ Domen Xətası: Firebase Console-da (Authentication > Settings > Authorized domains) bu ünvanı əlavə edin.',
+                'auth/operation-not-allowed': '?? Google girisi aktivl?sdirilm?yib.',
+                'auth/unauthorized-domain': '? Domen X?tasi: Firebase Console-da (Authentication > Settings > Authorized domains) bu �nvani ?lav? edin.',
             };
-            return m[code] ?? `⚠️ Xəta: ${code}`;
+            return m[code] ?? `?? X?ta: ${code}`;
         }
 
 
@@ -608,7 +610,7 @@
             $('loginBtn').disabled = true;
             clearInterval(rlTimer);
             let left = sec;
-            el.textContent = `🔒 ${left}s sonra yenidən cəhd edin`;
+            el.textContent = `?? ${left}s sonra yenid?n c?hd edin`;
             rlTimer = setInterval(() => {
                 left--;
                 if (left <= 0) {
@@ -616,12 +618,12 @@
                     el.textContent = '';
                     $('loginBtn').disabled = false;
                 } else {
-                    el.textContent = `🔒 ${left}s sonra yenidən cəhd edin`;
+                    el.textContent = `?? ${left}s sonra yenid?n c?hd edin`;
                 }
             }, 1000);
         }
 
-        // ── Email login ──
+        // -- Email login --
         window.handleLoginSubmit = async function (e) {
             e.preventDefault();
             $('authError').classList.remove('show');
@@ -631,35 +633,35 @@
 
             const email = $('loginEmail').value.trim();
             const pass = $('loginPassword').value;
-            if (!email || !pass) { showErr('Bütün sahələri doldurun.'); return; }
+            if (!email || !pass) { showErr('B�t�n sah?l?ri doldurun.'); return; }
 
             const btn = $('loginBtn');
             btn.disabled = true;
-            $('loginBtnText').textContent = 'YÜKLƏNİR...';
+            $('loginBtnText').textContent = 'Y�KL?NIR...';
             $('loginSpinner').classList.remove('hidden');
 
             try {
                 await signInWithEmailAndPassword(auth, email, pass);
                 resetRL();
-                showOk('✅ Uğurla daxil oldunuz!');
+                showOk('? Ugurla daxil oldunuz!');
                 setTimeout(() => window.location.replace(getNextUrl()), 700);
             } catch (err) {
                 const msg = getErrMsg(err.code);
                 if (msg) showErr(msg);
                 btn.disabled = false;
-                $('loginBtnText').textContent = 'DAXİL OL';
+                $('loginBtnText').textContent = 'DAXIL OL';
                 $('loginSpinner').classList.add('hidden');
             }
         };
 
-        // ── Google login ──
+        // -- Google login --
         window.handleGoogleLogin = async function () {
             $('authError').classList.remove('show');
             const btn = $('googleBtn');
             btn.disabled = true; btn.style.opacity = '.6';
-            btn.textContent = 'YÜKLƏNİR...';
+            btn.textContent = 'Y�KL?NIR...';
 
-            // Google prosesi başlayır - onAuthStateChanged-i bloklaya
+            // Google prosesi baslayir - onAuthStateChanged-i bloklaya
             googleInProgress = true;
 
             try {
@@ -668,22 +670,22 @@
                 const result = await signInWithPopup(auth, provider);
                 const user = result.user;
 
-                // Firestore-da sənədi yoxla/yarat
+                // Firestore-da s?n?di yoxla/yarat
                 const ref = doc(db, 'users', user.uid);
                 const snap = await getDoc(ref);
                 const isAdmin = user.email === 'englishaliel@gmail.com';
 
                 if (!snap.exists()) {
-                    // Yeni istifadəçi - Google adı ilə yaz
+                    // Yeni istifad?�i - Google adi il? yaz
                     await setDoc(ref, {
-                        name: user.displayName || user.email?.split('@')[0] || 'İstifadəçi',
+                        name: user.displayName || user.email?.split('@')[0] || 'Istifad?�i',
                         email: user.email || '',
                         level: 'A1',
                         role: isAdmin ? 'admin' : 'user',
                         currentStreak: 0, longestStreak: 0,
                         lastActiveDate: new Date().toDateString(),
                         activeDays: 1, wordsLearned: 0, testsCompleted: 0,
-                        badges: ['🌱 Başlanğıc'],
+                        badges: ['?? Baslangic'],
                         favorites: { words: [], grammar: [], phrases: [] },
                         weeklyActivity: [false, false, false, false, false, false, false],
                         testHistory: [],
@@ -692,11 +694,11 @@
                         aiUsage: { count: 0, lastReset: new Date().toISOString() }
                     });
                 } else {
-                    // Mövcud istifadəçi - admin yoxlaması və ad yenilənməsi
+                    // M�vcud istifad?�i - admin yoxlamasi v? ad yenil?nm?si
                     const data = snap.data();
                     const updates = {};
                     if (isAdmin && data.role !== 'admin') updates.role = 'admin';
-                    if ((!data.name || data.name === 'İstifadəçi') && user.displayName) {
+                    if ((!data.name || data.name === 'Istifad?�i') && user.displayName) {
                         updates.name = user.displayName;
                     }
                     if (Object.keys(updates).length > 0) {
@@ -704,8 +706,8 @@
                     }
                 }
 
-                showOk('✅ Google ilə uğurla daxil oldunuz! Yönləndirilirsiniz...');
-                // Bütün Firestore əməliyyatları bitdikdən sonra yönləndir
+                showOk('? Google il? ugurla daxil oldunuz! Y�nl?ndirilirsiniz...');
+                // B�t�n Firestore ?m?liyyatlari bitdikd?n sonra y�nl?ndir
                 googleInProgress = false;
                 setTimeout(() => window.location.replace(getNextUrl()), 800);
             } catch (err) {
@@ -715,17 +717,17 @@
                 btn.disabled = false;
                 btn.style.opacity = '';
                 btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                Google ilə daxil ol`;
+                Google il? daxil ol`;
             }
         };
 
-        // ── Toggle password visibility ──
+        // -- Toggle password visibility --
         window.toggleEye = function (id, btn) {
             const inp = document.getElementById(id);
             if (!inp) return;
             const show = inp.type === 'password';
             inp.type = show ? 'text' : 'password';
-            btn.textContent = show ? 'GİZLƏT' : 'GÖSTƏR';
+            btn.textContent = show ? 'GIZL?T' : 'G�ST?R';
         };
     </script>
 

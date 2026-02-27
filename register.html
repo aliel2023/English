@@ -1,14 +1,14 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="az">
 
 <head>
-    <!-- KÄ°BER TÆHLÃœKÆSÄ°ZLÄ°K QATI (Security Enforcements) -->
+    <!-- KİBER TƏHLÜKƏSİZLİK QATI (Security Enforcements) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <!-- Clickjacking / Iframe QorumasÄ± (Framebusting) -->
+    <!-- Clickjacking / Iframe Qoruması (Framebusting) -->
     <style id="antiClickjack">body{display:none !important;}</style>
     <script>
         if (self === top) {
@@ -20,10 +20,14 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <meta name="description" content="Alielenglish — Pulsuz qeydiyyatdan keçin">
+    <meta name="description" content="Alielenglish � Pulsuz qeydiyyatdan ke�in">
     <meta name="robots" content="noindex">
-    <title>Qeydiyyat — Alielenglish</title>
+    <title>Qeydiyyat � Alielenglish</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap">
+    <link rel="stylesheet" href="styles/design-system.css">
     <link rel="stylesheet" href="styles/auth-page.css">
     <style>
         *,
@@ -62,7 +66,7 @@
             padding: 1.5rem;
         }
 
-        /* ── TOP BAR ── */
+        /* -- TOP BAR -- */
         .duo-topbar {
             position: fixed;
             top: 0;
@@ -146,7 +150,7 @@
             background: rgba(230, 57, 70, .08);
         }
 
-        /* ── CARD ── */
+        /* -- CARD -- */
         .duo-card {
             width: 100%;
             max-width: 440px;
@@ -175,7 +179,7 @@
             letter-spacing: -.5px;
         }
 
-        /* ── ALERTS ── */
+        /* -- ALERTS -- */
         .duo-alert {
             padding: .75rem 1rem;
             border-radius: var(--radius);
@@ -202,7 +206,7 @@
             color: var(--success);
         }
 
-        /* ── GOOGLE BUTTON ── */
+        /* -- GOOGLE BUTTON -- */
         .duo-google-btn {
             width: 100%;
             padding: .85rem 1rem;
@@ -238,7 +242,7 @@
             transform: none;
         }
 
-        /* ── DIVIDER ── */
+        /* -- DIVIDER -- */
         .duo-divider {
             display: flex;
             align-items: center;
@@ -258,7 +262,7 @@
             background: var(--border);
         }
 
-        /* ── FORM ── */
+        /* -- FORM -- */
         .duo-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -382,7 +386,7 @@
             text-decoration: underline;
         }
 
-        /* ── SUBMIT ── */
+        /* -- SUBMIT -- */
         .duo-submit-btn {
             width: 100%;
             padding: .9rem 1rem;
@@ -560,12 +564,12 @@
 
     <!-- Top Bar -->
     <header class="duo-topbar">
-        <a href="index.html" class="duo-close-btn" title="Bağla" aria-label="Ana Səhifəyə qayıt">×</a>
+        <a href="index.html" class="duo-close-btn" title="Bagla" aria-label="Ana S?hif?y? qayit">�</a>
         <a href="index.html" class="duo-topbar-logo">
             <div class="duo-logo-mark">A</div>
             <span class="duo-logo-text">Alielenglish</span>
         </a>
-        <a href="login.html" class="duo-login-btn">DAXİL OL</a>
+        <a href="login.html" class="duo-login-btn">DAXIL OL</a>
     </header>
 
     <main class="duo-page">
@@ -588,10 +592,10 @@
                     <path fill="#EA4335"
                         d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                 </svg>
-                Google ilə qeydiyyat
+                Google il? qeydiyyat
             </button>
 
-            <div class="duo-divider">VƏ YA</div>
+            <div class="duo-divider">V? YA</div>
 
             <form id="registerForm" onsubmit="handleRegisterSubmit(event)" novalidate autocomplete="on">
 
@@ -602,12 +606,12 @@
                     </div>
                     <div class="duo-field">
                         <select id="regLevel" class="duo-input">
-                            <option value="A1">A1 — Başlanğıc</option>
-                            <option value="A2">A2 — Əsas</option>
-                            <option value="B1" selected>B1 — Orta</option>
-                            <option value="B2">B2 — Yuxarı Orta</option>
-                            <option value="C1">C1 — Təkmil</option>
-                            <option value="C2">C2 — Ustadlıq</option>
+                            <option value="A1">A1 � Baslangic</option>
+                            <option value="A2">A2 � ?sas</option>
+                            <option value="B1" selected>B1 � Orta</option>
+                            <option value="B2">B2 � Yuxari Orta</option>
+                            <option value="C1">C1 � T?kmil</option>
+                            <option value="C2">C2 � Ustadliq</option>
                         </select>
                     </div>
                 </div>
@@ -618,9 +622,9 @@
                 </div>
 
                 <div class="duo-field duo-pw-wrap">
-                    <input type="password" id="regPass" class="duo-input" placeholder="Şifrə (min. 8 simvol)" required
+                    <input type="password" id="regPass" class="duo-input" placeholder="Sifr? (min. 8 simvol)" required
                         minlength="8" autocomplete="new-password" oninput="updateStrength(this.value)">
-                    <button type="button" class="duo-eye-btn" onclick="toggleEye('regPass',this)">GÖSTƏR</button>
+                    <button type="button" class="duo-eye-btn" onclick="toggleEye('regPass',this)">G�ST?R</button>
                 </div>
                 <div class="duo-strength" id="strengthWrap">
                     <div class="duo-strength-track">
@@ -630,41 +634,41 @@
                 </div>
 
                 <div class="duo-field duo-pw-wrap" style="margin-top:.65rem">
-                    <input type="password" id="regPassConfirm" class="duo-input" placeholder="Şifrəni təkrarla" required
+                    <input type="password" id="regPassConfirm" class="duo-input" placeholder="Sifr?ni t?krarla" required
                         autocomplete="new-password">
-                    <button type="button" class="duo-eye-btn" onclick="toggleEye('regPassConfirm',this)">GÖSTƏR</button>
+                    <button type="button" class="duo-eye-btn" onclick="toggleEye('regPassConfirm',this)">G�ST?R</button>
                 </div>
 
                 <label class="duo-terms">
                     <input type="checkbox" id="termsCheck" required>
                     <span>
-                        <a href="#" onclick="showDoc('privacy',event)">Gizlilik Siyasəti</a>
-                        və
-                        <a href="#" onclick="showDoc('terms',event)">İstifadə Şərtlərini</a>
-                        qəbul edirəm
+                        <a href="#" onclick="showDoc('privacy',event)">Gizlilik Siyas?ti</a>
+                        v?
+                        <a href="#" onclick="showDoc('terms',event)">Istifad? S?rtl?rini</a>
+                        q?bul edir?m
                     </span>
                 </label>
 
                 <button type="submit" class="duo-submit-btn" id="regBtn">
-                    <span id="regBtnText">PULSUZ QEYDİYYAT</span>
+                    <span id="regBtnText">PULSUZ QEYDIYYAT</span>
                     <span class="duo-spinner hidden" id="regSpinner"></span>
                 </button>
 
             </form>
 
             <div class="duo-switch">
-                Artıq hesabın var?
-                <a href="login.html">Daxil ol →</a>
+                Artiq hesabin var?
+                <a href="login.html">Daxil ol ?</a>
             </div>
 
-            <p class="duo-security">🔒 Firebase Auth · Şifrələr hash+salt · SSL şifrəli</p>
+            <p class="duo-security">?? Firebase Auth � Sifr?l?r hash+salt � SSL sifr?li</p>
         </div>
     </main>
 
     <!-- Doc modal -->
     <div id="docOverlay" class="doc-overlay" onclick="if(event.target===this)closeDoc()">
         <div class="doc-card">
-            <button class="doc-close" onclick="closeDoc()">×</button>
+            <button class="doc-close" onclick="closeDoc()">�</button>
             <div id="docContent"></div>
         </div>
     </div>
@@ -693,11 +697,11 @@
         const db = getFirestore(app);
         const $ = id => document.getElementById(id);
 
-        // Google prosesi zamanı redirect-i bloklayan flag
+        // Google prosesi zamani redirect-i bloklayan flag
         let googleInProgress = false;
 
         onAuthStateChanged(auth, u => {
-            // Əgər Google girişi hələ davam edirsə, redirect etmə
+            // ?g?r Google girisi h?l? davam edirs?, redirect etm?
             if (googleInProgress) return;
             if (u) window.location.replace('index.html');
         });
@@ -715,21 +719,21 @@
         }
         function setLoading(on) {
             $('regBtn').disabled = on;
-            $('regBtnText').textContent = on ? 'QEYDİYYAT...' : 'PULSUZ QEYDİYYAT';
+            $('regBtnText').textContent = on ? 'QEYDIYYAT...' : 'PULSUZ QEYDIYYAT';
             $('regSpinner').classList.toggle('hidden', !on);
         }
         function getErrMsg(code) {
             const m = {
-                'auth/email-already-in-use': '📧 Bu email artıq qeydiyyatdan keçib.',
-                'auth/weak-password': '🔑 Şifrə çox zəifdir.',
-                'auth/invalid-email': '📧 Email formatı yanlışdır.',
-                'auth/network-request-failed': '🌐 İnternet bağlantısını yoxlayın.',
-                'auth/popup-blocked': '🚫 Popup bloklandı.',
+                'auth/email-already-in-use': '?? Bu email artiq qeydiyyatdan ke�ib.',
+                'auth/weak-password': '?? Sifr? �ox z?ifdir.',
+                'auth/invalid-email': '?? Email formati yanlisdir.',
+                'auth/network-request-failed': '?? Internet baglantisini yoxlayin.',
+                'auth/popup-blocked': '?? Popup bloklandi.',
                 'auth/popup-closed-by-user': '',
                 'auth/cancelled-popup-request': '',
-                'auth/unauthorized-domain': '⛔ Domen Xətası: Firebase Console-da (Authentication > Settings > Authorized domains) bu ünvanı əlavə edin.',
+                'auth/unauthorized-domain': '? Domen X?tasi: Firebase Console-da (Authentication > Settings > Authorized domains) bu �nvani ?lav? edin.',
             };
-            return m[code] ?? `⚠️ Xəta: ${code}`;
+            return m[code] ?? `?? X?ta: ${code}`;
         }
         function sanitize(s) {
             return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -742,7 +746,7 @@
                 currentStreak: 0, longestStreak: 0,
                 lastActiveDate: new Date().toDateString(),
                 activeDays: 1, wordsLearned: 0, testsCompleted: 0,
-                badges: ['🌱 Başlanğıc'],
+                badges: ['?? Baslangic'],
                 favorites: { words: [], grammar: [], phrases: [] },
                 weeklyActivity: [false, false, false, false, false, false, false],
                 testHistory: [], createdAt: serverTimestamp(), provider
@@ -750,7 +754,7 @@
             try { await addDoc(collection(db, 'leads'), { name: sanitize(name), email, level, source: '/register.html', createdAt: serverTimestamp() }); } catch (_) { }
         }
 
-        // ── Password strength ──
+        // -- Password strength --
         window.updateStrength = function (val) {
             const wrap = $('strengthWrap'), bar = $('strengthBar'), lbl = $('strengthLabel');
             if (!val) { wrap.classList.remove('show'); return; }
@@ -763,11 +767,11 @@
             if (/[^A-Za-z0-9]/.test(val)) s++;
             const cfg = [
                 { w: '0%', c: '#ff4757', t: '' },
-                { w: '20%', c: '#ff4757', t: '🔴 Çox zəif' },
-                { w: '40%', c: '#ffa502', t: '🟠 Zəif' },
-                { w: '60%', c: '#eccc68', t: '🟡 Orta' },
-                { w: '80%', c: '#2ed573', t: '🟢 Güclü' },
-                { w: '100%', c: '#1e90ff', t: '💪 Mükəmməl' },
+                { w: '20%', c: '#ff4757', t: '?? �ox z?if' },
+                { w: '40%', c: '#ffa502', t: '?? Z?if' },
+                { w: '60%', c: '#eccc68', t: '?? Orta' },
+                { w: '80%', c: '#2ed573', t: '?? G�cl�' },
+                { w: '100%', c: '#1e90ff', t: '?? M�k?mm?l' },
             ][s] || { w: '0%', c: '#ff4757', t: '' };
             bar.style.width = cfg.w; bar.style.background = cfg.c;
             lbl.textContent = cfg.t; lbl.style.color = cfg.c;
@@ -778,10 +782,10 @@
             if (!inp) return;
             const show = inp.type === 'password';
             inp.type = show ? 'text' : 'password';
-            btn.textContent = show ? 'GİZLƏT' : 'GÖSTƏR';
+            btn.textContent = show ? 'GIZL?T' : 'G�ST?R';
         };
 
-        // ── Email Register ──
+        // -- Email Register --
         window.handleRegisterSubmit = async function (e) {
             e.preventDefault();
             $('authError').classList.remove('show');
@@ -793,11 +797,11 @@
             const level = $('regLevel').value;
             const terms = $('termsCheck').checked;
 
-            if (!terms) { showErr('Şərtləri qəbul etməlisiniz.'); return; }
-            if (name.length < 2) { showErr('Ad ən azı 2 hərf olmalıdır.'); return; }
-            if (!/\S+@\S+\.\S+/.test(email)) { showErr('Email formatı yanlışdır.'); return; }
-            if (pass.length < 8) { showErr('Şifrə minimum 8 simvol olmalıdır.'); return; }
-            if (pass !== confirm) { showErr('Şifrələr uyğun gəlmir.'); return; }
+            if (!terms) { showErr('S?rtl?ri q?bul etm?lisiniz.'); return; }
+            if (name.length < 2) { showErr('Ad ?n azi 2 h?rf olmalidir.'); return; }
+            if (!/\S+@\S+\.\S+/.test(email)) { showErr('Email formati yanlisdir.'); return; }
+            if (pass.length < 8) { showErr('Sifr? minimum 8 simvol olmalidir.'); return; }
+            if (pass !== confirm) { showErr('Sifr?l?r uygun g?lmir.'); return; }
 
             setLoading(true);
             try {
@@ -805,7 +809,7 @@
                 await updateProfile(cred.user, { displayName: name });
                 try { await sendEmailVerification(cred.user); } catch (_) { }
                 await createUserDoc(cred.user.uid, { name, email, level, provider: 'email' });
-                showOk('🎉 Qeydiyyat uğurlu! Xoş gəldiniz!');
+                showOk('?? Qeydiyyat ugurlu! Xos g?ldiniz!');
                 setTimeout(() => window.location.replace('index.html'), 1200);
             } catch (err) {
                 const msg = getErrMsg(err.code);
@@ -814,12 +818,12 @@
             }
         };
 
-        // ── Google Register ──
+        // -- Google Register --
         window.handleGoogleReg = async function () {
             $('authError').classList.remove('show');
             const btn = $('googleBtn');
             btn.disabled = true; btn.style.opacity = '.6';
-            // Google prosesi başlayır - onAuthStateChanged-i bloklaya
+            // Google prosesi baslayir - onAuthStateChanged-i bloklaya
             googleInProgress = true;
             try {
                 const provider = new GoogleAuthProvider();
@@ -827,12 +831,12 @@
                 const result = await signInWithPopup(auth, provider);
                 const user = result.user;
 
-                // Firestore sənədi yarat (yoxdursa)
+                // Firestore s?n?di yarat (yoxdursa)
                 const ref = doc(db, 'users', user.uid);
                 const snap = await getDoc(ref);
                 if (!snap.exists()) {
                     await createUserDoc(user.uid, {
-                        name: user.displayName || 'İstifadəçi',
+                        name: user.displayName || 'Istifad?�i',
                         email: user.email || '',
                         level: 'A1', provider: 'google'
                     });
@@ -840,8 +844,8 @@
                     await updateDoc(ref, { role: 'admin' });
                 }
 
-                showOk('🎉 Google ilə uğurla qeydiyyatdan keçdiniz!');
-                // Bütün işlər bitdikdən sonra yönləndir
+                showOk('?? Google il? ugurla qeydiyyatdan ke�diniz!');
+                // B�t�n isl?r bitdikd?n sonra y�nl?ndir
                 googleInProgress = false;
                 setTimeout(() => window.location.replace('index.html'), 800);
             } catch (err) {
@@ -852,17 +856,17 @@
             }
         };
 
-        // ── Doc modal ──
+        // -- Doc modal --
         const DOCS = {
-            privacy: `<h2>🔒 Gizlilik Siyasəti</h2>
-                <p>Biz yalnız tələb olunan məlumatları toplayırıq: adınız, email, tədris səviyyəsi.</p>
+            privacy: `<h2>?? Gizlilik Siyas?ti</h2>
+                <p>Biz yalniz t?l?b olunan m?lumatlari toplayiriq: adiniz, email, t?dris s?viyy?si.</p>
                 <h3 style="margin:1rem 0 .5rem;font-size:1rem;">Saxlanma</h3>
-                <p>Bütün məlumatlar Firebase serverlərində şifrəli saxlanılır. Heç vaxt üçüncü tərəflərə satılmır.</p>`,
-            terms: `<h2>📋 İstifadə Şərtləri</h2>
+                <p>B�t�n m?lumatlar Firebase serverl?rind? sifr?li saxlanilir. He� vaxt ���nc� t?r?fl?r? satilmir.</p>`,
+            terms: `<h2>?? Istifad? S?rtl?ri</h2>
                 <ul style="margin:1rem 0;padding-left:1.2rem;line-height:2;color:#94a3b8">
-                    <li>Platformanı yalnız öz məqsədləriniz üçün istifadə edin</li>
-                    <li>Digər istifadəçilərə zərər verməyin</li>
-                    <li>Saxta məlumat girməyin</li>
+                    <li>Platformani yalniz �z m?qs?dl?riniz ���n istifad? edin</li>
+                    <li>Dig?r istifad?�il?r? z?r?r verm?yin</li>
+                    <li>Saxta m?lumat girm?yin</li>
                 </ul>`
         };
         window.showDoc = function (type, e) {

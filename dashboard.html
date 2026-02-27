@@ -1,14 +1,14 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="az">
 
 <head>
-    <!-- KÄ°BER TÆHLÃœKÆSÄ°ZLÄ°K QATI (Security Enforcements) -->
+    <!-- KİBER TƏHLÜKƏSİZLİK QATI (Security Enforcements) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <!-- Clickjacking / Iframe QorumasÄ± (Framebusting) -->
+    <!-- Clickjacking / Iframe Qoruması (Framebusting) -->
     <style id="antiClickjack">body{display:none !important;}</style>
     <script>
         if (self === top) {
@@ -20,17 +20,21 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="İstifadəçi paneli - Alielenglish">
+    <meta name="description" content="Istifad?�i paneli - Alielenglish">
     <title>Dashboard - Alielenglish</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap">
+    <link rel="stylesheet" href="styles/design-system.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/auth.css">
     <link rel="stylesheet" href="styles/dashboard.css">
     <script>
-        // Firebase Auth event-ə əsaslanır — localStorage sistemi ARTIQ İSTİFADƏ EDİLMİR
-        // auth.js 'alielAuthReady' event göndərəndə dashboard.js işə düşür
-        // Bu blok yalnız ilkin loading state göstərir
+        // Firebase Auth event-? ?saslanir � localStorage sistemi ARTIQ ISTIFAD? EDILMIR
+        // auth.js 'alielAuthReady' event g�nd?r?nd? dashboard.js is? d�s�r
+        // Bu blok yalniz ilkin loading state g�st?rir
         window.addEventListener('DOMContentLoaded', function () {
-            // Auth yüklənənə qədər hər ikisini gizlə
+            // Auth y�kl?n?n? q?d?r h?r ikisini gizl?
             var content = document.getElementById('dashContent');
             var authRequired = document.getElementById('dashAuthRequired');
             if (content) content.classList.add('hidden');
@@ -49,10 +53,10 @@
                     <span class="brand-name">Alielenglish</span>
                 </div>
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
-                    <li><a href="daily-word.html">Günün Sözü</a></li>
-                    <li><a href="test.html">Səviyyə Testi</a></li>
-                    <li><a href="dashboard.html" class="active">📊 Dashboard</a></li>
+                    <li><a href="index.html" data-i18n="nav.home">Ana S?hif?</a></li>
+                    <li><a href="daily-word.html">G�n�n S�z�</a></li>
+                    <li><a href="test.html">S?viyy? Testi</a></li>
+                    <li><a href="dashboard.html" class="active">?? Dashboard</a></li>
                 </ul>
                 <div class="nav-actions">
                     <div class="lang-dropdown nav-item">
@@ -75,9 +79,9 @@
     <div id="dashAuthRequired" class="auth-required-dash hidden">
         <div class="container">
             <div class="auth-prompt-center">
-                <div style="font-size:5rem;">🔐</div>
-                <h2>Hesabınıza Daxil Olun</h2>
-                <p>Dashboard-ı görmək üçün hesabınıza daxil olun</p>
+                <div style="font-size:5rem;">??</div>
+                <h2>Hesabiniza Daxil Olun</h2>
+                <p>Dashboard-i g�rm?k ���n hesabiniza daxil olun</p>
                 <a href="login.html?next=dashboard.html" class="btn btn-primary">Daxil Ol</a>
                 <a href="register.html" class="btn btn-secondary" style="margin-left:1rem;">Qeydiyyat</a>
             </div>
@@ -94,14 +98,14 @@
                     <div class="dash-welcome">
                         <div class="dash-avatar" id="dashAvatar">A</div>
                         <div>
-                            <h1 id="dashGreeting">Xoş gəldiniz!</h1>
+                            <h1 id="dashGreeting">Xos g?ldiniz!</h1>
                             <p id="dashSubtitle" class="dash-subtitle"></p>
                         </div>
                     </div>
                     <div class="dash-streak-card" id="dashStreakCard">
-                        <div class="streak-fire">🔥</div>
+                        <div class="streak-fire">??</div>
                         <div class="streak-number" id="dashStreakNum">0</div>
-                        <div class="streak-label">Günlük Sıra</div>
+                        <div class="streak-label">G�nl�k Sira</div>
                     </div>
                 </div>
             </div>
@@ -112,34 +116,34 @@
             <div class="container">
                 <div class="dash-stats-grid">
                     <div class="dash-stat-card">
-                        <div class="dash-stat-icon">📚</div>
+                        <div class="dash-stat-icon">??</div>
                         <div class="dash-stat-num" id="statWords">0</div>
-                        <div class="dash-stat-label">Öyrənilmiş Söz</div>
+                        <div class="dash-stat-label">�yr?nilmis S�z</div>
                     </div>
                     <div class="dash-stat-card">
-                        <div class="dash-stat-icon">🎯</div>
+                        <div class="dash-stat-icon">??</div>
                         <div class="dash-stat-num" id="statTests">0</div>
-                        <div class="dash-stat-label">Test Sayı</div>
+                        <div class="dash-stat-label">Test Sayi</div>
                     </div>
                     <div class="dash-stat-card">
-                        <div class="dash-stat-icon">📅</div>
+                        <div class="dash-stat-icon">??</div>
                         <div class="dash-stat-num" id="statDays">0</div>
-                        <div class="dash-stat-label">Aktiv Gün</div>
+                        <div class="dash-stat-label">Aktiv G�n</div>
                     </div>
                     <div class="dash-stat-card">
-                        <div class="dash-stat-icon">❤️</div>
+                        <div class="dash-stat-icon">??</div>
                         <div class="dash-stat-num" id="statFavs">0</div>
-                        <div class="dash-stat-label">Sevimli Söz</div>
+                        <div class="dash-stat-label">Sevimli S�z</div>
                     </div>
                     <div class="dash-stat-card">
-                        <div class="dash-stat-icon">🏆</div>
+                        <div class="dash-stat-icon">??</div>
                         <div class="dash-stat-num" id="statStreak">0</div>
-                        <div class="dash-stat-label">Ən Uzun Sıra</div>
+                        <div class="dash-stat-label">?n Uzun Sira</div>
                     </div>
                     <div class="dash-stat-card primary-card">
-                        <div class="dash-stat-icon">📈</div>
+                        <div class="dash-stat-icon">??</div>
                         <div class="dash-stat-num" id="statLevel">A1</div>
-                        <div class="dash-stat-label">Cari Səviyyə</div>
+                        <div class="dash-stat-label">Cari S?viyy?</div>
                     </div>
                 </div>
             </div>
@@ -149,10 +153,10 @@
         <section class="dash-section">
             <div class="container">
                 <div class="dash-tip-card" id="dashTipCard">
-                    <div class="dash-tip-icon" id="dashTipIcon">💡</div>
+                    <div class="dash-tip-icon" id="dashTipIcon">??</div>
                     <div class="dash-tip-content">
-                        <h3 id="dashTipTitle">Gün Məsləhəti</h3>
-                        <p id="dashTipText">Yüklənir...</p>
+                        <h3 id="dashTipTitle">G�n M?sl?h?ti</h3>
+                        <p id="dashTipText">Y�kl?nir...</p>
                     </div>
                 </div>
             </div>
@@ -161,12 +165,12 @@
         <!-- Weekly Progress -->
         <section class="dash-section">
             <div class="container">
-                <h2 class="dash-section-title">📊 Həftəlik Aktivlik</h2>
+                <h2 class="dash-section-title">?? H?ft?lik Aktivlik</h2>
                 <div class="weekly-progress-card">
                     <div class="weekly-days" id="weeklyDays"></div>
                     <div class="weekly-goal">
-                        <span>Həftəlik Hədəf: </span>
-                        <span id="weeklyGoalText">0/7 gün</span>
+                        <span>H?ft?lik H?d?f: </span>
+                        <span id="weeklyGoalText">0/7 g�n</span>
                     </div>
                 </div>
             </div>
@@ -175,7 +179,7 @@
         <!-- Badges -->
         <section class="dash-section">
             <div class="container">
-                <h2 class="dash-section-title">🏅 Nailiyyətlər</h2>
+                <h2 class="dash-section-title">?? Nailiyy?tl?r</h2>
                 <div class="badges-grid" id="badgesGrid"></div>
             </div>
         </section>
@@ -183,10 +187,10 @@
         <!-- Test History -->
         <section class="dash-section">
             <div class="container">
-                <h2 class="dash-section-title">📝 Test Tarixçəsi</h2>
+                <h2 class="dash-section-title">?? Test Tarix�?si</h2>
                 <div id="testHistoryContent">
-                    <div class="empty-state">Hələ heç bir test tamamlanmayıb. <a href="test.html"
-                            class="link-primary">Testi başlayın →</a></div>
+                    <div class="empty-state">H?l? he� bir test tamamlanmayib. <a href="test.html"
+                            class="link-primary">Testi baslayin ?</a></div>
                 </div>
             </div>
         </section>
@@ -194,34 +198,34 @@
         <!-- Quick Actions -->
         <section class="dash-section">
             <div class="container">
-                <h2 class="dash-section-title">⚡ Sürətli Keçidlər</h2>
+                <h2 class="dash-section-title">? S�r?tli Ke�idl?r</h2>
                 <div class="quick-actions-grid">
                     <a href="daily-word.html" class="quick-action-card">
-                        <span class="qa-icon">📅</span>
+                        <span class="qa-icon">??</span>
                         <div>
-                            <strong>Günün Sözü</strong>
-                            <p>Yeni söz öyrən</p>
+                            <strong>G�n�n S�z�</strong>
+                            <p>Yeni s�z �yr?n</p>
                         </div>
                     </a>
                     <a href="test.html" class="quick-action-card">
-                        <span class="qa-icon">🎯</span>
+                        <span class="qa-icon">??</span>
                         <div>
-                            <strong>Səviyyə Testi</strong>
+                            <strong>S?viyy? Testi</strong>
                             <p>Bilikini yoxla</p>
                         </div>
                     </a>
                     <a href="speaking.html" class="quick-action-card">
-                        <span class="qa-icon">🎙️</span>
+                        <span class="qa-icon">???</span>
                         <div>
-                            <strong>Danışıq</strong>
-                            <p>Tələffüzü inkişaf etdir</p>
+                            <strong>Danisiq</strong>
+                            <p>T?l?ff�z� inkisaf etdir</p>
                         </div>
                     </a>
                     <a href="favorites.html" class="quick-action-card">
-                        <span class="qa-icon">❤️</span>
+                        <span class="qa-icon">??</span>
                         <div>
-                            <strong>Sevimlilər</strong>
-                            <p>Öyrəndiklərini təkrar et</p>
+                            <strong>Sevimlil?r</strong>
+                            <p>�yr?ndikl?rini t?krar et</p>
                         </div>
                     </a>
                 </div>
@@ -232,9 +236,9 @@
         <section class="dash-section">
             <div class="container">
                 <div class="account-card">
-                    <h2>👤 Hesab Məlumatları</h2>
+                    <h2>?? Hesab M?lumatlari</h2>
                     <div class="account-info-grid" id="accountInfoGrid"></div>
-                    <button class="btn btn-secondary logout-dash-btn" onclick="logoutUser()">🚪 Hesabdan Çıx</button>
+                    <button class="btn btn-secondary logout-dash-btn" onclick="logoutUser()">?? Hesabdan �ix</button>
                 </div>
             </div>
         </section>
@@ -245,11 +249,12 @@
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-bottom">
-                <p>© 2025 Alielenglish. Bütün hüquqlar qorunur.</p>
+                <p>� 2025 Alielenglish. B�t�n h�quqlar qorunur.</p>
             </div>
         </div>
     </footer>
 
+    <script src="scripts/design-system.js"></script>
     <script src="scripts/i18n.js"></script>
     <script src="scripts/main.js"></script>
     <script type="module" src="scripts/auth.js"></script>

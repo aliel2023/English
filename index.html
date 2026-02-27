@@ -2,14 +2,22 @@
 <html lang="az">
 
 <head>
+    <!-- Google Fonts: Space Grotesk + DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- KÄ°BER TÆHLÃœKÆSÄ°ZLÄ°K QATI (Security Enforcements) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    
+
     <!-- Clickjacking / Iframe QorumasÄ± (Framebusting) -->
-    <style id="antiClickjack">body{display:none !important;}</style>
+    <style id="antiClickjack">
+        body {
+            display: none !important;
+        }
+    </style>
     <script>
         if (self === top) {
             var antiClickjack = document.getElementById("antiClickjack");
@@ -26,6 +34,9 @@
     <meta name="author" content="Alielenglish">
     <link rel="canonical" href="https://aliel2023.github.io/English2/index.html">
     <title>Alielenglish - Ana Səhifə</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap">
+    <link rel="stylesheet" href="styles/design-system.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/home.css">
     <link rel="stylesheet" href="styles/auth.css">
@@ -72,8 +83,23 @@
         </nav>
     </header>
 
+    <!-- Scroll-aware header -->
+    <script>
+        (function () {
+            var lastScroll = 0;
+            window.addEventListener('scroll', function () {
+                var header = document.querySelector('.site-header');
+                if (header) {
+                    header.classList.toggle('scrolled', window.scrollY > 20);
+                }
+            }, { passive: true });
+        })();
+    </script>
+
     <!-- Hero Section -->
-    <section class="hero-section">
+    <section class="hero-section" id="heroSection">
+        <!-- Animated gradient orb layer 3 (purple depth) -->
+        <div class="hero-purple-orb" aria-hidden="true"></div>
         <div class="hero-container">
             <div class="hero-content">
                 <h1 class="hero-title" data-i18n="hero.title">
@@ -372,6 +398,7 @@
     </div>
 
     <!-- Scripts - DÜZGÜN SIRA -->
+    <script src="scripts/design-system.js"></script>
     <script src="scripts/i18n.js"></script>
     <script src="scripts/main.js"></script>
     <script type="module" src="scripts/auth.js"></script>

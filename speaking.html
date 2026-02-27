@@ -1,14 +1,14 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="az">
 
 <head>
-    <!-- KÄ°BER TÆHLÃœKÆSÄ°ZLÄ°K QATI (Security Enforcements) -->
+    <!-- KİBER TƏHLÜKƏSİZLİK QATI (Security Enforcements) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <!-- Clickjacking / Iframe QorumasÄ± (Framebusting) -->
+    <!-- Clickjacking / Iframe Qoruması (Framebusting) -->
     <style id="antiClickjack">body{display:none !important;}</style>
     <script>
         if (self === top) {
@@ -20,10 +20,14 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Süni intellekt ilə səsli danışıq pratikası və tələffüz yoxlama">
-    <meta name="keywords" content="danışıq, speaking, pronunciation, tələffüz, ingilis dili">
+    <meta name="description" content="S�ni intellekt il? s?sli danisiq pratikasi v? t?l?ff�z yoxlama">
+    <meta name="keywords" content="danisiq, speaking, pronunciation, t?l?ff�z, ingilis dili">
     <link rel="canonical" href="https://aliel2023.github.io/English2/speaking.html">
-    <title>Danışıq Pratikası - Alielenglish</title>
+    <title>Danisiq Pratikasi - Alielenglish</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap">
+    <link rel="stylesheet" href="styles/design-system.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/speaking.css">
     <link rel="stylesheet" href="styles/auth.css">
@@ -38,13 +42,13 @@
                     <span class="brand-name">Alielenglish</span>
                 </div>
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
-                    <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
-                    <li><a href="speaking.html" class="active" data-i18n="nav.speaking">Danışıq Pratikası</a></li>
-                    <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
+                    <li><a href="index.html" data-i18n="nav.home">Ana S?hif?</a></li>
+                    <li><a href="daily-word.html" data-i18n="nav.daily">G�n�n S�z�</a></li>
+                    <li><a href="speaking.html" class="active" data-i18n="nav.speaking">Danisiq Pratikasi</a></li>
+                    <li><a href="test.html" data-i18n="nav.test">S?viyy? Testi</a></li>
                     <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
-                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
-                    <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
+                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiym?tl?r</a></li>
+                    <li><a href="contact.html" data-i18n="nav.contact">?laq?</a></li>
                 </ul>
                 <div class="nav-actions">
                     <div class="lang-dropdown nav-item">
@@ -65,9 +69,9 @@
 
     <section class="speaking-hero">
         <div class="container">
-            <h1 class="section-title" data-i18n="speaking.title">🎙️ Danışıq Pratikası</h1>
+            <h1 class="section-title" data-i18n="speaking.title">??? Danisiq Pratikasi</h1>
             <p class="speaking-subtitle" data-i18n="speaking.subtitle">
-                Süni intellekt köməyi ilə tələffüzünüzü sıfır xəta və pulsuz olaraq inkişaf etdirin.
+                S�ni intellekt k�m?yi il? t?l?ff�z�n�z� sifir x?ta v? pulsuz olaraq inkisaf etdirin.
             </p>
         </div>
     </section>
@@ -76,32 +80,32 @@
         <div class="container">
             <div class="speaking-card">
                 <div class="instructions" data-i18n="speaking.instructions">
-                    Aşağıdakı cümləni oxumaq üçün mikrofon düyməsini basın. Alqoritm tələffüzünüzü yoxlayacaq.
+                    Asagidaki c�ml?ni oxumaq ���n mikrofon d�ym?sini basin. Alqoritm t?l?ff�z�n�z� yoxlayacaq.
                 </div>
 
                 <div class="sentence-box">
                     <h2 id="targetSentence">The weather is beautiful today and I feel great.</h2>
-                    <button class="btn-refresh-sentence" onclick="getNewSentence()" title="Yeni cümlə ver">🔄</button>
+                    <button class="btn-refresh-sentence" onclick="getNewSentence()" title="Yeni c�ml? ver">??</button>
                 </div>
 
                 <div class="actions-container">
                     <button id="micBtn" class="btn btn-mic" onclick="toggleRecording()">
-                        <span class="mic-icon">🎤</span>
-                        <span id="micText" data-i18n="speaking.btnStart">Danışmağa Başla</span>
+                        <span class="mic-icon">??</span>
+                        <span id="micText" data-i18n="speaking.btnStart">Danismaga Basla</span>
                     </button>
                 </div>
 
                 <div id="statusIndicator" class="recording-status hidden">
-                    <span data-i18n="speaking.listening">Dinlənilir...</span> <span class="wave"></span><span
+                    <span data-i18n="speaking.listening">Dinl?nilir...</span> <span class="wave"></span><span
                         class="wave"></span><span class="wave"></span>
                 </div>
 
                 <div class="result-box hidden" id="resultBox">
-                    <h3 data-i18n="speaking.yourVoice">Sizin səsiniz:</h3>
+                    <h3 data-i18n="speaking.yourVoice">Sizin s?siniz:</h3>
                     <p id="userSpeech" class="user-speech">...</p>
 
                     <div class="accuracy-score">
-                        <span data-i18n="speaking.accuracy">Uyğunluq:</span> <span id="accuracyPercentage">0%</span>
+                        <span data-i18n="speaking.accuracy">Uygunluq:</span> <span id="accuracyPercentage">0%</span>
                     </div>
 
                     <div class="feedback" id="feedbackMessage"></div>
@@ -116,16 +120,17 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <h4>Alielenglish</h4>
-                    <p data-i18n="footer.about">2023-dən bəri minlərlə tələbəyə keyfiyyətli ingilis dili təhsili təqdim
+                    <p data-i18n="footer.about">2023-d?n b?ri minl?rl? t?l?b?y? keyfiyy?tli ingilis dili t?hsili t?qdim
                         edirik.</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. Bütün hüquqlar qorunur.</p>
+                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. B�t�n h�quqlar qorunur.</p>
             </div>
         </div>
     </footer>
 
+    <script src="scripts/design-system.js"></script>
     <script src="scripts/i18n.js"></script>
     <script src="scripts/main.js"></script>
     <script type="module" src="scripts/auth.js"></script>
