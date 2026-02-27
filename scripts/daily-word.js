@@ -554,7 +554,7 @@ function _addToLocalFavorites() {
 
 // ===== SHARE WORD (FIXED - uses today's word) =====
 function shareWord() {
-    const shareText = `📚 Günün Sözü: ${todayWord.word}\n\n✅ ${todayWord.translation}\n\n💬 "${todayWord.examples[0].en}"\n\n🔗 alielenglish.az ilə öyrən!`;
+    const shareText = `📚 Günün Sözü: ${todayWord.word}\n\n✅ ${todayWord.translation}\n\n💬 "${todayWord.examples[0].en}"\n\n🔗 Alielenglish ilə öyrən!`;
 
     if (navigator.share) {
         navigator.share({ title: 'Günün Sözü - Alielenglish', text: shareText, url: window.location.href });
