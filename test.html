@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="az">
 
 <head>
-    <!-- KİBER TƏHLÜKƏSİZLİK QATI (Security Enforcements) -->
+    <!-- KÄ°BER TÆHLÃœKÆSÄ°ZLÄ°K QATI (Security Enforcements) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <!-- Clickjacking / Iframe Qoruması (Framebusting) -->
+    <!-- Clickjacking / Iframe QorumasÄ± (Framebusting) -->
     <style id="antiClickjack">body{display:none !important;}</style>
     <script>
         if (self === top) {
@@ -20,15 +20,14 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ingilis dili s?viyy? testi - A1-d?n C2-y? q?d?r �z s?viyy?nizi t?yin edin">
-    <meta name="keywords" content="s?viyy? testi, level test, CEFR, ingilis dili">
+    <meta name="description" content="İngilis dili səviyyə testi - A1-dən C2-yə qədər öz səviyyənizi təyin edin">
+    <meta name="keywords" content="səviyyə testi, level test, CEFR, ingilis dili">
     <link rel="canonical" href="https://aliel2023.github.io/English2/test.html">
-    <title>S?viyy? Testi - Alielenglish</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <title>Səviyyə Testi - Alielenglish</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&subset=latin,latin-ext&display=swap">
-    <link rel="stylesheet" href="styles/design-system.css">
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/design-system.css"><link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/test.css">
     <link rel="stylesheet" href="styles/auth.css">
 </head>
@@ -42,13 +41,13 @@
                     <span class="brand-name">Alielenglish</span>
                 </div>
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="index.html" data-i18n="nav.home">Ana S?hif?</a></li>
-                    <li><a href="daily-word.html" data-i18n="nav.daily">G�n�n S�z�</a></li>
-                    <li><a href="speaking.html" data-i18n="nav.speaking">Danisiq Pratikasi</a></li>
-                    <li><a href="test.html" class="active" data-i18n="nav.test">S?viyy? Testi</a></li>
+                    <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
+                    <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
+                    <li><a href="speaking.html" data-i18n="nav.speaking">Danışıq Pratikası</a></li>
+                    <li><a href="test.html" class="active" data-i18n="nav.test">Səviyyə Testi</a></li>
                     <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
-                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiym?tl?r</a></li>
-                    <li><a href="contact.html" data-i18n="nav.contact">?laq?</a></li>
+                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
+                    <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
                 </ul>
                 <div class="nav-actions">
                     <div class="lang-dropdown nav-item">
@@ -69,9 +68,9 @@
 
     <section class="test-hero">
         <div class="container">
-            <h1 class="section-title" data-i18n="test.title">?? Ingilis Dili S?viyy? Testi</h1>
+            <h1 class="section-title" data-i18n="test.title">🎯 İngilis Dili Səviyyə Testi</h1>
             <p class="test-subtitle" data-i18n="test.subtitle">
-                CEFR standartlarina uygun testl?rimiz il? �z s?viyy?nizi d?qiq t?yin edin v? uygun �yr?nm? plani ?ld?
+                CEFR standartlarına uyğun testlərimiz ilə öz səviyyənizi dəqiq təyin edin və uyğun öyrənmə planı əldə
                 edin
             </p>
         </div>
@@ -79,94 +78,94 @@
 
     <section class="level-selection" id="levelSelection">
         <div class="container">
-            <h2 class="section-title" data-i18n="test.selectLevel">S?viyy?nizi Se�in</h2>
+            <h2 class="section-title" data-i18n="test.selectLevel">Səviyyənizi Seçin</h2>
             <div class="levels-grid">
                 <div class="level-card featured" onclick="startTest('Daily')"
                     style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%); border-color: var(--primary-color);">
-                    <div class="popular-badge" style="background:#ef4444;" data-i18n="test.aiDailyBadge">AI G�N�N TESTI
-                        ??</div>
+                    <div class="popular-badge" style="background:#ef4444;" data-i18n="test.aiDailyBadge">AI GÜNÜN TESTİ
+                        🤖</div>
                     <div class="level-badge" style="background:var(--primary-color); color:white;">AI</div>
-                    <h3 data-i18n="test.aiDailyTitle">G�n�n Testi</h3>
-                    <p data-i18n="test.aiDailyDesc">S�ni intellekt t?r?find?n bug�n�n spesifik se�ilmis suallari</p>
+                    <h3 data-i18n="test.aiDailyTitle">Günün Testi</h3>
+                    <p data-i18n="test.aiDailyDesc">Süni intellekt tərəfindən bugünün spesifik seçilmiş sualları</p>
                     <ul class="level-features">
-                        <li data-i18n="test.aiDailyF1">? 5 f?rqli sual</li>
-                        <li data-i18n="test.aiDailyF2">? 5 d?qiq?</li>
-                        <li data-i18n="test.aiDailyF3">? H?r g�n yenil?nir</li>
+                        <li data-i18n="test.aiDailyF1">✓ 5 fərqli sual</li>
+                        <li data-i18n="test.aiDailyF2">✓ 5 dəqiqə</li>
+                        <li data-i18n="test.aiDailyF3">✓ Hər gün yenilənir</li>
                     </ul>
-                    <button class="btn btn-primary" data-i18n="test.btnStart">Basla</button>
+                    <button class="btn btn-primary" data-i18n="test.btnStart">Başla</button>
                 </div>
 
                 <div class="level-card" onclick="startTest('A1')">
                     <div class="level-badge">A1</div>
-                    <h3 data-i18n="test.beginner">Baslangic</h3>
-                    <p>?sas ifad?l?r v? sad? c�ml?l?r</p>
+                    <h3 data-i18n="test.beginner">Başlanğıc</h3>
+                    <p>Əsas ifadələr və sadə cümlələr</p>
                     <ul class="level-features">
-                        <li>? 15 sual</li>
-                        <li>? 10 d?qiq?</li>
-                        <li>? ?sas qrammatika</li>
+                        <li>✓ 15 sual</li>
+                        <li>✓ 10 dəqiqə</li>
+                        <li>✓ Əsas qrammatika</li>
                     </ul>
-                    <button class="btn btn-secondary" data-i18n="test.btnStart">Basla</button>
+                    <button class="btn btn-secondary" data-i18n="test.btnStart">Başla</button>
                 </div>
 
                 <div class="level-card" onclick="startTest('A2')">
                     <div class="level-badge">A2</div>
-                    <h3 data-i18n="test.basic">?sas</h3>
-                    <p>G�nd?lik m�vzularda �nsiyy?t</p>
+                    <h3 data-i18n="test.basic">Əsas</h3>
+                    <p>Gündəlik mövzularda ünsiyyət</p>
                     <ul class="level-features">
-                        <li>? 20 sual</li>
-                        <li>? 15 d?qiq?</li>
-                        <li>? Ke�mis zaman</li>
+                        <li>✓ 20 sual</li>
+                        <li>✓ 15 dəqiqə</li>
+                        <li>✓ Keçmiş zaman</li>
                     </ul>
-                    <button class="btn btn-secondary" data-i18n="test.btnStart">Basla</button>
+                    <button class="btn btn-secondary" data-i18n="test.btnStart">Başla</button>
                 </div>
 
                 <div class="level-card featured" onclick="startTest('B1')">
-                    <div class="popular-badge">?N POPULYAR</div>
+                    <div class="popular-badge">ƏN POPULYAR</div>
                     <div class="level-badge">B1</div>
                     <h3 data-i18n="test.intermediate">Orta</h3>
-                    <p>Is v? s?yah?t situasiyalari</p>
+                    <p>İş və səyahət situasiyaları</p>
                     <ul class="level-features">
-                        <li>? 25 sual</li>
-                        <li>? 20 d?qiq?</li>
-                        <li>? M�r?kk?b c�ml?l?r</li>
+                        <li>✓ 25 sual</li>
+                        <li>✓ 20 dəqiqə</li>
+                        <li>✓ Mürəkkəb cümlələr</li>
                     </ul>
-                    <button class="btn btn-primary" data-i18n="test.btnStart">Basla</button>
+                    <button class="btn btn-primary" data-i18n="test.btnStart">Başla</button>
                 </div>
 
                 <div class="level-card" onclick="startTest('B2')">
                     <div class="level-badge">B2</div>
-                    <h3 data-i18n="test.upperIntermediate">Yuxari-Orta</h3>
-                    <p>M�c?rr?d m�vzularda m�zakir?</p>
+                    <h3 data-i18n="test.upperIntermediate">Yuxarı-Orta</h3>
+                    <p>Mücərrəd mövzularda müzakirə</p>
                     <ul class="level-features">
-                        <li>? 30 sual</li>
-                        <li>? 25 d?qiq?</li>
-                        <li>? Idiomlar</li>
+                        <li>✓ 30 sual</li>
+                        <li>✓ 25 dəqiqə</li>
+                        <li>✓ İdiomlar</li>
                     </ul>
-                    <button class="btn btn-secondary" data-i18n="test.btnStart">Basla</button>
+                    <button class="btn btn-secondary" data-i18n="test.btnStart">Başla</button>
                 </div>
 
                 <div class="level-card" onclick="startTest('C1')">
                     <div class="level-badge">C1</div>
-                    <h3 data-i18n="test.advanced">T?kmil</h3>
-                    <p>Professional v? akademik �nsiyy?t</p>
+                    <h3 data-i18n="test.advanced">Təkmil</h3>
+                    <p>Professional və akademik ünsiyyət</p>
                     <ul class="level-features">
-                        <li>? 5 sual</li>
-                        <li>? 30 d?qiq?</li>
-                        <li>? N�anslar</li>
+                        <li>✓ 5 sual</li>
+                        <li>✓ 30 dəqiqə</li>
+                        <li>✓ Nüanslar</li>
                     </ul>
-                    <button class="btn btn-secondary" data-i18n="test.btnStart">Basla</button>
+                    <button class="btn btn-secondary" data-i18n="test.btnStart">Başla</button>
                 </div>
 
                 <div class="level-card" onclick="startTest('C2')">
                     <div class="level-badge">C2</div>
-                    <h3 data-i18n="test.proficiency">Pes?kar</h3>
-                    <p>Ana dili kimi s?viyy?</p>
+                    <h3 data-i18n="test.proficiency">Peşəkar</h3>
+                    <p>Ana dili kimi səviyyə</p>
                     <ul class="level-features">
-                        <li>? 5 sual</li>
-                        <li>? 35 d?qiq?</li>
-                        <li>? H?rt?r?fli</li>
+                        <li>✓ 5 sual</li>
+                        <li>✓ 35 dəqiqə</li>
+                        <li>✓ Hərtərəfli</li>
                     </ul>
-                    <button class="btn btn-secondary" data-i18n="test.btnStart">Basla</button>
+                    <button class="btn btn-secondary" data-i18n="test.btnStart">Başla</button>
                 </div>
             </div>
         </div>
@@ -182,7 +181,7 @@
                     <span class="progress-text" id="progressText">Sual 1/15</span>
                 </div>
                 <div class="test-timer">
-                    <span class="timer-icon">??</span>
+                    <span class="timer-icon">⏱️</span>
                     <span id="timerDisplay">10:00</span>
                 </div>
             </div>
@@ -198,11 +197,11 @@
                 <div class="test-actions">
                     <button class="btn btn-secondary" onclick="previousQuestion()" id="prevBtn" disabled
                         data-i18n="test.btnPrevious">
-                        ? ?vv?lki
+                        ← Əvvəlki
                     </button>
                     <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn" disabled
                         data-i18n="test.btnNext">
-                        N�vb?ti ?
+                        Növbəti →
                     </button>
                 </div>
             </div>
@@ -212,8 +211,8 @@
     <section class="test-results hidden" id="testResults">
         <div class="container">
             <div class="results-card">
-                <div class="results-icon" id="resultsIcon">??</div>
-                <h2 id="resultsTitle" data-i18n="test.congratulations">T?brikl?r!</h2>
+                <div class="results-icon" id="resultsIcon">🎉</div>
+                <h2 id="resultsTitle" data-i18n="test.congratulations">Təbriklər!</h2>
                 <div class="score-display">
                     <div class="score-circle">
                         <span class="score-number" id="scoreNumber">0</span>
@@ -223,7 +222,7 @@
                 </div>
 
                 <div class="level-result">
-                    <p data-i18n="test.yourLevel">Sizin s?viyy?niz:</p>
+                    <p data-i18n="test.yourLevel">Sizin səviyyəniz:</p>
                     <div class="level-badge-large" id="levelBadge">A1</div>
                 </div>
 
@@ -234,7 +233,7 @@
                         Premium Planlara Bax
                     </button>
                     <button class="btn btn-secondary" onclick="restartTest()" data-i18n="test.btnRestart">
-                        Yenid?n Test Ke�
+                        Yenidən Test Keç
                     </button>
                 </div>
 
@@ -245,27 +244,27 @@
 
     <section class="why-test-section">
         <div class="container">
-            <h2 class="section-title">Niy? Test Ke�m?lisiniz?</h2>
+            <h2 class="section-title">Niyə Test Keçməlisiniz?</h2>
             <div class="benefits-grid">
                 <div class="benefit-card">
-                    <div class="benefit-icon">??</div>
-                    <h3>D?qiq Qiym?tl?ndirm?</h3>
-                    <p>CEFR standartlarina uygun professional test sistemi</p>
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Dəqiq Qiymətləndirmə</h3>
+                    <p>CEFR standartlarına uyğun professional test sistemi</p>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">??</div>
-                    <h3>F?rdi Plan</h3>
-                    <p>N?tic?l?r? ?sas?n siz? uygun �yr?nm? proqrami</p>
+                    <div class="benefit-icon">📊</div>
+                    <h3>Fərdi Plan</h3>
+                    <p>Nəticələrə əsasən sizə uyğun öyrənmə proqramı</p>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">??</div>
+                    <div class="benefit-icon">🏆</div>
                     <h3>Motivasiya</h3>
-                    <p>Ir?lil?yisinizi izl?yin v? m?qs?dl?r? �atin</p>
+                    <p>İrəliləyişinizi izləyin və məqsədlərə çatın</p>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">??</div>
-                    <h3>Ir?lil?yis Izl?m?</h3>
-                    <p>Test n?tic?l?rinizi izl?yin, z?ifl?dikl?rinizi t?yin edin</p>
+                    <div class="benefit-icon">📈</div>
+                    <h3>İrəliləyiş İzləmə</h3>
+                    <p>Test nəticələrinizi izləyin, zəiflədiklərinizi təyin edin</p>
                 </div>
             </div>
         </div>
@@ -276,7 +275,7 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <h4>Alielenglish</h4>
-                    <p data-i18n="footer.about">2023-d?n b?ri minl?rl? t?l?b?y? keyfiyy?tli ingilis dili t?hsili t?qdim
+                    <p data-i18n="footer.about">2023-dən bəri minlərlə tələbəyə keyfiyyətli ingilis dili təhsili təqdim
                         edirik.</p>
                     <div class="social-links">
                         <a href="https://instagram.com/alielenglish" target="_blank" class="social-link" rel="noopener"
@@ -293,32 +292,32 @@
                     </div>
                 </div>
                 <div class="footer-col">
-                    <h4 data-i18n="footer.links">Ke�idl?r</h4>
+                    <h4 data-i18n="footer.links">Keçidlər</h4>
                     <ul class="footer-links">
-                        <li><a href="index.html" data-i18n="nav.home">Ana S?hif?</a></li>
-                        <li><a href="daily-word.html" data-i18n="nav.daily">G�n�n S�z�</a></li>
-                        <li><a href="test.html" data-i18n="nav.test">S?viyy? Testi</a></li>
+                        <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
+                        <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
+                        <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
                         <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4 data-i18n="footer.support">D?st?k</h4>
+                    <h4 data-i18n="footer.support">Dəstək</h4>
                     <ul class="footer-links">
-                        <li><a href="pricing.html" data-i18n="nav.pricing">Qiym?tl?r</a></li>
-                        <li><a href="contact.html" data-i18n="nav.contact">?laq?</a></li>
+                        <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
+                        <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
                         <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#privacy">M?xfilik</a></li>
+                        <li><a href="#privacy">Məxfilik</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4 data-i18n="footer.newsletter">X?b?r B�lleteni</h4>
-                    <p data-i18n="footer.newsletterDesc">G�nd?lik d?rs v? x�susi t?klifl?rd?n x?b?rdar olun</p>
+                    <h4 data-i18n="footer.newsletter">Xəbər Bülleteni</h4>
+                    <p data-i18n="footer.newsletterDesc">Gündəlik dərs və xüsusi təkliflərdən xəbərdar olun</p>
                     <button class="btn btn-primary btn-sm" onclick="openEmailModal()"
-                        data-i18n="footer.btnSubscribe">Abun? Ol</button>
+                        data-i18n="footer.btnSubscribe">Abunə Ol</button>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. B�t�n h�quqlar qorunur.</p>
+                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. Bütün hüquqlar qorunur.</p>
             </div>
         </div>
     </footer>
@@ -326,20 +325,20 @@
     <div id="emailModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeEmailModal()">&times;</button>
-            <h2 data-i18n="modal.welcome">?? Xos g?lmisiniz!</h2>
-            <p data-i18n="modal.subtitle">Pulsuz e-kitab v? bonus materiallar ?ld? etm?k ���n qeydiyyatdan ke�in</p>
+            <h2 data-i18n="modal.welcome">🎉 Xoş gəlmisiniz!</h2>
+            <p data-i18n="modal.subtitle">Pulsuz e-kitab və bonus materiallar əldə etmək üçün qeydiyyatdan keçin</p>
             <form id="emailForm" class="modal-form">
-                <input type="text" id="userName" name="name" data-i18n="modal.inputName" placeholder="Adiniz" required>
+                <input type="text" id="userName" name="name" data-i18n="modal.inputName" placeholder="Adınız" required>
                 <input type="email" id="userEmail" name="email" data-i18n="modal.inputEmail"
-                    placeholder="Email �nvaniniz" required>
-                <button type="submit" class="btn btn-primary" data-i18n="modal.btnSend">G�nd?r</button>
+                    placeholder="Email ünvanınız" required>
+                <button type="submit" class="btn btn-primary" data-i18n="modal.btnSend">Göndər</button>
             </form>
-            <p class="privacy-note" data-i18n="modal.privacy">?? M?lumatlariniz t?hl�k?sizdir v? paylasilmir</p>
+            <p class="privacy-note" data-i18n="modal.privacy">🔒 Məlumatlarınız təhlükəsizdir və paylaşılmır</p>
         </div>
     </div>
 
-    <script src="scripts/design-system.js"></script>
-    <script src="scripts/i18n.js"></script>
+        <script src="scripts/design-system.js"></script>
+<script src="scripts/i18n.js"></script>
     <script src="scripts/main.js"></script>
     <script type="module" src="scripts/auth.js"></script>
     <script src="scripts/test.js"></script>

@@ -1,23 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="az">
 
 <head>
-    <!-- Google Fonts: Space Grotesk + DM Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- KİBER TƏHLÜKƏSİZLİK QATI (Security Enforcements) -->
-    <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
+    <!-- KÄ°BER TÆHLÃœKÆSÄ°ZLÄ°K QATI (Security Enforcements) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-
-    <!-- Clickjacking / Iframe Qoruması (Framebusting) -->
-    <style id="antiClickjack">
-        body {
-            display: none !important;
-        }
-    </style>
+    
+    <!-- Clickjacking / Iframe QorumasÄ± (Framebusting) -->
+    <style id="antiClickjack">body{display:none !important;}</style>
     <script>
         if (self === top) {
             var antiClickjack = document.getElementById("antiClickjack");
@@ -29,15 +21,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Alielenglish - Ingilis dili �yr?nin A1-d?n C2-y? q?d?r. G�nd?lik d?rsl?r, testl?r v? premium resurslar.">
+        content="Alielenglish - İngilis dili öyrənin A1-dən C2-yə qədər. Gündəlik dərslər, testlər və premium resurslar.">
     <meta name="keywords" content="ingilis dili, english learning, online courses, Azerbaijan">
     <meta name="author" content="Alielenglish">
     <link rel="canonical" href="https://aliel2023.github.io/English2/index.html">
-    <title>Alielenglish - Ana S?hif?</title>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&subset=latin,latin-ext&display=swap">
-    <link rel="stylesheet" href="styles/design-system.css">
-    <link rel="stylesheet" href="styles/main.css">
+    <title>Alielenglish - Ana Səhifə</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&subset=latin,latin-ext&display=swap">
+    <link rel="stylesheet" href="styles/design-system.css"><link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/home.css">
     <link rel="stylesheet" href="styles/auth.css">
 </head>
@@ -55,13 +47,13 @@
                 </div>
 
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="index.html" class="active" data-i18n="nav.home">Ana S?hif?</a></li>
-                    <li><a href="daily-word.html" data-i18n="nav.daily">G�n�n S�z�</a></li>
-                    <li><a href="speaking.html" data-i18n="nav.speaking">Danisiq Pratikasi</a></li>
-                    <li><a href="test.html" data-i18n="nav.test">S?viyy? Testi</a></li>
+                    <li><a href="index.html" class="active" data-i18n="nav.home">Ana Səhifə</a></li>
+                    <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
+                    <li><a href="speaking.html" data-i18n="nav.speaking">Danışıq Pratikası</a></li>
+                    <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
                     <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
-                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiym?tl?r</a></li>
-                    <li><a href="contact.html" data-i18n="nav.contact">?laq?</a></li>
+                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
+                    <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
                 </ul>
 
                 <div class="nav-actions">
@@ -83,41 +75,26 @@
         </nav>
     </header>
 
-    <!-- Scroll-aware header -->
-    <script>
-        (function () {
-            var lastScroll = 0;
-            window.addEventListener('scroll', function () {
-                var header = document.querySelector('.site-header');
-                if (header) {
-                    header.classList.toggle('scrolled', window.scrollY > 20);
-                }
-            }, { passive: true });
-        })();
-    </script>
-
     <!-- Hero Section -->
-    <section class="hero-section" id="heroSection">
-        <!-- Animated gradient orb layer 3 (purple depth) -->
-        <div class="hero-purple-orb" aria-hidden="true"></div>
+    <section class="hero-section">
         <div class="hero-container">
             <div class="hero-content">
                 <h1 class="hero-title" data-i18n="hero.title">
-                    Ingilis Dilini <span class="gradient-text">Pes?kar</span> S?viyy?d? �yr?n
+                    İngilis Dilini <span class="gradient-text">Peşəkar</span> Səviyyədə Öyrən
                 </h1>
                 <p class="hero-subtitle" data-i18n="hero.subtitle">
-                    A1-d?n C2-y? q?d?r strukturlu proqram, g�nd?lik canli d?rsl?r v? 13,000+ aktiv t?l?b? il? �yr?nm?
-                    s?yah?tin? baslayin
+                    A1-dən C2-yə qədər strukturlu proqram, gündəlik canlı dərslər və 13,000+ aktiv tələbə ilə öyrənmə
+                    səyahətinə başlayın
                 </p>
                 <div class="hero-actions" id="heroCTAButtons">
-                    <!-- Giris etm?y?nl?r ���n: auth.js t?r?find?n idar? olunur -->
+                    <!-- Giriş etməyənlər üçün: auth.js tərəfindən idarə olunur -->
                     <button class="btn btn-primary hero-guest-btn" onclick="openEmailModal()" data-i18n="hero.btnStart"
                         id="heroStartBtn">
-                        Pulsuz Basla
+                        Pulsuz Başla
                     </button>
-                    <!-- Login olmus istifad?�il?r ���n (gizli baslayir) -->
+                    <!-- Login olmuş istifadəçilər üçün (gizli başlayır) -->
                     <a href="dashboard.html" class="btn btn-primary hero-user-btn hidden" id="heroDashBtn">
-                        ?? Dashboard
+                        📊 Dashboard
                     </a>
                     <a href="pricing.html" class="btn btn-secondary" data-i18n="hero.btnPlans">
                         Premium Planlara Bax
@@ -126,30 +103,30 @@
                 <div class="hero-stats">
                     <div class="stat-item">
                         <span class="stat-number" data-target="13000">0</span>
-                        <span class="stat-label" data-i18n="hero.statStudents">Aktiv T?l?b?</span>
+                        <span class="stat-label" data-i18n="hero.statStudents">Aktiv Tələbə</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-number" data-target="500">0</span>
-                        <span class="stat-label" data-i18n="hero.statLessons">D?rs Materialu</span>
+                        <span class="stat-label" data-i18n="hero.statLessons">Dərs Materialu</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-number" data-target="98">0</span>
-                        <span class="stat-label" data-i18n="hero.statSatisfaction">% M?mnuniyy?t</span>
+                        <span class="stat-label" data-i18n="hero.statSatisfaction">% Məmnuniyyət</span>
                     </div>
                 </div>
             </div>
             <div class="hero-image">
                 <div class="floating-card card-1">
-                    <span class="card-icon">??</span>
+                    <span class="card-icon">📚</span>
                     <span class="card-text">50+ PDF Resurslar</span>
                 </div>
                 <div class="floating-card card-2">
-                    <span class="card-icon">??</span>
-                    <span class="card-text">Interaktiv Testl?r</span>
+                    <span class="card-icon">🎯</span>
+                    <span class="card-text">İnteraktiv Testlər</span>
                 </div>
                 <div class="floating-card card-3">
-                    <span class="card-icon">??</span>
-                    <span class="card-text">Canli D?st?k</span>
+                    <span class="card-icon">🔥</span>
+                    <span class="card-text">Canlı Dəstək</span>
                 </div>
             </div>
         </div>
@@ -158,40 +135,40 @@
     <!-- Features Section -->
     <section class="features-section">
         <div class="container">
-            <h2 class="section-title" data-i18n="features.title">Niy? Alielenglish?</h2>
+            <h2 class="section-title" data-i18n="features.title">Niyə Alielenglish?</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">??</div>
-                    <h3 data-i18n="features.daily">G�nd?lik D?rsl?r</h3>
-                    <p data-i18n="features.dailyDesc">H?r g�n yeni s�z, ifad? v? qrammatika qaydalari il? davamli t?lim
+                    <div class="feature-icon">📅</div>
+                    <h3 data-i18n="features.daily">Gündəlik Dərslər</h3>
+                    <p data-i18n="features.dailyDesc">Hər gün yeni söz, ifadə və qrammatika qaydaları ilə davamlı təlim
                     </p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">??</div>
+                    <div class="feature-icon">🎓</div>
                     <h3 data-i18n="features.program">Strukturlu Proqram</h3>
-                    <p data-i18n="features.programDesc">A1-d?n C2-y? q?d?r CEFR standartlarina uygun m?rh?l?li �yr?nm?
+                    <p data-i18n="features.programDesc">A1-dən C2-yə qədər CEFR standartlarına uyğun mərhələli öyrənmə
                     </p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">??</div>
-                    <h3 data-i18n="features.support">Canli D?st?k</h3>
-                    <p data-i18n="features.supportDesc">Suallariniza 24/7 cavab v? mentor d?st?yi il? he� vaxt t?k
+                    <div class="feature-icon">💥</div>
+                    <h3 data-i18n="features.support">Canlı Dəstək</h3>
+                    <p data-i18n="features.supportDesc">Suallarınıza 24/7 cavab və mentor dəstəyi ilə heç vaxt tək
                         deyilsiniz</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">??</div>
-                    <h3>Ir?lil?yis T?qibi</h3>
-                    <p>�z inkisafinizi izl?yin v? motivasiya il? h?d?fl?r? �atin</p>
+                    <div class="feature-icon">📊</div>
+                    <h3>İrəliləyiş Təqibi</h3>
+                    <p>Öz inkişafınızı izləyin və motivasiya ilə hədəflərə çatın</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">??</div>
-                    <h3>Flashcard �yr?nm?</h3>
-                    <p>Interaktiv flashcard sistemi il? s�zl?ri asan yadda saxlayin</p>
+                    <div class="feature-icon">🎴</div>
+                    <h3>Flashcard Öyrənmə</h3>
+                    <p>İnteraktiv flashcard sistemi ilə sözləri asan yadda saxlayın</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">??</div>
-                    <h3>Is Ingilizc?si</h3>
-                    <p>Karyera inkisafiniz ���n Business English x�susi modullari</p>
+                    <div class="feature-icon">💼</div>
+                    <h3>İş İngilizcəsi</h3>
+                    <p>Karyera inkişafınız üçün Business English xüsusi modulları</p>
                 </div>
             </div>
         </div>
@@ -201,112 +178,112 @@
     <section class="quick-access-section">
         <div class="container">
             <div class="section-header-center">
-                <span class="section-badge">? Tez Basla</span>
-                <h2 class="section-title">Hansi Funksiyadan Baslayirsiniz?</h2>
-                <p class="section-sub">H?r g�n istifad? ed?c?yiniz g�cl� al?tl?r bir arada</p>
+                <span class="section-badge">⚡ Tez Başla</span>
+                <h2 class="section-title">Hansı Funksiyadan Başlayırsınız?</h2>
+                <p class="section-sub">Hər gün istifadə edəcəyiniz güclü alətlər bir arada</p>
             </div>
             <div class="qa-grid">
 
-                <!-- G�n�n S�z� -->
+                <!-- Günün Sözü -->
                 <a href="daily-word.html" class="qa-card qa-daily">
                     <div class="qa-card-glow"></div>
                     <div class="qa-icon-wrap">
-                        <span class="qa-icon">??</span>
+                        <span class="qa-icon">📖</span>
                     </div>
-                    <div class="qa-badge">H?r g�n yenil?ni?</div>
-                    <h3 class="qa-title">G�n�n S�z�</h3>
-                    <p class="qa-desc">C1 s?viyy?sin? q?d?r g�nd?lik yeni s�z, t?l?ff�z, n�mun? c�ml?l?r</p>
+                    <div class="qa-badge">Hər gün yeniləniр</div>
+                    <h3 class="qa-title">Günün Sözü</h3>
+                    <p class="qa-desc">C1 səviyyəsinə qədər gündəlik yeni söz, tələffüz, nümunə cümlələr</p>
                     <div class="qa-meta">
-                        <span>?? T?l?ff�z</span>
-                        <span>?? N�mun?l?r</span>
-                        <span>?? Saxla</span>
+                        <span>🔊 Tələffüz</span>
+                        <span>💡 Nümunələr</span>
+                        <span>❤️ Saxla</span>
                     </div>
-                    <span class="qa-btn">S�z? Bax ?</span>
+                    <span class="qa-btn">Sözə Bax →</span>
                 </a>
 
-                <!-- S?viyy? Testi -->
+                <!-- Səviyyə Testi -->
                 <a href="test.html" class="qa-card qa-test">
                     <div class="qa-card-glow"></div>
                     <div class="qa-icon-wrap">
-                        <span class="qa-icon">??</span>
+                        <span class="qa-icon">🎯</span>
                     </div>
-                    <div class="qa-badge qa-badge-hot">?? ?n Populyar</div>
-                    <h3 class="qa-title">S?viyy? Testi</h3>
-                    <p class="qa-desc">A1-d?n C2-y? CEFR standardi testl?ri il? �z s?viyy?nizi d?qiq m�?yy?nl?sdirin</p>
+                    <div class="qa-badge qa-badge-hot">🔥 Ən Populyar</div>
+                    <h3 class="qa-title">Səviyyə Testi</h3>
+                    <p class="qa-desc">A1-dən C2-yə CEFR standardı testləri ilə öz səviyyənizi dəqiq müəyyənləşdirin</p>
                     <div class="qa-meta">
-                        <span>?? 6 S?viyy?</span>
-                        <span>?? AI Test</span>
-                        <span>? 5-25 d?q</span>
+                        <span>📊 6 Səviyyə</span>
+                        <span>🤖 AI Test</span>
+                        <span>⏱ 5-25 dəq</span>
                     </div>
-                    <span class="qa-btn">Test Baslat ?</span>
+                    <span class="qa-btn">Test Başlat →</span>
                 </a>
 
-                <!-- Danisiq Pratikasi -->
+                <!-- Danışıq Pratikası -->
                 <a href="speaking.html" class="qa-card qa-speaking">
                     <div class="qa-card-glow"></div>
                     <div class="qa-icon-wrap">
-                        <span class="qa-icon">???</span>
+                        <span class="qa-icon">🎙️</span>
                     </div>
-                    <div class="qa-badge">Nitq Tanima</div>
-                    <h3 class="qa-title">Danisiq Pratikasi</h3>
-                    <p class="qa-desc">Mikrofon il? t?l?ff�z�n�z� yoxlayin, AI siz? aninda feedback versin</p>
+                    <div class="qa-badge">Nitq Tanıma</div>
+                    <h3 class="qa-title">Danışıq Pratikası</h3>
+                    <p class="qa-desc">Mikrofon ilə tələffüzünüzü yoxlayın, AI sizə anında feedback versin</p>
                     <div class="qa-meta">
-                        <span>?? Mikrofon</span>
-                        <span>?? Analiz</span>
-                        <span>? Feedback</span>
+                        <span>🎤 Mikrofon</span>
+                        <span>📈 Analiz</span>
+                        <span>✅ Feedback</span>
                     </div>
-                    <span class="qa-btn">Danismaga Basla ?</span>
+                    <span class="qa-btn">Danışmağa Başla →</span>
                 </a>
 
-                <!-- Sevimlil?r -->
+                <!-- Sevimlilər -->
                 <a href="favorites.html" class="qa-card qa-favorites">
                     <div class="qa-card-glow"></div>
                     <div class="qa-icon-wrap">
-                        <span class="qa-icon">??</span>
+                        <span class="qa-icon">❤️</span>
                     </div>
-                    <div class="qa-badge">S?xsi L�g?t</div>
-                    <h3 class="qa-title">Sevimlil?r</h3>
-                    <p class="qa-desc">Saxladiginiz s�zl?r, qrammatika qaydalari v? ifad?l?r bir yerd?</p>
+                    <div class="qa-badge">Şəxsi Lüğət</div>
+                    <h3 class="qa-title">Sevimlilər</h3>
+                    <p class="qa-desc">Saxladığınız sözlər, qrammatika qaydaları və ifadələr bir yerdə</p>
                     <div class="qa-meta">
-                        <span>?? S�zl?r</span>
-                        <span>?? Qrammatika</span>
-                        <span>?? Ifad?l?r</span>
+                        <span>📚 Sözlər</span>
+                        <span>📝 Qrammatika</span>
+                        <span>💬 İfadələr</span>
                     </div>
-                    <span class="qa-btn">Sevimlil?r? Get ?</span>
+                    <span class="qa-btn">Sevimlilərə Get →</span>
                 </a>
 
                 <!-- Dashboard -->
                 <a href="dashboard.html" class="qa-card qa-dashboard">
                     <div class="qa-card-glow"></div>
                     <div class="qa-icon-wrap">
-                        <span class="qa-icon">??</span>
+                        <span class="qa-icon">📊</span>
                     </div>
                     <div class="qa-badge">Statistika</div>
-                    <h3 class="qa-title">S?xsi Dashboard</h3>
-                    <p class="qa-desc">Streak, nailiyy?t badgelari, test tarixi v? h?ft?lik ir?lil?yisiniz</p>
+                    <h3 class="qa-title">Şəxsi Dashboard</h3>
+                    <p class="qa-desc">Streak, nailiyyət badgeları, test tarixi və həftəlik irəliləyişiniz</p>
                     <div class="qa-meta">
-                        <span>?? Badgel?r</span>
-                        <span>?? Streak</span>
-                        <span>?? Tarix</span>
+                        <span>🏅 Badgelər</span>
+                        <span>🔥 Streak</span>
+                        <span>📅 Tarix</span>
                     </div>
-                    <span class="qa-btn">Dashboard A� ?</span>
+                    <span class="qa-btn">Dashboard Aç →</span>
                 </a>
 
                 <!-- Resurslar -->
                 <a href="resources.html" class="qa-card qa-resources">
                     <div class="qa-card-glow"></div>
                     <div class="qa-icon-wrap">
-                        <span class="qa-icon">??</span>
+                        <span class="qa-icon">📂</span>
                     </div>
                     <div class="qa-badge">50+ Material</div>
                     <h3 class="qa-title">Resurslar</h3>
-                    <p class="qa-desc">PDF kitablar, qrammatika c?dv?ll?ri, ifad? siyahilari v? daha �ox</p>
+                    <p class="qa-desc">PDF kitablar, qrammatika cədvəlləri, ifadə siyahıları və daha çox</p>
                     <div class="qa-meta">
-                        <span>?? PDF</span>
-                        <span>?? Pulsuz</span>
-                        <span>?? Y�kl?yin</span>
+                        <span>📄 PDF</span>
+                        <span>🆓 Pulsuz</span>
+                        <span>⬇️ Yükləyin</span>
                     </div>
-                    <span class="qa-btn">Resurslara Bax ?</span>
+                    <span class="qa-btn">Resurslara Bax →</span>
                 </a>
 
             </div>
@@ -317,12 +294,12 @@
     <section class="cta-section">
         <div class="container">
             <div class="cta-content">
-                <h2 data-i18n="cta.title">Daha G�zl?m?yin - Indi Baslayin!</h2>
-                <p data-i18n="cta.subtitle">Ilk 100 qeydiyyat�iya <strong>50% endirim</strong> v?
+                <h2 data-i18n="cta.title">Daha Gözləməyin - İndi Başlayın!</h2>
+                <p data-i18n="cta.subtitle">İlk 100 qeydiyyatçıya <strong>50% endirim</strong> və
                     <strong>pulsuz</strong> bonus material paketimiz
                 </p>
                 <button class="btn btn-light" onclick="openEmailModal()" data-i18n="cta.btnRegister">
-                    Qeydiyyatdan Ke�
+                    Qeydiyyatdan Keç
                 </button>
             </div>
         </div>
@@ -334,7 +311,7 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <h4>Alielenglish</h4>
-                    <p data-i18n="footer.about">2023-d?n b?ri minl?rl? t?l?b?y? keyfiyy?tli ingilis dili t?hsili t?qdim
+                    <p data-i18n="footer.about">2023-dən bəri minlərlə tələbəyə keyfiyyətli ingilis dili təhsili təqdim
                         edirik.</p>
                     <div class="social-links">
                         <a href="https://instagram.com/alielenglish" target="_blank" class="social-link" rel="noopener"
@@ -351,32 +328,32 @@
                     </div>
                 </div>
                 <div class="footer-col">
-                    <h4 data-i18n="footer.links">Ke�idl?r</h4>
+                    <h4 data-i18n="footer.links">Keçidlər</h4>
                     <ul class="footer-links">
-                        <li><a href="index.html" data-i18n="nav.home">Ana S?hif?</a></li>
-                        <li><a href="daily-word.html" data-i18n="nav.daily">G�n�n S�z�</a></li>
-                        <li><a href="test.html" data-i18n="nav.test">S?viyy? Testi</a></li>
+                        <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
+                        <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
+                        <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
                         <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4 data-i18n="footer.support">D?st?k</h4>
+                    <h4 data-i18n="footer.support">Dəstək</h4>
                     <ul class="footer-links">
-                        <li><a href="pricing.html" data-i18n="nav.pricing">Qiym?tl?r</a></li>
-                        <li><a href="contact.html" data-i18n="nav.contact">?laq?</a></li>
+                        <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
+                        <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
                         <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#privacy">M?xfilik</a></li>
+                        <li><a href="#privacy">Məxfilik</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4 data-i18n="footer.newsletter">X?b?r B�lleteni</h4>
-                    <p data-i18n="footer.newsletterDesc">G�nd?lik d?rs v? x�susi t?klifl?rd?n x?b?rdar olun</p>
+                    <h4 data-i18n="footer.newsletter">Xəbər Bülleteni</h4>
+                    <p data-i18n="footer.newsletterDesc">Gündəlik dərs və xüsusi təkliflərdən xəbərdar olun</p>
                     <button class="btn btn-primary btn-sm" onclick="openEmailModal()"
-                        data-i18n="footer.btnSubscribe">Abun? Ol</button>
+                        data-i18n="footer.btnSubscribe">Abunə Ol</button>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. B�t�n h�quqlar qorunur.</p>
+                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. Bütün hüquqlar qorunur.</p>
             </div>
         </div>
     </footer>
@@ -385,21 +362,21 @@
     <div id="emailModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeEmailModal()">&times;</button>
-            <h2 data-i18n="modal.welcome">?? Xos g?lmisiniz!</h2>
-            <p data-i18n="modal.subtitle">Pulsuz e-kitab v? bonus materiallar ?ld? etm?k ���n qeydiyyatdan ke�in</p>
+            <h2 data-i18n="modal.welcome">🎉 Xoş gəlmisiniz!</h2>
+            <p data-i18n="modal.subtitle">Pulsuz e-kitab və bonus materiallar əldə etmək üçün qeydiyyatdan keçin</p>
             <form id="emailForm" class="modal-form">
-                <input type="text" id="userName" name="name" data-i18n="modal.inputName" placeholder="Adiniz" required>
+                <input type="text" id="userName" name="name" data-i18n="modal.inputName" placeholder="Adınız" required>
                 <input type="email" id="userEmail" name="email" data-i18n="modal.inputEmail"
-                    placeholder="Email �nvaniniz" required>
-                <button type="submit" class="btn btn-primary" data-i18n="modal.btnSend">G�nd?r</button>
+                    placeholder="Email ünvanınız" required>
+                <button type="submit" class="btn btn-primary" data-i18n="modal.btnSend">Göndər</button>
             </form>
-            <p class="privacy-note" data-i18n="modal.privacy">?? M?lumatlariniz t?hl�k?sizdir v? paylasilmir</p>
+            <p class="privacy-note" data-i18n="modal.privacy">🔒 Məlumatlarınız təhlükəsizdir və paylaşılmır</p>
         </div>
     </div>
 
-    <!-- Scripts - D�ZG�N SIRA -->
-    <script src="scripts/design-system.js"></script>
-    <script src="scripts/i18n.js"></script>
+    <!-- Scripts - DÜZGÜN SIRA -->
+        <script src="scripts/design-system.js"></script>
+<script src="scripts/i18n.js"></script>
     <script src="scripts/main.js"></script>
     <script type="module" src="scripts/auth.js"></script>
     <script src="scripts/home.js"></script>

@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="az">
 
 <head>
-    <!-- KİBER TƏHLÜKƏSİZLİK QATI (Security Enforcements) -->
+    <!-- KÄ°BER TÆHLÃœKÆSÄ°ZLÄ°K QATI (Security Enforcements) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <!-- Clickjacking / Iframe Qoruması (Framebusting) -->
+    <!-- Clickjacking / Iframe QorumasÄ± (Framebusting) -->
     <style id="antiClickjack">body{display:none !important;}</style>
     <script>
         if (self === top) {
@@ -20,22 +20,21 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Alielenglish Premium - Sifaris s?hif?si. T?hl�k?siz �d?nis sistemi.">
+    <meta name="description" content="Alielenglish Premium - Sifariş səhifəsi. Təhlükəsiz ödəniş sistemi.">
     <meta name="robots" content="noindex,nofollow">
-    <title>Premium Sifaris � Alielenglish</title>
+    <title>Premium Sifariş — Alielenglish</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&subset=latin,latin-ext&display=swap">
-    <link rel="stylesheet" href="styles/design-system.css">
-    <link rel="stylesheet" href="styles/premium-order.css">
+    <link rel="stylesheet" href="styles/design-system.css"><link rel="stylesheet" href="styles/premium-order.css">
 </head>
 
 <body>
-    <!-- -- HEADER ---------------------------------------------- -->
+    <!-- ══ HEADER ══════════════════════════════════════════════ -->
     <header class="po-header">
         <div class="po-header-inner">
             <a href="pricing.html" class="po-logo">
@@ -47,44 +46,44 @@
                         stroke-width="2.5">
                         <rect x="3" y="11" width="18" height="11" rx="2" />
                         <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                    </svg> SSL Sifr?li</span>
+                    </svg> SSL Şifrəli</span>
                 <span class="po-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2.5">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    </svg> Stripe Qorumali</span>
+                    </svg> Stripe Qorumalı</span>
             </div>
         </div>
     </header>
 
-    <!-- -- MAIN ------------------------------------------------ -->
+    <!-- ══ MAIN ════════════════════════════════════════════════ -->
     <main class="po-main">
         <div class="po-wrapper">
 
-            <!-- LEFT � Order Form -->
+            <!-- LEFT — Order Form -->
             <div class="po-left">
                 <!-- Progress Steps -->
                 <div class="po-steps">
                     <div class="po-step active" id="step1Indicator">
                         <div class="po-step-num">1</div>
-                        <span>M?lumatlar</span>
+                        <span>Məlumatlar</span>
                     </div>
                     <div class="po-step-line"></div>
                     <div class="po-step" id="step2Indicator">
                         <div class="po-step-num">2</div>
-                        <span>�d?nis</span>
+                        <span>Ödəniş</span>
                     </div>
                 </div>
 
-                <!-- -- STEP 1: Form -- -->
+                <!-- ── STEP 1: Form ── -->
                 <div class="po-card" id="stepFormCard">
                     <div class="po-card-header">
-                        <h1 class="po-title">Sifarisi Tamamlayin</h1>
-                        <p class="po-subtitle">M?lumatlarinizi daxil edin, sifr?li Stripe �d?nis s?hif?sin?
-                            y�nl?ndiril?c?ksiniz.</p>
+                        <h1 class="po-title">Sifarişi Tamamlayın</h1>
+                        <p class="po-subtitle">Məlumatlarınızı daxil edin, şifrəli Stripe ödəniş səhifəsinə
+                            yönləndiriləcəksiniz.</p>
                     </div>
 
                     <form id="orderForm" novalidate autocomplete="on">
-                        <!-- ?? Honeypot - botlar dolduracaq, insanlar g�rm�r -->
+                        <!-- 🍯 Honeypot - botlar dolduracaq, insanlar görmür -->
                         <input type="text" name="_hp" id="_hp"
                             style="opacity:0;position:absolute;pointer-events:none;height:0;width:0;" tabindex="-1"
                             autocomplete="off" aria-hidden="true">
@@ -106,7 +105,7 @@
                                     </svg>
                                     Ad Soyad *
                                 </label>
-                                <input type="text" id="fName" name="name" placeholder="?li H�seynov" required
+                                <input type="text" id="fName" name="name" placeholder="Əli Hüseynov" required
                                     minlength="2" maxlength="60" autocomplete="name" aria-describedby="fNameErr">
                                 <span class="po-field-err" id="fNameErr"></span>
                             </div>
@@ -140,7 +139,7 @@
                             <span class="po-field-err" id="fEmailErr"></span>
                         </div>
 
-                        <!-- Baslama + �d?nis -->
+                        <!-- Başlama + Ödəniş -->
                         <div class="po-row">
                             <div class="po-field">
                                 <label for="fStart">
@@ -151,13 +150,13 @@
                                         <line x1="8" y1="2" x2="8" y2="6" />
                                         <line x1="3" y1="10" x2="21" y2="10" />
                                     </svg>
-                                    Baslama Vaxti
+                                    Başlama Vaxtı
                                 </label>
                                 <select id="fStart" name="startDate">
-                                    <option value="Bu h?ft?">Bu h?ft?</option>
-                                    <option value="N�vb?ti h?ft?">N�vb?ti h?ft?</option>
+                                    <option value="Bu həftə">Bu həftə</option>
+                                    <option value="Növbəti həftə">Növbəti həftə</option>
                                     <option value="Bu ay">Bu ay</option>
-                                    <option value="N�vb?ti ay">N�vb?ti ay</option>
+                                    <option value="Növbəti ay">Növbəti ay</option>
                                 </select>
                             </div>
                             <div class="po-field">
@@ -167,16 +166,16 @@
                                         <rect x="1" y="4" width="22" height="16" rx="2" />
                                         <line x1="1" y1="10" x2="23" y2="10" />
                                     </svg>
-                                    �d?nis �sulu
+                                    Ödəniş Üsulu
                                 </label>
                                 <select id="fPayment" name="paymentMethod">
-                                    <option value="Stripe (Onlayn Kart)">?? Stripe (Onlayn Kart)</option>
-                                    <option value="Telegram (Manual)">?? Telegram il? ?laq?</option>
+                                    <option value="Stripe (Onlayn Kart)">💳 Stripe (Onlayn Kart)</option>
+                                    <option value="Telegram (Manual)">📱 Telegram ilə Əlaqə</option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- Paket se�imi (dinamik g�st?rilir) -->
+                        <!-- Paket seçimi (dinamik göstərilir) -->
                         <div class="po-plan-selector" id="planSelectorSection">
                             <label class="po-plan-label">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -184,10 +183,10 @@
                                     <polygon
                                         points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                                 </svg>
-                                Paket Se�in *
+                                Paket Seçin *
                             </label>
                             <div class="po-plan-grid" id="planGrid">
-                                <!-- JS il? doldurulur -->
+                                <!-- JS ilə doldurulur -->
                             </div>
                         </div>
 
@@ -201,21 +200,21 @@
                                     stroke-width="2.5">
                                     <polyline points="20 6 9 17 4 12" />
                                 </svg>
-                                Sifarisi G�nd?r
+                                Sifarişi Göndər
                             </span>
                             <span class="po-spinner hidden" id="btnSpinner"></span>
                         </button>
 
                         <!-- Trust row -->
                         <div class="po-trust-row">
-                            <span>?? SSL Sifr?li</span>
-                            <span>??? Kart m?lumati saxlanmir</span>
-                            <span>?? 30 g�n z?man?t</span>
+                            <span>🔒 SSL Şifrəli</span>
+                            <span>🛡️ Kart məlumatı saxlanmır</span>
+                            <span>💯 30 gün zəmanət</span>
                         </div>
                     </form>
                 </div>
 
-                <!-- -- STEP 2: �d?nis -- -->
+                <!-- ── STEP 2: Ödəniş ── -->
                 <div class="po-card hidden" id="stepPayCard">
                     <div class="po-success-top">
                         <div class="po-success-icon">
@@ -224,98 +223,98 @@
                                 <polyline points="20 6 9 17 4 12" />
                             </svg>
                         </div>
-                        <h2 class="po-success-title">Sifarisiniz Qeyd? Alindi!</h2>
-                        <p class="po-success-sub" id="successSub">Indi �d?nisi tamamlayin:</p>
+                        <h2 class="po-success-title">Sifarişiniz Qeydə Alındı!</h2>
+                        <p class="po-success-sub" id="successSub">İndi ödənişi tamamlayın:</p>
                     </div>
 
                     <div id="paymentOptionsDiv"></div>
 
                     <div class="po-receipt" id="orderReceipt">
-                        <!-- Q?bz JS il? doldurulur -->
+                        <!-- Qəbz JS ilə doldurulur -->
                     </div>
 
                     <p class="po-help-note">
-                        ?? Sifaris t?f?rr�ati emailiniz? g�nd?ril?c?k.<br>
-                        Sualiniz varsa:
+                        📩 Sifariş təfərrüatı emailinizə göndəriləcək.<br>
+                        Sualınız varsa:
                         <a href="https://t.me/alifarajovvv" target="_blank" rel="noopener">@alifarajovvv</a>
                         &nbsp;|&nbsp;
                         <a href="mailto:englishaliel@gmail.com">englishaliel@gmail.com</a>
                     </p>
 
                     <button class="po-back-btn" onclick="goBackToForm()">
-                        ? Geri qayit
+                        ← Geri qayıt
                     </button>
                 </div>
             </div>
 
-            <!-- RIGHT � Summary & Security -->
+            <!-- RIGHT — Summary & Security -->
             <aside class="po-right">
                 <!-- Order Summary -->
                 <div class="po-summary-card" id="summaryCard">
                     <div class="po-summary-header">
-                        <h3>Sifaris X�las?si</h3>
-                        <a href="pricing.html" class="po-change-link">D?yis</a>
+                        <h3>Sifariş Xülasəsi</h3>
+                        <a href="pricing.html" class="po-change-link">Dəyiş</a>
                     </div>
                     <div class="po-summary-plan">
-                        <div class="po-summary-plan-icon" id="summaryIcon">?</div>
+                        <div class="po-summary-plan-icon" id="summaryIcon">⭐</div>
                         <div>
                             <div class="po-summary-plan-name" id="summaryPlanName">Premium</div>
-                            <div class="po-summary-plan-period" id="summaryPeriod">Ayliq</div>
+                            <div class="po-summary-plan-period" id="summaryPeriod">Aylıq</div>
                         </div>
                         <div class="po-summary-plan-price" id="summaryPrice">25 AZN</div>
                     </div>
                     <div class="po-summary-divider"></div>
                     <div class="po-summary-features" id="summaryFeatures">
-                        <!-- JS il? doldurulur -->
+                        <!-- JS ilə doldurulur -->
                     </div>
                     <div class="po-summary-total">
-                        <span>C?mi bu g�n:</span>
+                        <span>Cəmi bu gün:</span>
                         <strong id="summaryTotal">25 AZN</strong>
                     </div>
                 </div>
 
                 <!-- Security Info -->
                 <div class="po-security-card">
-                    <h4>?? T?hl�k?sizlik</h4>
+                    <h4>🔐 Təhlükəsizlik</h4>
                     <ul class="po-security-list">
                         <li>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#27ae60"
                                 stroke-width="2.5">
                                 <polyline points="20 6 9 17 4 12" />
                             </svg>
-                            Kart m?lumati <strong>bizim server? �atmir</strong>
+                            Kart məlumatı <strong>bizim serverə çatmır</strong>
                         </li>
                         <li>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#27ae60"
                                 stroke-width="2.5">
                                 <polyline points="20 6 9 17 4 12" />
                             </svg>
-                            �d?nis <strong>Stripe</strong> t?r?find?n isl?nir
+                            Ödəniş <strong>Stripe</strong> tərəfindən işlənir
                         </li>
                         <li>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#27ae60"
                                 stroke-width="2.5">
                                 <polyline points="20 6 9 17 4 12" />
                             </svg>
-                            256-bit <strong>SSL/TLS</strong> sifr?l?m?
+                            256-bit <strong>SSL/TLS</strong> şifrələmə
                         </li>
                         <li>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#27ae60"
                                 stroke-width="2.5">
                                 <polyline points="20 6 9 17 4 12" />
                             </svg>
-                            PCI DSS Level 1 uygun
+                            PCI DSS Level 1 uyğun
                         </li>
                         <li>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#27ae60"
                                 stroke-width="2.5">
                                 <polyline points="20 6 9 17 4 12" />
                             </svg>
-                            30 g�n <strong>geri qaytarma z?man?ti</strong>
+                            30 gün <strong>geri qaytarma zəmanəti</strong>
                         </li>
                     </ul>
                     <div class="po-powered-by">
-                        <span>G�cl�:</span>
+                        <span>Güclü:</span>
                         <div class="po-stripe-badge">
                             <svg width="52" height="22" viewBox="0 0 60 25" fill="none">
                                 <text x="0" y="18" font-family="Arial" font-weight="bold" font-size="17"
@@ -327,19 +326,19 @@
 
                 <!-- Testimonial -->
                 <div class="po-testimonial">
-                    <div class="po-stars">?????</div>
-                    <p>"Premium abun?likd?n �ox raziyam. Material keyfiyy?ti ?la, d?st?k superdir!"</p>
+                    <div class="po-stars">★★★★★</div>
+                    <p>"Premium abunəlikdən çox razıyam. Material keyfiyyəti əla, dəstək superdir!"</p>
                     <div class="po-testimonial-author">
                         <div class="po-avatar">N</div>
-                        <span>Nigar M., Baki</span>
+                        <span>Nigar M., Bakı</span>
                     </div>
                 </div>
             </aside>
         </div>
     </main>
 
-    <script src="scripts/design-system.js"></script>
-    <script src="scripts/premium-order.js"></script>
+        <script src="scripts/design-system.js"></script>
+<script src="scripts/premium-order.js"></script>
 </body>
 
 </html>

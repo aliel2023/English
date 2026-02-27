@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="az">
 
 <head>
-    <!-- KİBER TƏHLÜKƏSİZLİK QATI (Security Enforcements) -->
+    <!-- KÄ°BER TÆHLÃœKÆSÄ°ZLÄ°K QATI (Security Enforcements) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <!-- Clickjacking / Iframe Qoruması (Framebusting) -->
+    <!-- Clickjacking / Iframe QorumasÄ± (Framebusting) -->
     <style id="antiClickjack">body{display:none !important;}</style>
     <script>
         if (self === top) {
@@ -20,21 +20,20 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel � Alielenglish</title>
+    <title>Admin Panel — Alielenglish</title>
     <meta name="robots" content="noindex, nofollow">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&subset=latin,latin-ext&display=swap">
-    <link rel="stylesheet" href="styles/design-system.css">
-    <link rel="stylesheet" href="styles/admin.css">
+    <link rel="stylesheet" href="styles/design-system.css"><link rel="stylesheet" href="styles/admin.css">
 </head>
 
 <body>
 
-    <!-- ===== ACCESS DENIED (Firebase auth yoxlanana q?d?r) ===== -->
+    <!-- ===== ACCESS DENIED (Firebase auth yoxlanana qədər) ===== -->
     <div id="accessDenied" class="access-denied">
         <div class="admin-spinner"></div>
-        <p style="color:#888">Giris yoxlanilir...</p>
+        <p style="color:#888">Giriş yoxlanılır...</p>
     </div>
 
     <!-- ===== ADMIN LAYOUT ===== -->
@@ -51,33 +50,33 @@
             </div>
 
             <nav class="sidebar-nav">
-                <div class="nav-section-label">?sas</div>
+                <div class="nav-section-label">Əsas</div>
                 <div class="sidebar-nav-item active" onclick="showPanel('dashboard')">
-                    <span class="nav-icon">??</span> Icmal
+                    <span class="nav-icon">📊</span> İcmal
                 </div>
                 <div class="sidebar-nav-item" onclick="showPanel('users')">
-                    <span class="nav-icon">??</span> Istifad?�il?r
+                    <span class="nav-icon">👥</span> İstifadəçilər
                     <span class="nav-badge" id="usersCount">0</span>
                 </div>
                 <div class="sidebar-nav-item" onclick="showPanel('leads')">
-                    <span class="nav-icon">??</span> Leads
+                    <span class="nav-icon">📬</span> Leads
                     <span class="nav-badge" id="leadsCount">0</span>
                 </div>
 
                 <div class="nav-section-label" style="margin-top:0.5rem;">Analitika</div>
                 <div class="sidebar-nav-item" onclick="showPanel('progress')">
-                    <span class="nav-icon">??</span> Ir?lil?yis
+                    <span class="nav-icon">📈</span> İrəliləyiş
                 </div>
                 <div class="sidebar-nav-item" onclick="showPanel('levels')">
-                    <span class="nav-icon">??</span> S?viyy?l?r
+                    <span class="nav-icon">🎓</span> Səviyyələr
                 </div>
 
                 <div class="nav-section-label" style="margin-top:0.5rem;">Sistem</div>
                 <a href="index.html" class="sidebar-nav-item">
-                    <span class="nav-icon">??</span> Sayta Qayit
+                    <span class="nav-icon">🌐</span> Sayta Qayıt
                 </a>
                 <div class="sidebar-nav-item" onclick="confirmLogout()" style="color:#ff4757;">
-                    <span class="nav-icon">??</span> �ixis
+                    <span class="nav-icon">🚪</span> Çıxış
                 </div>
             </nav>
 
@@ -86,7 +85,7 @@
                     <div class="admin-avatar" id="sidebarAvatar">A</div>
                     <div>
                         <div class="admin-name" id="sidebarName">Admin</div>
-                        <div class="admin-role">?? Administrator</div>
+                        <div class="admin-role">👑 Administrator</div>
                     </div>
                 </div>
             </div>
@@ -96,12 +95,12 @@
         <main class="admin-main">
             <div class="admin-topbar">
                 <div>
-                    <div class="topbar-title" id="panelTitle">?? Icmal</div>
-                    <div class="topbar-subtitle" id="lastRefresh">Y�kl?nir...</div>
+                    <div class="topbar-title" id="panelTitle">📊 İcmal</div>
+                    <div class="topbar-subtitle" id="lastRefresh">Yüklənir...</div>
                 </div>
                 <div class="topbar-actions">
                     <button class="topbar-refresh-btn" onclick="refreshCurrentPanel()">
-                        ?? Yenil?
+                        🔄 Yenilə
                     </button>
                 </div>
             </div>
@@ -120,7 +119,7 @@
                         <!-- Recent Users -->
                         <div class="admin-table-card">
                             <div class="table-header">
-                                <div class="table-title">?? Son Qeydiyyatlar</div>
+                                <div class="table-title">👤 Son Qeydiyyatlar</div>
                             </div>
                             <div id="recentUsers">
                                 <div class="admin-loading">
@@ -131,7 +130,7 @@
                         <!-- Recent Leads -->
                         <div class="admin-table-card">
                             <div class="table-header">
-                                <div class="table-title">?? Son Leads</div>
+                                <div class="table-title">📬 Son Leads</div>
                             </div>
                             <div id="recentLeadsList">
                                 <div class="admin-loading">
@@ -144,7 +143,7 @@
                     <!-- Level Distribution -->
                     <div class="admin-table-card">
                         <div class="table-header">
-                            <div class="table-title">?? S?viyy? Paylanmasi</div>
+                            <div class="table-title">🎓 Səviyyə Paylanması</div>
                         </div>
                         <div id="levelDistribution" style="padding:1.5rem;">
                             <div class="admin-loading">
@@ -158,7 +157,7 @@
                 <div id="panel-users" class="admin-panel">
                     <div class="admin-table-card">
                         <div class="table-header">
-                            <div class="table-title">?? B�t�n Istifad?�il?r</div>
+                            <div class="table-title">👥 Bütün İstifadəçilər</div>
                             <input type="text" class="table-search" id="userSearchInput"
                                 placeholder="Ad, email axtar..." oninput="filterUsersTable()">
                         </div>
@@ -166,13 +165,13 @@
                             <table class="admin-table" id="usersTable">
                                 <thead>
                                     <tr>
-                                        <th>Istifad?�i</th>
-                                        <th>S?viyy?</th>
+                                        <th>İstifadəçi</th>
+                                        <th>Səviyyə</th>
                                         <th>Rol</th>
-                                        <th>Streak ??</th>
-                                        <th>Testl?r</th>
+                                        <th>Streak 🔥</th>
+                                        <th>Testlər</th>
                                         <th>Qeydiyyat</th>
-                                        <th>?m?liyyat</th>
+                                        <th>Əməliyyat</th>
                                     </tr>
                                 </thead>
                                 <tbody id="usersTableBody">
@@ -193,7 +192,7 @@
                 <div id="panel-leads" class="admin-panel">
                     <div class="admin-table-card">
                         <div class="table-header">
-                            <div class="table-title">?? B�t�n Leads (Newsletter)</div>
+                            <div class="table-title">📬 Bütün Leads (Newsletter)</div>
                             <input type="text" class="table-search" id="leadSearchInput"
                                 placeholder="Ad, email axtar..." oninput="filterLeadsTable()">
                         </div>
@@ -203,8 +202,8 @@
                                     <tr>
                                         <th>Ad</th>
                                         <th>Email</th>
-                                        <th>S?viyy?</th>
-                                        <th>M?nb?</th>
+                                        <th>Səviyyə</th>
+                                        <th>Mənbə</th>
                                         <th>Tarix</th>
                                     </tr>
                                 </thead>
@@ -226,18 +225,18 @@
                 <div id="panel-progress" class="admin-panel">
                     <div class="admin-table-card">
                         <div class="table-header">
-                            <div class="table-title">?? Istifad?�i Ir?lil?yisi</div>
+                            <div class="table-title">📈 İstifadəçi İrəliləyişi</div>
                         </div>
                         <div class="admin-table-wrap">
                             <table class="admin-table">
                                 <thead>
                                     <tr>
-                                        <th>Istifad?�i</th>
+                                        <th>İstifadəçi</th>
                                         <th>Cari Streak</th>
-                                        <th>?n Uzun Streak</th>
-                                        <th>Aktiv G�n</th>
-                                        <th>Testl?r</th>
-                                        <th>Sevimlil?r</th>
+                                        <th>Ən Uzun Streak</th>
+                                        <th>Aktiv Gün</th>
+                                        <th>Testlər</th>
+                                        <th>Sevimlilər</th>
                                     </tr>
                                 </thead>
                                 <tbody id="progressTableBody">
@@ -311,23 +310,23 @@
 
         // ===== Date Format =====
         function fmtDate(val) {
-            if (!val) return '�';
+            if (!val) return '—';
             if (val && typeof val.toDate === 'function') return val.toDate().toLocaleDateString('az-AZ');
             const d = new Date(val);
-            return isNaN(d) ? '�' : d.toLocaleDateString('az-AZ');
+            return isNaN(d) ? '—' : d.toLocaleDateString('az-AZ');
         }
 
         // ===== Auth Guard =====
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
-                showAccessDenied('Daxil olmamisiniz. <a href="index.html" style="color:#6c63ff">Ana S?hif?</a>');
+                showAccessDenied('Daxil olmamısınız. <a href="index.html" style="color:#6c63ff">Ana Səhifə</a>');
                 return;
             }
 
             // Check admin role from Firestore
             const userDoc = await getDoc(doc(db, "users", user.uid));
             if (!userDoc.exists() || userDoc.data().role !== 'admin') {
-                showAccessDenied('Bu s?hif?y? giris icaz?niz yoxdur. Yalniz admin daxil ola bil?r.');
+                showAccessDenied('Bu səhifəyə giriş icazəniz yoxdur. Yalnız admin daxil ola bilər.');
                 return;
             }
 
@@ -399,27 +398,27 @@
 
             document.getElementById('statsGrid').innerHTML = `
         <div class="admin-stat-card blue">
-            <span class="stat-icon">??</span>
+            <span class="stat-icon">👥</span>
             <div class="stat-value">${users.length}</div>
-            <div class="stat-label">�mumi Istifad?�i</div>
+            <div class="stat-label">Ümumi İstifadəçi</div>
         </div>
         <div class="admin-stat-card green">
-            <span class="stat-icon">??</span>
+            <span class="stat-icon">🟢</span>
             <div class="stat-value">${activeToday}</div>
-            <div class="stat-label">Bu g�n aktiv</div>
+            <div class="stat-label">Bu gün aktiv</div>
         </div>
         <div class="admin-stat-card orange">
-            <span class="stat-icon">??</span>
+            <span class="stat-icon">📬</span>
             <div class="stat-value">${leads.length}</div>
             <div class="stat-label">Leads</div>
         </div>
         <div class="admin-stat-card purple">
-            <span class="stat-icon">??</span>
+            <span class="stat-icon">🎯</span>
             <div class="stat-value">${totalTests}</div>
-            <div class="stat-label">Test sayi (c?mi)</div>
+            <div class="stat-label">Test sayı (cəmi)</div>
         </div>
         <div class="admin-stat-card red">
-            <span class="stat-icon">??</span>
+            <span class="stat-icon">🔥</span>
             <div class="stat-value">${avgStreak}</div>
             <div class="stat-label">Ortalama Streak</div>
         </div>
@@ -431,12 +430,12 @@
         <div class="lead-item">
             <div class="table-avatar">${esc((u.name || '?').charAt(0).toUpperCase())}</div>
             <div class="lead-info">
-                <div class="lead-name">${esc(u.name || '�')}</div>
-                <div class="lead-email">${esc(u.email || '�')}</div>
+                <div class="lead-name">${esc(u.name || '—')}</div>
+                <div class="lead-email">${esc(u.email || '—')}</div>
             </div>
             <span class="level-badge">${esc(u.level || 'A1')}</span>
         </div>
-    `).join('') : '<div class="admin-empty"><div class="empty-icon">??</div><p>Istifad?�i yoxdur</p></div>';
+    `).join('') : '<div class="admin-empty"><div class="empty-icon">👤</div><p>İstifadəçi yoxdur</p></div>';
 
             // Recent Leads
             const recent5L = leads.slice(0, 5);
@@ -444,12 +443,12 @@
         <div class="lead-item">
             <div class="lead-avatar">${esc((l.name || '?').charAt(0).toUpperCase())}</div>
             <div class="lead-info">
-                <div class="lead-name">${esc(l.name || '�')}</div>
-                <div class="lead-email">${esc(l.email || '�')}</div>
+                <div class="lead-name">${esc(l.name || '—')}</div>
+                <div class="lead-email">${esc(l.email || '—')}</div>
             </div>
             <div class="lead-date">${fmtDate(l.createdAt)}</div>
         </div>
-    `).join('') : '<div class="admin-empty"><div class="empty-icon">??</div><p>Lead yoxdur</p></div>';
+    `).join('') : '<div class="admin-empty"><div class="empty-icon">📬</div><p>Lead yoxdur</p></div>';
 
             // Level Distribution
             const levels = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 };
@@ -468,14 +467,14 @@
     `;
 
             // Update last refresh
-            document.getElementById('lastRefresh').textContent = `Son yenil?nm?: ${new Date().toLocaleTimeString('az-AZ')}`;
+            document.getElementById('lastRefresh').textContent = `Son yenilənmə: ${new Date().toLocaleTimeString('az-AZ')}`;
         }
 
         // ===== USERS TABLE =====
         function renderUsersTable(users) {
             const tbody = document.getElementById('usersTableBody');
             if (!users.length) {
-                tbody.innerHTML = '<tr><td colspan="7"><div class="admin-empty"><div class="empty-icon">??</div><p>Istifad?�i tapilmadi</p></div></td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7"><div class="admin-empty"><div class="empty-icon">👤</div><p>İstifadəçi tapılmadı</p></div></td></tr>';
                 return;
             }
             tbody.innerHTML = users.map(u => `
@@ -484,18 +483,18 @@
                 <div class="user-cell">
                     <div class="table-avatar">${esc((u.name || '?').charAt(0).toUpperCase())}</div>
                     <div class="user-info">
-                        <div class="user-name-t">${esc(u.name || '�')}</div>
-                        <div class="user-email-t">${esc(u.email || '�')}</div>
+                        <div class="user-name-t">${esc(u.name || '—')}</div>
+                        <div class="user-email-t">${esc(u.email || '—')}</div>
                     </div>
                 </div>
             </td>
             <td><span class="level-badge">${esc(u.level || 'A1')}</span></td>
-            <td><span class="role-badge ${u.role === 'admin' ? 'admin' : 'user'}">${u.role === 'admin' ? '?? Admin' : '?? User'}</span></td>
-            <td><span class="streak-pill">?? ${u.currentStreak || 0}</span></td>
+            <td><span class="role-badge ${u.role === 'admin' ? 'admin' : 'user'}">${u.role === 'admin' ? '👑 Admin' : '👤 User'}</span></td>
+            <td><span class="streak-pill">🔥 ${u.currentStreak || 0}</span></td>
             <td>${(u.testHistory || []).length}</td>
             <td>${fmtDate(u.createdAt)}</td>
             <td style="display:flex;gap:0.4rem;">
-                <button class="action-btn view" onclick="openUserDetail('${esc(u.uid)}')">?? Bax</button>
+                <button class="action-btn view" onclick="openUserDetail('${esc(u.uid)}')">👁 Bax</button>
             </td>
         </tr>
     `).join('');
@@ -505,14 +504,14 @@
         function renderLeadsTable(leads) {
             const tbody = document.getElementById('leadsTableBody');
             if (!leads.length) {
-                tbody.innerHTML = '<tr><td colspan="5"><div class="admin-empty"><div class="empty-icon">??</div><p>Lead tapilmadi</p></div></td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5"><div class="admin-empty"><div class="empty-icon">📬</div><p>Lead tapılmadı</p></div></td></tr>';
                 return;
             }
             tbody.innerHTML = leads.map(l => `
         <tr>
-            <td><strong>${esc(l.name || '�')}</strong></td>
-            <td>${esc(l.email || '�')}</td>
-            <td>${l.level ? `<span class="level-badge">${esc(l.level)}</span>` : '�'}</td>
+            <td><strong>${esc(l.name || '—')}</strong></td>
+            <td>${esc(l.email || '—')}</td>
+            <td>${l.level ? `<span class="level-badge">${esc(l.level)}</span>` : '—'}</td>
             <td style="font-size:0.78rem;color:#888;">${esc(l.source || '/')}</td>
             <td>${fmtDate(l.createdAt)}</td>
         </tr>
@@ -523,7 +522,7 @@
         function renderProgressTable(users) {
             const tbody = document.getElementById('progressTableBody');
             if (!users.length) {
-                tbody.innerHTML = '<tr><td colspan="6"><div class="admin-empty"><p>M?lumat yoxdur</p></div></td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6"><div class="admin-empty"><p>Məlumat yoxdur</p></div></td></tr>';
                 return;
             }
             const sorted = [...users].sort((a, b) => (b.currentStreak || 0) - (a.currentStreak || 0));
@@ -533,12 +532,12 @@
                 <div class="user-cell">
                     <div class="table-avatar" style="width:28px;height:28px;font-size:0.75rem;">${esc((u.name || '?').charAt(0).toUpperCase())}</div>
                     <div class="user-info">
-                        <div class="user-name-t" style="font-size:0.82rem;">${esc(u.name || '�')}</div>
+                        <div class="user-name-t" style="font-size:0.82rem;">${esc(u.name || '—')}</div>
                     </div>
                 </div>
             </td>
-            <td>?? ${u.currentStreak || 0}</td>
-            <td>?? ${u.longestStreak || 0}</td>
+            <td>🔥 ${u.currentStreak || 0}</td>
+            <td>🏆 ${u.longestStreak || 0}</td>
             <td>${u.activeDays || 0}</td>
             <td>${(u.testHistory || []).length}</td>
             <td>${((u.favorites && u.favorites.words) || []).length}</td>
@@ -557,22 +556,22 @@
             <div class="table-header">
                 <div class="table-title">
                     <span class="level-badge">${lvl}</span>
-                    &nbsp;${lvl} S?viyy?si � ${uList.length} istifad?�i
+                    &nbsp;${lvl} Səviyyəsi — ${uList.length} istifadəçi
                 </div>
             </div>
-            ${uList.length === 0 ? `<div class="admin-empty"><p>Bu s?viyy?d? istifad?�i yoxdur</p></div>` : `
+            ${uList.length === 0 ? `<div class="admin-empty"><p>Bu səviyyədə istifadəçi yoxdur</p></div>` : `
             <div style="padding:0.5rem 0;">
                 ${uList.slice(0, 5).map(u => `
                     <div class="lead-item">
                         <div class="table-avatar" style="width:30px;height:30px;font-size:0.8rem;">${esc((u.name || '?').charAt(0).toUpperCase())}</div>
                         <div class="lead-info">
-                            <div class="lead-name">${esc(u.name || '�')}</div>
-                            <div class="lead-email">${esc(u.email || '�')}</div>
+                            <div class="lead-name">${esc(u.name || '—')}</div>
+                            <div class="lead-email">${esc(u.email || '—')}</div>
                         </div>
-                        <span style="font-size:0.75rem;color:#888;">??${u.currentStreak || 0}</span>
+                        <span style="font-size:0.75rem;color:#888;">🔥${u.currentStreak || 0}</span>
                     </div>
                 `).join('')}
-                ${uList.length > 5 ? `<div style="text-align:center;padding:0.75rem;color:#888;font-size:0.8rem;">+${uList.length - 5} daha �ox</div>` : ''}
+                ${uList.length > 5 ? `<div style="text-align:center;padding:0.75rem;color:#888;font-size:0.8rem;">+${uList.length - 5} daha çox</div>` : ''}
             </div>`}
         </div>
     `).join('');
@@ -589,22 +588,22 @@
                 ${esc((u.name || '?').charAt(0).toUpperCase())}
             </div>
             <div>
-                <div style="font-size:1.1rem;font-weight:700;">${esc(u.name || '�')}</div>
-                <div style="color:#888;font-size:0.85rem;">${esc(u.email || '�')}</div>
+                <div style="font-size:1.1rem;font-weight:700;">${esc(u.name || '—')}</div>
+                <div style="color:#888;font-size:0.85rem;">${esc(u.email || '—')}</div>
                 <div style="margin-top:0.3rem;display:flex;gap:0.5rem;">
                     <span class="level-badge">${esc(u.level || 'A1')}</span>
-                    <span class="role-badge ${u.role === 'admin' ? 'admin' : 'user'}">${u.role === 'admin' ? '?? Admin' : '?? User'}</span>
+                    <span class="role-badge ${u.role === 'admin' ? 'admin' : 'user'}">${u.role === 'admin' ? '👑 Admin' : '👤 User'}</span>
                 </div>
             </div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.25rem;">
             ${[
-                    ['?? Streak', u.currentStreak || 0],
-                    ['?? ?n Uzun', u.longestStreak || 0],
-                    ['?? Aktiv G�n', u.activeDays || 0],
-                    ['?? Testl?r', (u.testHistory || []).length],
-                    ['?? Sevimlil?r', ((u.favorites && u.favorites.words) || []).length],
-                    ['?? Qeydiyyat', fmtDate(u.createdAt)],
+                    ['🔥 Streak', u.currentStreak || 0],
+                    ['🏆 Ən Uzun', u.longestStreak || 0],
+                    ['📅 Aktiv Gün', u.activeDays || 0],
+                    ['🎯 Testlər', (u.testHistory || []).length],
+                    ['❤️ Sevimlilər', ((u.favorites && u.favorites.words) || []).length],
+                    ['📅 Qeydiyyat', fmtDate(u.createdAt)],
                 ].map(([l, v]) => `
                 <div style="background:#13131a;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:0.75rem;">
                     <div style="font-size:0.75rem;color:#888;margin-bottom:0.2rem;">${l}</div>
@@ -614,10 +613,10 @@
         </div>
         ${u.testHistory && u.testHistory.length ? `
             <div>
-                <div style="font-size:0.85rem;font-weight:600;margin-bottom:0.5rem;color:#888;">Test Tarix�?si (son 3)</div>
+                <div style="font-size:0.85rem;font-weight:600;margin-bottom:0.5rem;color:#888;">Test Tarixçəsi (son 3)</div>
                 ${[...u.testHistory].reverse().slice(0, 3).map(t => `
                     <div style="background:#13131a;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:0.6rem 0.9rem;margin-bottom:0.4rem;display:flex;justify-content:space-between;font-size:0.82rem;">
-                        <span>${esc(t.level)} � ${t.score || 0}/${t.total || 0}</span>
+                        <span>${esc(t.level)} — ${t.score || 0}/${t.total || 0}</span>
                         <span style="color:#888;">${fmtDate(t.date)}</span>
                     </div>
                 `).join('')}
@@ -657,7 +656,7 @@
         };
 
         window.confirmLogout = async function () {
-            if (confirm('Admin paneld?n �ixmaq ist?yirsiniz?')) {
+            if (confirm('Admin paneldən çıxmaq istəyirsiniz?')) {
                 await signOut(auth);
                 window.location.href = 'index.html';
             }
@@ -675,11 +674,11 @@
             event && event.currentTarget && event.currentTarget.classList.add('active');
 
             const titles = {
-                dashboard: '?? Icmal',
-                users: '?? Istifad?�il?r',
-                leads: '?? Leads',
-                progress: '?? Ir?lil?yis',
-                levels: '?? S?viyy?l?r'
+                dashboard: '📊 İcmal',
+                users: '👥 İstifadəçilər',
+                leads: '📬 Leads',
+                progress: '📈 İrəliləyiş',
+                levels: '🎓 Səviyyələr'
             };
 
             document.getElementById(`panel-${name}`).classList.add('active');
@@ -709,10 +708,10 @@
 
         function showAccessDenied(msg) {
             document.getElementById('accessDenied').innerHTML = `
-        <div class="icon">??</div>
-        <h1>Giris R?dd Edildi</h1>
+        <div class="icon">🔒</div>
+        <h1>Giriş Rədd Edildi</h1>
         <p>${msg}</p>
-        <a href="index.html" style="margin-top:1rem;display:inline-block;background:#6c63ff;color:white;padding:0.75rem 1.5rem;border-radius:10px;text-decoration:none;font-weight:600;">Ana S?hif?y? Qayit</a>
+        <a href="index.html" style="margin-top:1rem;display:inline-block;background:#6c63ff;color:white;padding:0.75rem 1.5rem;border-radius:10px;text-decoration:none;font-weight:600;">Ana Səhifəyə Qayıt</a>
     `;
             document.getElementById('accessDenied').style.display = 'flex';
             document.getElementById('accessDenied').className = 'access-denied';
