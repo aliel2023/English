@@ -1,12 +1,18 @@
 // ===== FAVORITES PAGE =====
 // Firebase alielAuthReady-ə əsaslanır — localStorage YOX
 let favInited = false;
+let currentFavUid = undefined;
 
 function initFavorites(event) {
-    if (favInited) return;
-    favInited = true;
+    const user = event && event.detail ? event.detail.user : (typeof getCurrentUser === 'function' ? getCurrentUser() : undefined);
 
-    const user = event && event.detail ? event.detail.user : null;
+    if (user === undefined) return; // auth state unknown
+
+    const newUid = user ? user.uid : null;
+    if (favInited && currentFavUid === newUid) return;
+
+    favInited = true;
+    currentFavUid = newUid;
 
     const favContent = document.getElementById('favContent');
     const favAuth = document.getElementById('favAuthRequired');
@@ -31,7 +37,7 @@ document.addEventListener('alielAuthReady', initFavorites);
 // bir neçə dəfə yoxla
 let _favCheckCount = 0;
 function _checkAuthForFavs() {
-    if (favInited) return;
+    if (favInited && currentFavUid !== undefined) return;
     _favCheckCount++;
     if (_favCheckCount > 20) return; // max 2 saniyə
 

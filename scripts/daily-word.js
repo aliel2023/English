@@ -403,6 +403,12 @@ document.addEventListener('DOMContentLoaded', function () {
     updateStreak();
 });
 
+// Sync data when auth resolves
+document.addEventListener('alielAuthReady', function () {
+    updateFavoriteButton();
+    loadStatistics();
+});
+
 // ===== LOAD WORD OF DAY =====
 function loadWordOfDay() {
     document.getElementById('wordLevel').textContent = `${todayWord.level} LEVEL`;

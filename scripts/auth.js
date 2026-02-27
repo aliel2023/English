@@ -122,8 +122,8 @@ function isAdminUser(userData) {
 }
 
 // ===== Current User State =====
-let currentUser = null;
-let currentUserData = null;
+let currentUser = undefined;
+let currentUserData = undefined;
 let authInitialized = false;
 let _navRendered = false; // nav dublikatını əngəlləyən flag
 

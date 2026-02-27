@@ -1,25 +1,30 @@
 // ===== DASHBOARD PAGE =====
 // Firebase alielAuthReady event-ə əsaslanır — localStorage YOX
 let dashInited = false;
+let currentDashUid = undefined;
 
 function initDashboard(event) {
-    if (dashInited) return;
-    dashInited = true;
+    const user = event && event.detail ? event.detail.user : (typeof getCurrentUser === 'function' ? getCurrentUser() : undefined);
 
-    const user = event && event.detail ? event.detail.user : null;
+    if (user === undefined) return; // auth state unknown
+
+    const newUid = user ? user.uid : null;
+    if (dashInited && currentDashUid === newUid) return;
+
+    dashInited = true;
+    currentDashUid = newUid;
+
+    const content = document.getElementById('dashContent');
+    const authReq = document.getElementById('dashAuthRequired');
 
     if (!user) {
         // İstifadəçi daxil olmayıb
-        const content = document.getElementById('dashContent');
-        const authReq = document.getElementById('dashAuthRequired');
         if (content) content.classList.add('hidden');
         if (authReq) authReq.classList.remove('hidden');
         return;
     }
 
     // İstifadəçi daxil olub — content göstər
-    const content = document.getElementById('dashContent');
-    const authReq = document.getElementById('dashAuthRequired');
     if (content) content.classList.remove('hidden');
     if (authReq) authReq.classList.add('hidden');
 
@@ -32,7 +37,7 @@ document.addEventListener('alielAuthReady', initDashboard);
 // Race condition fallback: auth.js module əvvəl yüklənibsə event keçmiş ola bilər
 let _dashCheckCount = 0;
 function _checkAuthForDash() {
-    if (dashInited) return;
+    if (dashInited && currentDashUid !== undefined) return;
     _dashCheckCount++;
     if (_dashCheckCount > 20) return;
 
