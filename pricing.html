@@ -3,13 +3,18 @@
 
 <head>
     <!-- KÄ°BER TÆHLÃœKÆSÄ°ZLÄ°K QATI (Security Enforcements) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self'; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    
+
     <!-- Clickjacking / Iframe QorumasÄ± (Framebusting) -->
-    <style id="antiClickjack">body{display:none !important;}</style>
+    <style id="antiClickjack">
+        body {
+            display: none !important;
+        }
+    </style>
     <script>
         if (self === top) {
             var antiClickjack = document.getElementById("antiClickjack");
@@ -24,10 +29,12 @@
     <meta name="keywords" content="qiymətlər, pricing, premium plan, ingilis dili kurs">
     <link rel="canonical" href="https://aliel2023.github.io/English2/pricing.html">
     <title>Qiymətlər - Alielenglish</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&subset=latin,latin-ext&display=swap">
-    <link rel="stylesheet" href="styles/design-system.css"><link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&subset=latin,latin-ext&display=swap">
+    <link rel="stylesheet" href="styles/design-system.css">
+    <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/pricing.css">
 </head>
 
@@ -134,7 +141,7 @@
                 <div class="pricing-card">
                     <h3 data-i18n="pricing.planProfessional">Professional</h3>
                     <div class="price">
-                        <span class="price-amount monthly-price">119</span>
+                        <span class="price-amount monthly-price">168</span>
                         <span class="price-amount yearly-price hidden">1140</span>
                         <span class="price-currency">AZN</span>
                     </div>
@@ -266,8 +273,8 @@
         </div>
     </div>
 
-        <script src="scripts/design-system.js"></script>
-<script src="scripts/i18n.js"></script>
+    <script src="scripts/design-system.js"></script>
+    <script src="scripts/i18n.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/pricing.js"></script>
 </body>
