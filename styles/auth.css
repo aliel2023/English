@@ -1,5 +1,5 @@
 /* ===== AUTH SYSTEM STYLES ===== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&subset=latin,latin-ext&display=swap');
 
 /* ===== AUTH MODAL V2 — BEAUTIFUL REDESIGN ===== */
 .auth-modal-v2 {
@@ -65,7 +65,7 @@
     border-bottom: 2px solid transparent;
     color: #888898;
     padding: 0.6rem 1rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
@@ -133,7 +133,7 @@
     border: 1.5px solid rgba(255, 255, 255, 0.08);
     border-radius: 10px;
     color: #f0f0f5;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 0.9rem;
     padding: 0.7rem 1rem;
     outline: none;
@@ -249,7 +249,7 @@
     border: none;
     border-radius: 12px;
     color: white;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
@@ -305,7 +305,7 @@
     border: 1.5px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     color: #f0f0f5;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
@@ -462,7 +462,7 @@
     font-weight: 600;
     font-size: 0.9rem;
     transition: all 0.3s ease;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
 }
 
 .auth-tab-btn.active {
@@ -516,7 +516,7 @@
     border-radius: 10px;
     color: var(--text-primary);
     font-size: 0.95rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     transition: border-color 0.2s ease;
     outline: none;
 }
@@ -583,7 +583,7 @@
     cursor: pointer;
     font-weight: 600;
     font-size: 0.85rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     text-decoration: underline;
 }
 
@@ -602,7 +602,7 @@
     padding: 0.4rem 0.8rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
 }
 
 .user-avatar-btn:hover {
@@ -696,7 +696,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     width: 100%;
     text-align: left;
     transition: all 0.2s ease;
@@ -726,7 +726,7 @@
     cursor: pointer;
     font-weight: 600;
     font-size: 0.85rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     transition: all 0.3s ease;
 }
 
@@ -768,7 +768,7 @@
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     white-space: nowrap;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
 }
 
 .aliel-toast.show {

@@ -1,5 +1,5 @@
 /* ===== ADMIN PANEL STYLES ===== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&subset=latin,latin-ext&display=swap');
 
 :root {
     --admin-bg: #0a0a0f;
@@ -23,7 +23,7 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     background: var(--admin-bg);
     color: var(--admin-text);
     min-height: 100vh;

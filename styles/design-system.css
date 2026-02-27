@@ -4,7 +4,8 @@
    ============================================================ */
 
 /* ─────────────────── 1. GOOGLE FONTS ─────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+/* latin + latin-ext subset — required for Azerbaijani ə ğ ö ü ş ı İ */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&subset=latin,latin-ext&display=swap');
 
 /* ─────────────────── 2. DESIGN TOKENS ─────────────────── */
 :root {
@@ -45,8 +46,9 @@
     --ds-glass-border: 1px solid rgba(255, 255, 255, 0.10);
 
     /* Typography */
-    --ds-font-heading: 'Space Grotesk', system-ui, sans-serif;
-    --ds-font-body: 'DM Sans', system-ui, sans-serif;
+    /* Fallback stack ensures ə ğ ö ü ş ı İ Ə render on all systems */
+    --ds-font-heading: 'Space Grotesk', 'Segoe UI', 'Liberation Sans', 'DejaVu Sans', Arial, sans-serif;
+    --ds-font-body: 'DM Sans', 'Segoe UI', 'Liberation Sans', 'DejaVu Sans', Arial, sans-serif;
 
     /* Spacing Scale */
     --ds-space-xs: 0.25rem;
