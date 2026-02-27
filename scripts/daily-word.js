@@ -513,7 +513,7 @@ function addWordToFavBtn() {
 
     // auth.js-dən window.addToFavorites-i çağır (Firestore-a yazacaq)
     if (typeof window.addToFavorites === 'function') {
-        window.addToFavorites('words', wordData).then(added => {
+        window.addToFavorites(wordData, 'words').then(added => {
             if (added !== false) {
                 const btn = document.querySelector('[onclick="addWordToFavBtn()"]');
                 if (btn) {
@@ -746,7 +746,7 @@ function speakWord(word) {
 
 function addArchiveWordToFav(wordObj) {
     if (typeof addToFavorites === 'function') {
-        addToFavorites('word', { ...wordObj, savedAt: new Date().toISOString() });
+        addToFavorites({ ...wordObj, savedAt: new Date().toISOString() }, 'words');
     }
 }
 

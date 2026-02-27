@@ -240,7 +240,7 @@ function showAllCards() {
 // ===== REMOVE ACTIONS =====
 function removeWordFav(word) {
     if (!confirm(`"${word}" sözünü sevimlilərdən silmək istəyirsiniz?`)) return;
-    removeFromFavorites('word', word);
+    removeFromFavorites(word, 'words');
     const user = getCurrentUser();
     if (user) {
         allFavWords = user.favoriteWords || [];
@@ -252,7 +252,7 @@ function removeWordFav(word) {
 
 function removeGrammarFav(title) {
     if (!confirm(`Bu qaydanı sevimlilərdən silmək istəyirsiniz?`)) return;
-    removeFromFavorites('grammar', title);
+    removeFromFavorites(title, 'grammar');
     const user = getCurrentUser();
     if (user) {
         allFavGrammars = user.favoriteGrammars || [];
@@ -264,7 +264,7 @@ function removeGrammarFav(title) {
 
 function removePhraseFav(phrase) {
     if (!confirm(`Bu ifadəni sevimlilərdən silmək istəyirsiniz?`)) return;
-    removeFromFavorites('phrase', phrase);
+    removeFromFavorites(phrase, 'phrases');
     const user = getCurrentUser();
     if (user) {
         allFavPhrases = user.favoritePhrases || [];
