@@ -50,50 +50,9 @@ function closeEmailModal() {
 // ===== Email Form Submission =====
 function handleEmailFormSubmit(e) {
     e.preventDefault();
-
-    const name = document.getElementById('userName')?.value;
-    const email = document.getElementById('userEmail')?.value;
-
-    if (!name || !email) {
-        alert('Please fill in all fields');
-        return;
-    }
-
-    // Save to localStorage
-    const userData = {
-        name: name,
-        email: email,
-        date: new Date().toISOString(),
-        progress: {
-            level: 'A1',
-            completedLessons: 0,
-            testScore: 0
-        }
-    };
-
-    localStorage.setItem('alielUser', JSON.stringify(userData));
-
-    // Get message based on current language
-    const lang = document.documentElement.lang || 'az';
-    const messages = {
-        az: `Təşəkkürlər ${name}! Pulsuz e-kitab email ünvanınıza göndəriləcək.`,
-        en: `Thank you ${name}! The free e-book will be sent to your email.`
-    };
-
-    alert(messages[lang] || messages.az);
-
-    // Track download
-    let downloads = parseInt(localStorage.getItem('totalDownloads') || '0');
-    downloads++;
-    localStorage.setItem('totalDownloads', downloads.toString());
-
-    closeEmailModal();
-    e.target.reset();
-
-    // Redirect to resources page
-    setTimeout(() => {
-        window.location.href = 'resources.html';
-    }, 1500);
+    // Email modal artıq register.html-ə yönləndirir
+    // Bu handler uygunluq nəmınə saxlanılıb
+    window.location.href = 'register.html';
 }
 
 // ===== Progress Tracker =====

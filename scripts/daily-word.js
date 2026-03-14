@@ -441,11 +441,6 @@ function loadWordOfDay() {
     // Mark as seen (for auth user and localStorage)
     markWordAsSeen(todayWord.word);
 
-    // Mark for auth user
-    if (typeof markWordSeen === 'function') {
-        markWordSeen(todayWord);
-    }
-
     // Update favorite button state
     updateFavoriteButton();
 }
@@ -750,7 +745,19 @@ function addArchiveWordToFav(wordObj) {
     }
 }
 
-// Fallback toast if auth.js not loaded
+// ===== Global showToast bridge =====
+// daily-word.js non-module scopeda olduğu üçün DS.toast-a bridge lazımdır
 if (typeof showToast === 'undefined') {
-    window.showToast = function (msg) { alert(msg); };
+    window.showToast = function (msg, type) {
+        if (window.DS && typeof window.DS.toast === 'function') {
+            window.DS.toast({ msg: msg, type: type || 'info', duration: 3500 });
+        } else {
+            // fallback
+            const t = document.createElement('div');
+            t.style.cssText = 'position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#1c2333;color:#fff;padding:.75rem 1.5rem;border-radius:8px;z-index:9999;font-size:.9rem;box-shadow:0 4px 20px rgba(0,0,0,.4)';
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        }
+    };
 }

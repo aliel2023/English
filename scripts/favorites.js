@@ -240,38 +240,42 @@ function showAllCards() {
 // ===== REMOVE ACTIONS =====
 function removeWordFav(word) {
     if (!confirm(`"${word}" sözünü sevimlilərdən silmək istəyirsiniz?`)) return;
-    removeFromFavorites(word, 'words');
-    const user = getCurrentUser();
-    if (user) {
-        allFavWords = user.favoriteWords || [];
-        renderWords(allFavWords);
-        document.getElementById('wordCount').textContent = allFavWords.length;
-        updateFavStats(user);
+    if (typeof window.removeFromFavorites === 'function') {
+        window.removeFromFavorites(word, 'words');
     }
+    // Optimistically update local state
+    allFavWords = allFavWords.filter(w => (typeof w === 'object' ? w.word : w) !== word);
+    renderWords(allFavWords);
+    const wc = document.getElementById('wordCount');
+    if (wc) wc.textContent = allFavWords.length;
+    const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+    if (user) updateFavStats({ ...user, favorites: { words: allFavWords, grammar: allFavGrammars, phrases: allFavPhrases } });
 }
 
 function removeGrammarFav(title) {
     if (!confirm(`Bu qaydanı sevimlilərdən silmək istəyirsiniz?`)) return;
-    removeFromFavorites(title, 'grammar');
-    const user = getCurrentUser();
-    if (user) {
-        allFavGrammars = user.favoriteGrammars || [];
-        renderGrammars(allFavGrammars);
-        document.getElementById('grammarCount').textContent = allFavGrammars.length;
-        updateFavStats(user);
+    if (typeof window.removeFromFavorites === 'function') {
+        window.removeFromFavorites(title, 'grammar');
     }
+    allFavGrammars = allFavGrammars.filter(g => (typeof g === 'object' ? g.title : g) !== title);
+    renderGrammars(allFavGrammars);
+    const gc = document.getElementById('grammarCount');
+    if (gc) gc.textContent = allFavGrammars.length;
+    const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+    if (user) updateFavStats({ ...user, favorites: { words: allFavWords, grammar: allFavGrammars, phrases: allFavPhrases } });
 }
 
 function removePhraseFav(phrase) {
     if (!confirm(`Bu ifadəni sevimlilərdən silmək istəyirsiniz?`)) return;
-    removeFromFavorites(phrase, 'phrases');
-    const user = getCurrentUser();
-    if (user) {
-        allFavPhrases = user.favoritePhrases || [];
-        renderPhrases(allFavPhrases);
-        document.getElementById('phraseCount').textContent = allFavPhrases.length;
-        updateFavStats(user);
+    if (typeof window.removeFromFavorites === 'function') {
+        window.removeFromFavorites(phrase, 'phrases');
     }
+    allFavPhrases = allFavPhrases.filter(p => (typeof p === 'object' ? p.phrase : p) !== phrase);
+    renderPhrases(allFavPhrases);
+    const pc = document.getElementById('phraseCount');
+    if (pc) pc.textContent = allFavPhrases.length;
+    const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+    if (user) updateFavStats({ ...user, favorites: { words: allFavWords, grammar: allFavGrammars, phrases: allFavPhrases } });
 }
 
 // ===== WORD DETAIL MODAL =====
@@ -279,39 +283,97 @@ function openWordDetail(idx) {
     const word = allFavWords[idx];
     if (!word) return;
 
+    // XSS-safe: use textContent for all user data
+    const safe = (v) => String(v || '');
     const content = document.getElementById('wordDetailContent');
-    content.innerHTML = `
-        <div class="word-detail-header">
-            <span class="word-detail-badge">${word.level || '?'}</span>
-            <span class="word-detail-type">${word.type || ''}</span>
-        </div>
-        <h2 class="word-detail-title">${word.word}</h2>
-        <p class="word-detail-pronunciation">${word.pronunciation || ''}</p>
-        <div class="word-detail-section">
-            <h4>🌐 Tərcümə</h4>
-            <p>${word.translation || '-'}</p>
-        </div>
-        <div class="word-detail-section">
-            <h4>📖 Tərif</h4>
-            <p>${word.definition || '-'}</p>
-        </div>
-        ${word.examples && word.examples.length ? `
-        <div class="word-detail-section">
-            <h4>💬 Nümunə cümlələr</h4>
-            ${word.examples.map(ex => `
-                <div class="word-detail-example">
-                    <p class="ex-en">"${ex.en}"</p>
-                    <p class="ex-az">${ex.az}</p>
-                </div>
-            `).join('')}
-        </div>` : ''}
-        ${word.synonyms && word.synonyms.length ? `
-        <div class="word-detail-section">
-            <h4>🔗 Sinonimlər</h4>
-            <div class="synonym-tags">${word.synonyms.map(s => `<span class="tag">${s}</span>`).join('')}</div>
-        </div>` : ''}
-        <button class="btn btn-primary" onclick='playWordAudio("${word.word}")' style="margin-top:1rem;">🔊 Səsləndirmə</button>
-    `;
+    content.innerHTML = '';
+
+    // Header
+    const header = document.createElement('div');
+    header.className = 'word-detail-header';
+    const badge = document.createElement('span');
+    badge.className = 'word-detail-badge';
+    badge.textContent = word.level || '?';
+    const typeBadge = document.createElement('span');
+    typeBadge.className = 'word-detail-type';
+    typeBadge.textContent = word.type || '';
+    header.appendChild(badge);
+    header.appendChild(typeBadge);
+    content.appendChild(header);
+
+    const title = document.createElement('h2');
+    title.className = 'word-detail-title';
+    title.textContent = word.word || '';
+    content.appendChild(title);
+
+    const pron = document.createElement('p');
+    pron.className = 'word-detail-pronunciation';
+    pron.textContent = word.pronunciation || '';
+    content.appendChild(pron);
+
+    // Translation
+    const transSec = document.createElement('div');
+    transSec.className = 'word-detail-section';
+    transSec.innerHTML = '<h4>🌐 Tərcümə</h4>';
+    const transP = document.createElement('p');
+    transP.textContent = word.translation || '-';
+    transSec.appendChild(transP);
+    content.appendChild(transSec);
+
+    // Definition
+    const defSec = document.createElement('div');
+    defSec.className = 'word-detail-section';
+    defSec.innerHTML = '<h4>📖 Tərif</h4>';
+    const defP = document.createElement('p');
+    defP.textContent = word.definition || '-';
+    defSec.appendChild(defP);
+    content.appendChild(defSec);
+
+    // Examples
+    if (word.examples && word.examples.length) {
+        const exSec = document.createElement('div');
+        exSec.className = 'word-detail-section';
+        exSec.innerHTML = '<h4>💬 Nümunə cümlələr</h4>';
+        word.examples.forEach(ex => {
+            const exDiv = document.createElement('div');
+            exDiv.className = 'word-detail-example';
+            const enP = document.createElement('p');
+            enP.className = 'ex-en';
+            enP.textContent = '"' + (ex.en || '') + '"';
+            const azP = document.createElement('p');
+            azP.className = 'ex-az';
+            azP.textContent = ex.az || '';
+            exDiv.appendChild(enP);
+            exDiv.appendChild(azP);
+            exSec.appendChild(exDiv);
+        });
+        content.appendChild(exSec);
+    }
+
+    // Synonyms
+    if (word.synonyms && word.synonyms.length) {
+        const synSec = document.createElement('div');
+        synSec.className = 'word-detail-section';
+        synSec.innerHTML = '<h4>🔗 Sinonimlər</h4>';
+        const synDiv = document.createElement('div');
+        synDiv.className = 'synonym-tags';
+        word.synonyms.forEach(s => {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = s;
+            synDiv.appendChild(span);
+        });
+        synSec.appendChild(synDiv);
+        content.appendChild(synSec);
+    }
+
+    // Audio button
+    const audioBtn = document.createElement('button');
+    audioBtn.className = 'btn btn-primary';
+    audioBtn.style.marginTop = '1rem';
+    audioBtn.textContent = '🔊 Səsləndirmə';
+    audioBtn.addEventListener('click', () => playWordAudio(word.word || ''));
+    content.appendChild(audioBtn);
 
     document.getElementById('wordDetailModal').classList.add('active');
     document.body.style.overflow = 'hidden';

@@ -170,20 +170,22 @@ function loadWeeklyProgress(user) {
 
 function loadBadges(user) {
     const grid = document.getElementById('badgesGrid');
-    const badges = user.badges || ['🌟 Yeni Başlayan'];
+    const badges = user.badges || ['🌟 Yeni Başlayən'];
+    // Use correct Firestore paths
+    const favWords = (user.favorites && user.favorites.words) || user.favoriteWords || [];
 
     const allPossibleBadges = [
-        { badge: '🌟 Yeni Başlayan', desc: 'Qeydiyyatdan keçdiniz', unlocked: true },
+        { badge: '🌟 Yeni Başlayən', desc: 'Qeydiyyatdan keçdiniz', unlocked: true },
         { badge: '📅 1 Həftə', desc: '7 dəfə giriş', unlocked: (user.loginCount || 0) >= 7 },
         { badge: '🔥 7 Günlük Sıra', desc: '7 gün ardıcıl', unlocked: (user.currentStreak || 0) >= 7 },
         { badge: '📚 10 Söz', desc: '10 söz öyrəndiniz', unlocked: (user.seenWords || []).length >= 10 },
         { badge: '📚 50 Söz', desc: '50 söz öyrəndiniz', unlocked: (user.seenWords || []).length >= 50 },
-        { badge: '❤️ Sevimlilər', desc: '5 söz sevimlilərə', unlocked: (user.favoriteWords || []).length >= 5 },
-        { badge: '🧪 Test Ustası', desc: '3 test tamamladınız', unlocked: (user.testHistory || []).length >= 3 },
+        { badge: '❤️ Sevimlilər', desc: '5 söz sevimlilərə', unlocked: favWords.length >= 5 },
+        { badge: '🧪 Test Ustadı', desc: '3 test tamaməldınız', unlocked: (user.testHistory || []).length >= 3 },
         { badge: '🏅 1 Ay', desc: '30 giriş', unlocked: (user.loginCount || 0) >= 30 },
         { badge: '🔥 30 Günlük Sıra', desc: '30 gün ardıcıl', unlocked: (user.currentStreak || 0) >= 30 },
-        { badge: '📈 B1 Səviyyəsi', desc: 'B1 və ya üzərə çatın', unlocked: ['B1', 'B2', 'C1', 'C2'].includes(user.level) },
-        { badge: '🎓 İleri Səviyyə', desc: 'C1 və ya üzərə çatın', unlocked: ['C1', 'C2'].includes(user.level) },
+        { badge: '📈 B1 Səviyyəsi', desc: 'B1 və ya üzrǐ çatın', unlocked: ['B1', 'B2', 'C1', 'C2'].includes(user.level) },
+        { badge: '🎓 İleri Səviyyə', desc: 'C1 və ya üzrǐ çatın', unlocked: ['C1', 'C2'].includes(user.level) },
     ];
 
     allPossibleBadges.forEach(b => {
@@ -279,4 +281,18 @@ function loadAccountInfo(user, parseDate) {
         div.appendChild(val);
         grid.appendChild(div);
     });
+}
+
+// ===== DAILY TIP =====
+function getDailyTip(user) {
+    const streak = user.currentStreak || 0;
+    const level = user.level || 'A1';
+    const testCount = (user.testHistory || []).length;
+    const favCount = ((user.favorites && user.favorites.words) || []).length;
+
+    if (streak === 0) return { icon: '🌱', title: 'Başlayın!', content: 'Hər gün bir səhifə oxumaq vərdiyinizi formələşdirin. Streak-inizi başlatməq üçün bu gün fəaliyyət göstərin!' };
+    if (streak < 7) return { icon: '🔥', title: 'Davam edin!', content: `${streak} günlük siranız var. 7 günü tamamlamaq üçün davam edin!` };
+    if (streak >= 7 && testCount < 1) return { icon: '🎯', title: 'Test vaxtı!', content: 'Artıq möhtəşəm bir siranız var. Səviyyə testini keçmǐyi unutmayın!' };
+    if (favCount < 5) return { icon: '❤️', title: 'Söz saxlayın!', content: 'Günün Sozü bölməsindən sözləri sevimlilərə əlavə edin. 5+ söz badge qazanadırsınız!' };
+    return { icon: '🚀', title: 'Həyəcan verici!', content: `${level} səviyyəsini mənimsiyirsiniz. Növbəti hədəfə doğru irəlǐləmək üçün hər gün davam edin!` };
 }

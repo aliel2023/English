@@ -113,8 +113,16 @@ const RateLimit = {
     reset() { this.attempts = 0; this.lockedUntil = 0; }
 };
 
-// ===== SECURITY LAYER 4: CSRF-like Session Token =====
-const sessionToken = Math.random().toString(36).substring(2);
+// ===== SECURITY LAYER 4: CSRF-like Session Token (crypto-secure) =====
+const sessionToken = (() => {
+    try {
+        const arr = new Uint8Array(16);
+        crypto.getRandomValues(arr);
+        return Array.from(arr, b => b.toString(16).padStart(2, '0')).join('');
+    } catch (_) {
+        return Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
+    }
+})();
 
 // ===== Admin Check — SERVER SIDE ONLY =====
 function isAdminUser(userData) {
@@ -368,16 +376,20 @@ window.removeFromFavorites = async function (item, type = 'words') {
 };
 
 // ===== Save Test Result =====
-window.saveTestResult = async function (level, score, total) {
+window.saveTestResult = async function (level, score, total, percentage) {
     if (!currentUser) return;
     try {
-        const result = { level, score, total, date: new Date().toISOString() };
+        const pct = percentage !== undefined ? Math.round(percentage) : Math.round((score / total) * 100);
+        const result = { level, score, total, percentage: pct, date: new Date().toISOString() };
         await updateDoc(doc(db, "users", currentUser.uid), {
             level, testsCompleted: (currentUserData?.testsCompleted || 0) + 1,
             testHistory: arrayUnion(result)
         });
-        if (currentUserData) { currentUserData.level = level; currentUserData.testsCompleted = (currentUserData.testsCompleted || 0) + 1; }
-    } catch (e) { console.error(e); }
+        if (currentUserData) {
+            currentUserData.level = level;
+            currentUserData.testsCompleted = (currentUserData.testsCompleted || 0) + 1;
+        }
+    } catch (e) { console.error('saveTestResult:', e); }
 };
 
 // ===== Track Lead =====
