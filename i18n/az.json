@@ -44,10 +44,11 @@
     "about": "2023-dən bəri minlərlə tələbəyə keyfiyyətli ingilis dili təhsili təqdim edirik.",
     "links": "Keçidlər",
     "support": "Dəstək",
-    "newsletter": "Xəbər Bülleteni",
-    "newsletterDesc": "Gündəlik dərs və xüsusi təkliflərdən xəbərdar olun",
-    "btnSubscribe": "Abunə Ol",
-    "rights": "© 2025 Alielenglish. Bütün hüquqlar qorunur."
+    "newsletter": "Xəbər Bülləteni",
+    "newsletterDesc": "Gündəlik dərs və xüsusin təkliflərdən xəbərdar olun",
+    "btnSubscribe": "Abünə Ol",
+    "rights": "© 2025 Alielenglish. Bütün hüquqlar qorunur.",
+    "privacy": "Məxfilik Siyasəti"
   },
   "modal": {
     "welcome": "🎉 Xoş gəlmisiniz!",
