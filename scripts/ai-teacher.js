@@ -189,9 +189,9 @@
                 parts: [{ text: m.text }]
             }));
 
-            // Prepend system prompt to first message
+            // Prepend system prompt to first message with separator
             if (contents.length > 0) {
-                contents[0].parts[0].text = buildSystemPrompt() + '\n\n' + contents[0].parts[0].text;
+                contents[0].parts[0].text = buildSystemPrompt() + '\n\n---USER_MSG---\n\n' + contents[0].parts[0].text;
             }
 
             const url = CONFIG.apiKey ? `${CONFIG.apiUrl}?key=${CONFIG.apiKey}` : CONFIG.apiUrl;

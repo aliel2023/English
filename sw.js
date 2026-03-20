@@ -1,36 +1,40 @@
 /**
- * ALIELENGLISH — Service Worker v1.0
+ * ALIELENGLISH — Service Worker v2.0
  * Strategy: Cache First → Network Fallback
  * Offline: Essential pages and grammar rules cached
  */
 
-const CACHE_NAME = 'alielenglish-v1.2';
-const OFFLINE_URL = '/index.html';
+const CACHE_NAME = 'alielenglish-v2.0';
+const BASE = self.location.pathname.replace(/\/sw\.js$/, '/');
+const OFFLINE_URL = BASE + 'index.html';
 
-// Core assets to precache on install
+const PRECACHE_PATHS = [
+    '',
+    'index.html',
+    'daily-word.html',
+    'test.html',
+    'speaking.html',
+    'resources.html',
+    'pricing.html',
+    'contact.html',
+    'styles/design-system.css',
+    'styles/main.css',
+    'styles/home.css',
+    'styles/auth.css',
+    'styles/ai-teacher.css',
+    'scripts/design-system.js',
+    'scripts/i18n.js',
+    'scripts/main.js',
+    'scripts/ai-teacher.js',
+    'i18n/az.json',
+    'i18n/en.json',
+    'assets/instagram-1-svgrepo-com.svg',
+    'assets/telegram-svgrepo-com.svg',
+    'assets/gmail-icon-logo-svgrepo-com.svg'
+];
+
 const PRECACHE_URLS = [
-    '/',
-    '/index.html',
-    '/daily-word.html',
-    '/test.html',
-    '/speaking.html',
-    '/resources.html',
-    '/pricing.html',
-    '/contact.html',
-    '/styles/design-system.css',
-    '/styles/main.css',
-    '/styles/home.css',
-    '/styles/auth.css',
-    '/styles/ai-teacher.css',
-    '/scripts/design-system.js',
-    '/scripts/i18n.js',
-    '/scripts/main.js',
-    '/scripts/ai-teacher.js',
-    '/i18n/az.json',
-    '/i18n/en.json',
-    '/assets/instagram-1-svgrepo-com.svg',
-    '/assets/telegram-svgrepo-com.svg',
-    '/assets/gmail-icon-logo-svgrepo-com.svg',
+    ...PRECACHE_PATHS.map(p => BASE + p),
     'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&subset=latin,latin-ext&display=swap'
 ];
 
@@ -56,7 +60,7 @@ self.addEventListener('activate', (event) => {
             caches.keys().then((keys) =>
                 Promise.all(
                     keys
-                        .filter(key => key !== CACHE_NAME)
+                        .filter(key => key !== CACHE_NAME && key !== 'fonts-cache-v1')
                         .map(key => caches.delete(key))
                 )
             ),
@@ -70,39 +74,32 @@ self.addEventListener('fetch', (event) => {
     const { request } = event;
     const url = new URL(request.url);
 
-    // Skip non-GET and cross-origin API calls
     if (request.method !== 'GET') return;
     if (url.hostname === 'generativelanguage.googleapis.com') return;
     if (url.hostname === 'firestore.googleapis.com') return;
     if (url.hostname === 'identitytoolkit.googleapis.com') return;
     if (url.hostname === 'securetoken.googleapis.com') return;
     if (url.hostname === 'script.google.com') return;
+    if (url.hostname.endsWith('.workers.dev')) return;
 
-    // HTML pages — Network First
     if (request.headers.get('accept')?.includes('text/html')) {
         event.respondWith(networkFirstStrategy(request));
         return;
     }
 
-    // Google Fonts — Cache First (long-lived)
     if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
         event.respondWith(cacheFirstStrategy(request, 'fonts-cache-v1'));
         return;
     }
 
-    // Static assets (CSS, JS, images, JSON) — Cache First
-    if (
-        url.pathname.match(/\.(css|js|json|svg|png|jpg|jpeg|webp|ico|woff2?)$/)
-    ) {
+    if (url.pathname.match(/\.(css|js|json|svg|png|jpg|jpeg|webp|ico|woff2?)$/)) {
         event.respondWith(cacheFirstStrategy(request, CACHE_NAME));
         return;
     }
 
-    // Default — Network First
     event.respondWith(networkFirstStrategy(request));
 });
 
-// ── Cache First strategy ──
 async function cacheFirstStrategy(request, cacheName) {
     const cache = await caches.open(cacheName);
     const cached = await cache.match(request);
@@ -119,7 +116,6 @@ async function cacheFirstStrategy(request, cacheName) {
     }
 }
 
-// ── Network First strategy ──
 async function networkFirstStrategy(request) {
     try {
         const response = await fetch(request);
@@ -135,7 +131,6 @@ async function networkFirstStrategy(request) {
     }
 }
 
-// ===== MESSAGE — manual cache clear =====
 self.addEventListener('message', (event) => {
     if (event.data === 'SKIP_WAITING') {
         self.skipWaiting();

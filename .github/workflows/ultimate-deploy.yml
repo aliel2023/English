@@ -1,10 +1,9 @@
-name: 🚀 Ultimate AI Optimization & Deploy
+name: Ultimate AI Optimization & Deploy
 
 on:
   push:
     branches: [ main ]
   schedule:
-    # Weekly Sunday 02:00 UTC
     - cron: '0 2 * * 0'
   workflow_dispatch:
     inputs:
@@ -14,7 +13,7 @@ on:
         default: false
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -23,50 +22,32 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # ─────────────────── JOB 1: QUALITY CHECK ───────────────────
   quality:
-    name: 🔍 Quality & Security Check
+    name: Quality & Security Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
-
-      - name: Install tools
-        run: |
-          npm install -g html-minifier-terser clean-css-cli terser
-          sudo apt-get install -y webp
-
-      # ── AZ Grammar check (common misspellings) ──
-      - name: 🇦🇿 AZ Grammar Check
+      - name: AZ Grammar Check
         run: |
           echo "=== Checking Azerbaijani text quality ==="
-          # Check for common wrong spellings
-          WRONG_WORDS=("qramer" "gramotika" "sehfe" "melumat" "elave")
+          WRONG_WORDS=("qramer" "gramotika" "sehfe" "melumat" "elave" "xususin" "abune")
           FOUND=0
           for word in "${WRONG_WORDS[@]}"; do
-            if grep -rli "$word" --include="*.html" --include="*.json" .; then
-              echo "⚠️  Found possible misspelling: '$word'"
+            if grep -rli "$word" --include="*.html" --include="*.json" . 2>/dev/null; then
+              echo "WARNING: Found possible misspelling: '$word'"
               FOUND=1
             fi
           done
           if [ $FOUND -eq 0 ]; then
-            echo "✅ No obvious AZ spelling issues found"
+            echo "No obvious AZ spelling issues found"
           fi
 
-      # ── HTML validation ──
-      - name: 🔎 HTML Structure Check
+      - name: HTML Structure Check
         run: |
-          echo "=== Checking HTML files for common issues ==="
+          echo "=== Checking HTML files ==="
           for f in *.html; do
-            echo "Checking $f..."
-            # Check for missing alt attributes on images
             if grep -q '<img' "$f"; then
               IMG_COUNT=$(grep -c '<img' "$f" || true)
               ALT_COUNT=$(grep -c 'alt=' "$f" || true)
@@ -74,29 +55,25 @@ jobs:
             fi
           done
 
-      # ── Security header check ──
-      - name: 🔒 Security Headers Verify
+      - name: Security Headers Verify
         run: |
-          echo "=== Verifying _headers file ==="
           if [ -f "_headers" ]; then
-            echo "✅ _headers file exists"
-            grep -q "X-Frame-Options" _headers && echo "✅ X-Frame-Options" || echo "❌ Missing X-Frame-Options"
-            grep -q "Content-Security-Policy" _headers && echo "✅ CSP" || echo "❌ Missing CSP"
-            grep -q "Strict-Transport-Security" _headers && echo "✅ HSTS" || echo "❌ Missing HSTS"
-          else
-            echo "⚠️  _headers file not found"
+            echo "_headers file exists"
+            grep -q "X-Frame-Options" _headers && echo "OK: X-Frame-Options" || echo "MISSING: X-Frame-Options"
+            grep -q "Content-Security-Policy" _headers && echo "OK: CSP" || echo "MISSING: CSP"
+            grep -q "Strict-Transport-Security" _headers && echo "OK: HSTS" || echo "MISSING: HSTS"
           fi
 
-  # ─────────────────── JOB 2: OPTIMIZE ASSETS ───────────────────
-  optimize:
-    name: ⚡ Optimize Assets
+  build-and-deploy:
+    name: Build & Deploy
     runs-on: ubuntu-latest
     needs: quality
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -104,42 +81,44 @@ jobs:
           node-version: '20'
 
       - name: Install optimization tools
-        run: |
-          npm install -g html-minifier-terser clean-css-cli terser
+        run: npm install -g html-minifier-terser clean-css-cli terser
 
-      # ── Minify CSS ──
-      - name: 🎨 Minify CSS
+      - name: Create dist directory
         run: |
-          echo "=== Minifying CSS files ==="
-          SAVED=0
-          for f in styles/*.css; do
+          mkdir -p dist
+          cp -r *.html styles scripts i18n assets sw.js _headers dist/ 2>/dev/null || true
+          cp -r locales dist/ 2>/dev/null || true
+          cp firestore.rules dist/ 2>/dev/null || true
+
+      - name: Minify CSS
+        run: |
+          echo "=== Minifying CSS ==="
+          for f in dist/styles/*.css; do
+            [ -f "$f" ] || continue
             ORIG=$(stat -c%s "$f")
             cleancss -o "$f" "$f" 2>/dev/null || true
             NEW=$(stat -c%s "$f")
-            DIFF=$((ORIG - NEW))
-            SAVED=$((SAVED + DIFF))
-            echo "  $f: ${ORIG}B → ${NEW}B (saved ${DIFF}B)"
+            echo "  $f: ${ORIG}B -> ${NEW}B"
           done
-          echo "Total CSS saved: ${SAVED} bytes"
 
-      # ── Minify JS ──
-      - name: ⚙️ Minify JS
+      - name: Minify JS
         run: |
-          echo "=== Minifying JS files ==="
-          for f in scripts/*.js; do
-            # Skip already minified files
+          echo "=== Minifying JS ==="
+          for f in dist/scripts/*.js; do
+            [ -f "$f" ] || continue
             [[ "$f" == *".min.js" ]] && continue
+            [[ "$f" == *"auth.js" ]] && { echo "  SKIP $f (ES modules)"; continue; }
             ORIG=$(stat -c%s "$f")
             terser "$f" -o "$f" --compress --mangle 2>/dev/null || true
             NEW=$(stat -c%s "$f")
-            echo "  $f: ${ORIG}B → ${NEW}B"
+            echo "  $f: ${ORIG}B -> ${NEW}B"
           done
 
-      # ── Minify HTML ──
-      - name: 📄 Minify HTML
+      - name: Minify HTML
         run: |
-          echo "=== Minifying HTML files ==="
-          for f in *.html; do
+          echo "=== Minifying HTML ==="
+          for f in dist/*.html; do
+            [ -f "$f" ] || continue
             html-minifier-terser \
               --collapse-whitespace \
               --remove-comments \
@@ -150,113 +129,8 @@ jobs:
               --use-short-doctype \
               --minify-css true \
               --minify-js true \
-              -o "$f" "$f" 2>/dev/null || echo "  ⚠️ Could not minify $f (skipping)"
-            echo "  ✅ $f"
+              -o "$f" "$f" 2>/dev/null || echo "  Could not minify $f (skipping)"
           done
-
-      # ── Generate optimization report ──
-      - name: 📊 Generate Optimization Report
-        run: |
-          DATE=$(date -u +"%Y-%m-%d %H:%M UTC")
-          COMMIT=$(git rev-parse --short HEAD)
-          
-          cat > OPTIMIZATION_REPORT.md << EOF
-          # 📊 Optimization Report
-          
-          **Generated:** ${DATE}  
-          **Commit:** ${COMMIT}  
-          **Branch:** main
-          
-          ## ✅ Completed Optimizations
-          
-          | Phase | Status | Details |
-          |-------|--------|---------|
-          | Phase 2: AI Teacher Widget | ✅ Complete | Full onboarding, intent classification, Gemini API |
-          | Phase 3: i18n (AZ + EN) | ✅ Complete | az.json, en.json, inline fallbacks |
-          | Phase 4: SEO | ✅ Complete | OG, Twitter Card, JSON-LD, hreflang, canonical |
-          | Phase 5: Security | ✅ Complete | _headers, CSP, HSTS, X-Frame-Options |
-          | Phase 6: Service Worker | ✅ Complete | Cache-First, offline support |
-          | Phase 6: GitHub Actions | ✅ Complete | This workflow |
-          | CSS Minification | ✅ Applied | All styles/*.css |
-          | JS Minification | ✅ Applied | All scripts/*.js |
-          | HTML Minification | ✅ Applied | All *.html |
-          
-          ## 📁 File Inventory
-          
-          \`\`\`
-          styles/ai-teacher.css   — AI Teacher widget styles
-          scripts/ai-teacher.js   — AI Teacher full logic
-          sw.js                   — Service Worker (Cache-First)
-          _headers                — Security headers
-          index.html              — Enhanced SEO + AI Teacher
-          \`\`\`
-          
-          ## 🔒 Security Checklist
-          
-          - [x] Content-Security-Policy
-          - [x] X-Frame-Options: DENY
-          - [x] X-XSS-Protection
-          - [x] HSTS with preload
-          - [x] Referrer-Policy
-          - [x] Permissions-Policy
-          - [x] Rate limiting (auth.js)
-          - [x] XSS sanitizer (auth.js)
-          
-          ## 🤖 AI Teacher Features
-          
-          - [x] Onboarding flow (name → level → goal)
-          - [x] 10 intent categories
-          - [x] Gemini API integration
-          - [x] LocalStorage personalization
-          - [x] Offline fallback responses
-          - [x] Deep linking to site pages
-          - [x] Streak tracking
-          - [x] Bilingual (AZ + EN)
-          
-          ## 📈 SEO Enhancements
-          
-          - [x] Title: "Alielenglish - İngilis Dilini Öyrən | A1-C2 | AI Dəstəkli"
-          - [x] Meta description (optimized)
-          - [x] Canonical URL fixed (English2 → English)
-          - [x] Open Graph tags
-          - [x] Twitter Card
-          - [x] JSON-LD (EducationalOrganization + Courses)
-          - [x] hreflang (az, en, x-default)
-          - [x] robots meta
-          
-          ---
-          *Auto-generated by GitHub Actions — $(date -u)*
-          EOF
-          
-          echo "✅ Report generated"
-
-      # ── Commit changes ──
-      - name: 💾 Commit Optimized Files
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Actions"
-          git add -A
-          git diff --staged --quiet || git commit -m "⚡ Auto-optimize: minify assets + update report [skip ci]"
-
-      - name: 📤 Push Changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
-
-  # ─────────────────── JOB 3: DEPLOY ───────────────────
-  deploy:
-    name: 🌐 Deploy to GitHub Pages
-    runs-on: ubuntu-latest
-    needs: optimize
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: main
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -264,13 +138,11 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: 'dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: ✅ Deployment Success
-        run: |
-          echo "🎉 Deployed successfully!"
-          echo "URL: ${{ steps.deployment.outputs.page_url }}"
+      - name: Deployment Success
+        run: echo "Deployed to ${{ steps.deployment.outputs.page_url }}"
