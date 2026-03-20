@@ -47,6 +47,15 @@
     // ===== STORAGE =====
     function loadData() {
         try {
+            // Migrate old key 'ait_data' → new key 'ai_teacher_data'
+            const OLD_KEY = 'ait_data';
+            if (!localStorage.getItem(CONFIG.storageKey) && localStorage.getItem(OLD_KEY)) {
+                try {
+                    localStorage.setItem(CONFIG.storageKey, localStorage.getItem(OLD_KEY));
+                    localStorage.removeItem(OLD_KEY);
+                } catch (_) {}
+            }
+
             const raw = localStorage.getItem(CONFIG.storageKey);
             if (raw) {
                 const data = JSON.parse(raw);
