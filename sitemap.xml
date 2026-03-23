@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+    <!-- Homepage -->
+    <url>
+        <loc>https://aliel2023.github.io/English/</loc>
+        <lastmod>2026-03-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+        <xhtml:link rel="alternate" hreflang="az" href="https://aliel2023.github.io/English/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://aliel2023.github.io/English/"/>
+    </url>
+
+    <!-- Günün Sözü (Daily Word) — updated daily -->
+    <url>
+        <loc>https://aliel2023.github.io/English/daily-word.html</loc>
+        <lastmod>2026-03-23</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Danışıq Pratikası (Speaking Practice) -->
+    <url>
+        <loc>https://aliel2023.github.io/English/speaking.html</loc>
+        <lastmod>2026-03-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Səviyyə Testi (Level Test) -->
+    <url>
+        <loc>https://aliel2023.github.io/English/test.html</loc>
+        <lastmod>2026-03-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Resurslar (Resources) -->
+    <url>
+        <loc>https://aliel2023.github.io/English/resources.html</loc>
+        <lastmod>2026-03-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Qiymətlər (Pricing) -->
+    <url>
+        <loc>https://aliel2023.github.io/English/pricing.html</loc>
+        <lastmod>2026-03-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Əlaqə (Contact) -->
+    <url>
+        <loc>https://aliel2023.github.io/English/contact.html</loc>
+        <lastmod>2026-03-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- Məxfilik Siyasəti (Privacy Policy) -->
+    <url>
+        <loc>https://aliel2023.github.io/English/privacy.html</loc>
+        <lastmod>2026-03-23</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.4</priority>
+    </url>
+
+</urlset>

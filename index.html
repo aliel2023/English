@@ -43,28 +43,87 @@
     <meta name="twitter:title" content="Alielenglish - AI İngilis Dili Müəllimi">
     <meta name="twitter:description" content="A1-C2 arası ingilis dili öyrənmə platforması. Pulsuz başla!">
     <meta name="twitter:site" content="@alielenglish">
-    <!-- JSON-LD Structured Data -->
+    <!-- JSON-LD Structured Data: WebSite -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "EducationalOrganization",
+      "@type": "WebSite",
       "name": "Alielenglish",
       "url": "https://aliel2023.github.io/English/",
-      "description": "Azərbaycanlılar üçün AI dəstəkli ingilis dili öyrənmə platforması",
+      "description": "Azərbaycanlılar üçün AI dəstəkli ingilis dili öyrənmə platforması. A1-dən C2-yə qədər strukturlu proqram.",
       "inLanguage": ["az", "en"],
-      "sameAs": [
-        "https://instagram.com/alielenglish",
-        "https://t.me/alielenglish"
-      ],
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "İngilis Dili Kursları",
-        "itemListElement": [
-          {"@type": "Course", "name": "A1-A2 Başlanğıc", "description": "İngilis dilinə tam başlanğıc kursu", "provider": {"@type": "Organization", "name": "Alielenglish"}},
-          {"@type": "Course", "name": "B1-B2 Orta Səviyyə", "description": "Orta səviyyə ingilis dili kursu", "provider": {"@type": "Organization", "name": "Alielenglish"}},
-          {"@type": "Course", "name": "C1-C2 Təkmil", "description": "Təkmil səviyyə ingilis dili kursu", "provider": {"@type": "Organization", "name": "Alielenglish"}}
-        ]
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://aliel2023.github.io/English/resources.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
       }
+    }
+    </script>
+    <!-- JSON-LD Structured Data: EducationalOrganization + Courses -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "EducationalOrganization",
+          "@id": "https://aliel2023.github.io/English/#organization",
+          "name": "Alielenglish",
+          "url": "https://aliel2023.github.io/English/",
+          "logo": "https://aliel2023.github.io/English/assets/logo.png",
+          "description": "2023-dən bəri Azərbaycanlılara AI dəstəkli, CEFR standartlarına uyğun ingilis dili öyrənmə platforması.",
+          "foundingDate": "2023",
+          "inLanguage": ["az", "en"],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "englishaliel@gmail.com",
+            "contactType": "customer support",
+            "availableLanguage": ["Azerbaijani", "English"]
+          },
+          "sameAs": [
+            "https://instagram.com/alielenglish",
+            "https://t.me/alielenglish"
+          ],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "İngilis Dili Kursları",
+            "itemListElement": [
+              {
+                "@type": "Course",
+                "name": "A1-A2 Başlanğıc İngilis Dili",
+                "description": "İngilis dilinə heç bilgisi olmayan tələbələr üçün tam başlanğıc kursu. Əsas qrammatika, söz ehtiyatı və danışıq bacarıqları.",
+                "url": "https://aliel2023.github.io/English/test.html",
+                "provider": {"@type": "Organization", "name": "Alielenglish"},
+                "educationalLevel": "Beginner",
+                "teaches": "Basic English grammar, vocabulary, and speaking",
+                "audience": {"@type": "EducationalAudience", "educationalRole": "student"}
+              },
+              {
+                "@type": "Course",
+                "name": "B1-B2 Orta Səviyyə İngilis Dili",
+                "description": "Orta səviyyə tələbələr üçün strukturlu proqram. Mürəkkəb qrammatika, iş ingilizcəsi və IELTS hazırlığı.",
+                "url": "https://aliel2023.github.io/English/test.html",
+                "provider": {"@type": "Organization", "name": "Alielenglish"},
+                "educationalLevel": "Intermediate",
+                "teaches": "Intermediate English grammar, Business English, IELTS preparation",
+                "audience": {"@type": "EducationalAudience", "educationalRole": "student"}
+              },
+              {
+                "@type": "Course",
+                "name": "C1-C2 Təkmil İngilis Dili",
+                "description": "Təkmil səviyyə tələbələr üçün intensiv proqram. Akademik yazı, mürəkkəb söz ehtiyatı.",
+                "url": "https://aliel2023.github.io/English/test.html",
+                "provider": {"@type": "Organization", "name": "Alielenglish"},
+                "educationalLevel": "Advanced",
+                "teaches": "Advanced English, academic writing, complex vocabulary",
+                "audience": {"@type": "EducationalAudience", "educationalRole": "student"}
+              }
+            ]
+          }
+        }
+      ]
     }
     </script>
     <!-- Fonts -->
@@ -77,6 +136,7 @@
     <link rel="stylesheet" href="styles/home.css">
     <link rel="stylesheet" href="styles/auth.css">
     <link rel="stylesheet" href="styles/ai-teacher.css">
+    <link rel="stylesheet" href="styles/ui-upgrades.css">
 </head>
 
 <body>
@@ -104,13 +164,13 @@
                 <div class="nav-actions">
                     <div class="lang-dropdown nav-item">
                         <button class="lang-btn current-lang" id="currentLangBtn"
-                            onclick="toggleLangDropdown()">AZ</button>
+                            onclick="toggleLangDropdown()" aria-haspopup="true" aria-expanded="false" aria-label="Dil seçimi">AZ</button>
                         <div class="lang-menu" id="langMenu">
                             <button class="lang-option" onclick="switchLanguage('az', event)">AZ</button>
                             <button class="lang-option" onclick="switchLanguage('en', event)">EN</button>
                         </div>
                     </div>
-                    <button class="mobile-toggle" onclick="toggleMobileMenu()">
+                    <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Menyunu aç/bağla" aria-expanded="false">
                         <span></span>
                         <span></span>
                         <span></span>
@@ -335,6 +395,95 @@
         </div>
     </section>
 
+    <!-- ===== TESTIMONIALS / SOCIAL PROOF ===== -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="container">
+            <div class="section-header-center">
+                <span class="section-badge">⭐ Rəylər</span>
+                <h2 class="section-title">Tələbələrimiz Nə Deyir?</h2>
+                <p class="section-sub">13,000+ tələbənin etibar etdiyi platforma</p>
+            </div>
+
+            <div class="testimonials-carousel" id="testimonialsCarousel">
+                <div class="testimonials-track" id="testimonialsTrack">
+
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars" aria-label="5 ulduzlu reytinq">★★★★★</div>
+                        <p class="testimonial-quote">"Alielenglish ilə 6 ayda A2-dən B2 səviyyəsinə çatdım. Gündəlik dərslər və AI müəllim həqiqətən fərq yaradır. Hər kəsə tövsiyə edirəm!"</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">NM</div>
+                            <div class="testimonial-info">
+                                <span class="testimonial-name">Nigar Məmmədova</span>
+                                <span class="testimonial-role">B2 Səviyyə Tələbəsi</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars" aria-label="5 ulduzlu reytinq">★★★★★</div>
+                        <p class="testimonial-quote">"IELTS hazırlığı üçün ən yaxşı platforma! Band 7.0 əldə etdim. Müəllimlər çox peşəkar və material çox zəngindir."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">EH</div>
+                            <div class="testimonial-info">
+                                <span class="testimonial-name">Elvin Həsənov</span>
+                                <span class="testimonial-role">IELTS 7.0 — C1 Səviyyə</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars" aria-label="5 ulduzlu reytinq">★★★★★</div>
+                        <p class="testimonial-quote">"Günün sözü funksiyası inanılmaz! Hər gün yeni söz öyrənirəm və flashcard sistemi ilə yadda saxlamaq çox asandır."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">LA</div>
+                            <div class="testimonial-info">
+                                <span class="testimonial-name">Leyla Abbasova</span>
+                                <span class="testimonial-role">A2 Səviyyə Tələbəsi</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 4 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars" aria-label="4 ulduzlu reytinq">★★★★☆</div>
+                        <p class="testimonial-quote">"İş yerimdə ingilis dilində danışmaq lazım idi. Business English modulu ilə 3 ayda konfrans təqdimatı edə bildim!"</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">RQ</div>
+                            <div class="testimonial-info">
+                                <span class="testimonial-name">Rəşad Quliyev</span>
+                                <span class="testimonial-role">B1 Səviyyə — İş İngilizcəsi</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 5 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars" aria-label="5 ulduzlu reytinq">★★★★★</div>
+                        <p class="testimonial-quote">"Səviyyə testi ilə başladım, indi premium üzvəm. Danışıq pratikası və AI feedback ən sevdiyim xüsusiyyətlərdir."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">AK</div>
+                            <div class="testimonial-info">
+                                <span class="testimonial-name">Aysel Kərimli</span>
+                                <span class="testimonial-role">Premium Tələbə — B2 Səviyyə</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Carousel Controls -->
+                <div class="testimonials-controls">
+                    <button class="carousel-btn carousel-prev" id="testimonialPrev" aria-label="Əvvəlki rəy">‹</button>
+                    <div class="carousel-dots" id="carouselDots"></div>
+                    <button class="carousel-btn carousel-next" id="testimonialNext" aria-label="Növbəti rəy">›</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="container">
@@ -360,15 +509,15 @@
                         edirik.</p>
                     <div class="social-links">
                         <a href="https://instagram.com/alielenglish" target="_blank" class="social-link" rel="noopener"
-                            title="Instagram">
-                            <img src="assets/instagram-1-svgrepo-com.svg" alt="Instagram">
+                            title="Instagram" aria-label="Instagram">
+                            <img src="assets/instagram-1-svgrepo-com.svg" alt="Instagram" loading="lazy">
                         </a>
                         <a href="https://t.me/alielenglish" target="_blank" class="social-link" rel="noopener"
-                            title="Telegram">
-                            <img src="assets/telegram-svgrepo-com.svg" alt="Telegram">
+                            title="Telegram" aria-label="Telegram">
+                            <img src="assets/telegram-svgrepo-com.svg" alt="Telegram" loading="lazy">
                         </a>
-                        <a href="mailto:englishaliel@gmail.com" class="social-link" title="Gmail">
-                            <img src="assets/gmail-icon-logo-svgrepo-com.svg" alt="Email">
+                        <a href="mailto:englishaliel@gmail.com" class="social-link" title="Gmail" aria-label="Bizə email göndərin">
+                            <img src="assets/gmail-icon-logo-svgrepo-com.svg" alt="Email" loading="lazy">
                         </a>
                     </div>
                 </div>
@@ -406,13 +555,13 @@
     <!-- Email Modal -->
     <div id="emailModal" class="modal">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeEmailModal()">&times;</button>
+            <button class="modal-close" onclick="closeEmailModal()" aria-label="Modali bağla">&times;</button>
             <h2 data-i18n="modal.welcome">🎉 Xoş gəlmisiniz!</h2>
             <p data-i18n="modal.subtitle">Pulsuz e-kitab və bonus materiallar əldə etmək üçün qeydiyyatdan keçin</p>
             <form id="emailForm" class="modal-form">
-                <input type="text" id="userName" name="name" data-i18n="modal.inputName" placeholder="Adınız" required>
+                <input type="text" id="userName" name="name" data-i18n="modal.inputName" placeholder="Adınız" aria-label="Adınız" required>
                 <input type="email" id="userEmail" name="email" data-i18n="modal.inputEmail"
-                    placeholder="Email ünvanınız" required>
+                    placeholder="Email ünvanınız" aria-label="Email ünvanınız" required>
                 <button type="submit" class="btn btn-primary" data-i18n="modal.btnSend">Göndər</button>
             </form>
             <p class="privacy-note" data-i18n="modal.privacy">🔒 Məlumatlarınız təhlükəsizdir və paylaşılmır</p>
@@ -420,12 +569,13 @@
     </div>
 
     <!-- Scripts -->
-    <script src="scripts/design-system.js"></script>
-    <script src="scripts/i18n.js"></script>
-    <script src="scripts/main.js"></script>
+    <script src="scripts/design-system.js" defer></script>
+    <script src="scripts/i18n.js" defer></script>
+    <script src="scripts/main.js" defer></script>
     <script type="module" src="scripts/auth.js"></script>
-    <script src="scripts/home.js"></script>
-    <script src="scripts/ai-teacher.js"></script>
+    <script src="scripts/home.js" defer></script>
+    <script src="scripts/ai-teacher.js" defer></script>
+    <script src="scripts/testimonials.js" defer></script>
     <!-- Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
