@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self' https://accounts.google.com; object-src 'none'; base-uri 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com https://*.workers.dev; frame-src 'self' https://accounts.google.com; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -18,8 +18,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="İngilis dili öyrənmə yolu — A1-dən C2-yə qədər peşəkar kurikulum, 8 qızıl qayda və səviyyələr üzrə proqram">
     <meta name="keywords" content="öyrənmə yolu, ingilis dili proqramı, A1, A2, B1, B2, C1, C2, CEFR, kurikulum">
-    <link rel="canonical" href="https://aliel2023.github.io/English2/learning-path.html">
+    <link rel="canonical" href="https://aliel2023.github.io/English/learning-path.html">
     <title>Öyrənmə Yolu — Alielenglish</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Öyrənmə Yolu — Alielenglish">
+    <meta property="og:description" content="A1-dən C2-yə qədər strukturlu öyrənmə planı, 8 qızıl qayda və Pro kurikulum">
+    <meta property="og:url" content="https://aliel2023.github.io/English/learning-path.html">
+    <meta property="og:site_name" content="Alielenglish">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +37,7 @@
     <link rel="stylesheet" href="styles/learning-path.css">
     <link rel="stylesheet" href="styles/auth.css">
 </head>
-<body class="loading">
+<body>
     <header class="site-header">
         <nav class="main-nav">
             <div class="nav-container">
@@ -399,15 +406,16 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. Bütün hüquqlar qorunur.</p>
+                <p data-i18n="footer.rights">&copy; 2026 Alielenglish. Bütün hüquqlar qorunur.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Scripts: order matters! design-system & i18n & main first, then auth module, then learning-path last -->
     <script src="scripts/design-system.js"></script>
     <script src="scripts/i18n.js"></script>
     <script src="scripts/main.js"></script>
     <script type="module" src="scripts/auth.js"></script>
-    <script src="scripts/learning-path.js"></script>
+    <script src="scripts/learning-path.js" defer></script>
 </body>
 </html>

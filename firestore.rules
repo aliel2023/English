@@ -31,25 +31,25 @@ service cloud.firestore {
     // USERS COLLECTION
     // ================================================================
     match /users/{userId} {
-      // Öz profilini oxuya bilər
+      // Öz profilini oxuya bilər, admin hər kəsi oxuya bilər
       allow read: if isOwner(userId) || isAdmin();
 
-      // Öz profilini yalnız icazə verilmiş sahələri yazabilər
+      // Yeni profil yaratmaq
       allow create: if isOwner(userId)
         && isValidString(request.resource.data.name, 2, 100)
         && isValidEmail(request.resource.data.email)
         && (request.resource.data.role == 'user' || (request.resource.data.role == 'admin' && request.auth.token.email == 'englishaliel@gmail.com'))
         && request.resource.data.keys().hasAll(['name','email','level','role','createdAt']);
 
+      // Admin hər şeyi güncəlləyə bilər (premium vermək daxil)
+      // İstifadəçi yalnız icazə verilmiş sahələri güncəlləyə bilər
       allow update: if isAdmin() || (isOwner(userId)
         // role sahəsini dəyişdirə BİLMƏZ
-        && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role)
-        // email-i dəyişdirə BİLMƏZ
-        && (!('email' in request.resource.data) || request.resource.data.email == resource.data.email)
+        && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']))
+        // email-i dəyişdirə BİLMƏZ  
+        && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['email']))
         // premium sahəsini dəyişdirə BİLMƏZ
-        && (!('premium' in request.resource.data) || request.resource.data.premium == ("premium" in resource.data ? resource.data.premium : request.resource.data.premium))
-        // aktiv sahəsini dəyişdirə BİLMƏZ
-        && (!('premium.active' in request.resource.data) || request.resource.data['premium.active'] == ("premium.active" in resource.data ? resource.data['premium.active'] : request.resource.data['premium.active']))
+        && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['premium']))
       );
 
       // Silmə yalnız admin
@@ -83,11 +83,11 @@ service cloud.firestore {
     // PROGRESS COLLECTION
     // ================================================================
     match /progress/{progressId} {
-      // Yaratilirken: request.resource.data istifade et (resource.data heni yoxdur)
+      // Yaratılırkən: request.resource.data istifadə et
       allow create: if isAuth()
         && request.resource.data.userId == request.auth.uid;
-      // Oxumaq/yenilinmek: movcud snedin userId-sine bax; admin her seyi oxuya biler
-      allow read: if isAuth() && resource.data.userId == request.auth.uid || isAdmin();
+      // Oxumaq: öz məlumatı və ya admin
+      allow read: if (isAuth() && resource.data.userId == request.auth.uid) || isAdmin();
       allow update: if isAuth() && resource.data.userId == request.auth.uid;
       allow delete: if isAdmin();
     }

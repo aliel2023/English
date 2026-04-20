@@ -1,10 +1,10 @@
 /**
- * ALIELENGLISH — Service Worker v2.0
+ * ALIELENGLISH — Service Worker v3.0
  * Strategy: Cache First → Network Fallback
  * Offline: Essential pages and grammar rules cached
  */
 
-const CACHE_NAME = 'alielenglish-v2.0';
+const CACHE_NAME = 'alielenglish-v3.0';
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '/');
 const OFFLINE_URL = BASE + 'index.html';
 
@@ -17,15 +17,26 @@ const PRECACHE_PATHS = [
     'resources.html',
     'pricing.html',
     'contact.html',
+    'learning-path.html',
+    'dashboard.html',
+    'favorites.html',
     'styles/design-system.css',
     'styles/main.css',
     'styles/home.css',
     'styles/auth.css',
     'styles/ai-teacher.css',
+    'styles/learning-path.css',
+    'styles/daily-word.css',
+    'styles/dashboard.css',
+    'styles/favorites.css',
     'scripts/design-system.js',
     'scripts/i18n.js',
     'scripts/main.js',
     'scripts/ai-teacher.js',
+    'scripts/learning-path.js',
+    'scripts/daily-word.js',
+    'scripts/dashboard.js',
+    'scripts/favorites.js',
     'i18n/az.json',
     'i18n/en.json',
     'assets/instagram-1-svgrepo-com.svg',
