@@ -41,15 +41,16 @@ service cloud.firestore {
         && (request.resource.data.role == 'user' || (request.resource.data.role == 'admin' && request.auth.token.email == 'englishaliel@gmail.com'))
         && request.resource.data.keys().hasAll(['name','email','level','role','createdAt']);
 
-      allow update: if isOwner(userId)
-        // role sahəsini dəyişdirə BİLMƏZ (englishaliel@gmail.com istisna olmaqla)
-        && (!('role' in request.resource.data) || 
-             request.resource.data.role == resource.data.role || 
-             request.auth.token.email == 'englishaliel@gmail.com')
-        // email-i dəyişdirə BİLMƏZ (englishaliel@gmail.com istisna olmaqla)
-        && (!('email' in request.resource.data) ||
-             request.resource.data.email == resource.data.email || 
-             request.auth.token.email == 'englishaliel@gmail.com');
+      allow update: if isAdmin() || (isOwner(userId)
+        // role sahəsini dəyişdirə BİLMƏZ
+        && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role)
+        // email-i dəyişdirə BİLMƏZ
+        && (!('email' in request.resource.data) || request.resource.data.email == resource.data.email)
+        // premium sahəsini dəyişdirə BİLMƏZ
+        && (!('premium' in request.resource.data) || request.resource.data.premium == ("premium" in resource.data ? resource.data.premium : request.resource.data.premium))
+        // aktiv sahəsini dəyişdirə BİLMƏZ
+        && (!('premium.active' in request.resource.data) || request.resource.data['premium.active'] == ("premium.active" in resource.data ? resource.data['premium.active'] : request.resource.data['premium.active']))
+      );
 
       // Silmə yalnız admin
       allow delete: if isAdmin();

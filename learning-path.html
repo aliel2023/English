@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com; frame-src 'self' https://accounts.google.com; object-src 'none'; base-uri 'self';">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <style id="antiClickjack">body{display:none !important;}</style>
+    <script type="text/javascript">
+        if (self === top) {
+            var antiClickjack = document.getElementById("antiClickjack");
+            antiClickjack.parentNode.removeChild(antiClickjack);
+        } else {
+            top.location = self.location;
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="İngilis dili öyrənmə yolu — A1-dən C2-yə qədər peşəkar kurikulum, 8 qızıl qayda və səviyyələr üzrə proqram">
+    <meta name="keywords" content="öyrənmə yolu, ingilis dili proqramı, A1, A2, B1, B2, C1, C2, CEFR, kurikulum">
+    <link rel="canonical" href="https://aliel2023.github.io/English2/learning-path.html">
+    <title>Öyrənmə Yolu — Alielenglish</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&subset=latin,latin-ext&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/design-system.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/learning-path.css">
+    <link rel="stylesheet" href="styles/auth.css">
+</head>
+<body class="loading">
+    <header class="site-header">
+        <nav class="main-nav">
+            <div class="nav-container">
+                <div class="logo-section">
+                    <div class="logo"><span class="logo-icon">A</span></div>
+                    <span class="brand-name">Alielenglish</span>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html" data-i18n="nav.home">Ana Səhifə</a></li>
+                    <li><a href="daily-word.html" data-i18n="nav.daily">Günün Sözü</a></li>
+                    <li><a href="speaking.html" data-i18n="nav.speaking">Danışıq Pratikası</a></li>
+                    <li><a href="test.html" data-i18n="nav.test">Səviyyə Testi</a></li>
+                    <li><a href="resources.html" data-i18n="nav.resources">Resurslar</a></li>
+                    <li><a href="learning-path.html" class="active" data-i18n="nav.learningPath">Öyrənmə Yolu</a></li>
+                    <li><a href="pricing.html" data-i18n="nav.pricing">Qiymətlər</a></li>
+                    <li><a href="contact.html" data-i18n="nav.contact">Əlaqə</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="lang-dropdown nav-item">
+                        <button class="lang-btn current-lang" id="currentLangBtn" onclick="toggleLangDropdown()">AZ</button>
+                        <div class="lang-menu" id="langMenu">
+                            <button class="lang-option" onclick="switchLanguage('az', event)">AZ</button>
+                            <button class="lang-option" onclick="switchLanguage('en', event)">EN</button>
+                        </div>
+                    </div>
+                    <button class="mobile-toggle" onclick="toggleMobileMenu()">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="learning-path-hero">
+            <div class="container">
+                <h1 class="section-title">🚀 Öyrənmə Yolu <span class="pro-badge" style="font-size:1rem;">PRO</span></h1>
+                <p class="path-subtitle">A1-dən C2 səviyyəsinə qədər Alielenglish tərəfindən hazırlanmış qızıl qaydalar və xüsusi mövzularla sürətli inkişaf edin.</p>
+            </div>
+        </section>
+
+        <!-- 8 Qızıl Qayda -->
+        <section class="rules-section">
+            <div class="container">
+                <h2 class="section-title" style="text-align:center;">✨ 8 Qızıl Qayda</h2>
+                <div class="rules-grid">
+                    <div class="rule-card">
+                        <div class="rule-icon">🧠</div>
+                        <h3>1. Vocabulary — Söz Ehtiyatı</h3>
+                        <p>Sözləri təkcə əzbərləməyin, onları kontekstdə öyrənin. Gündəlik xəbərlər oxuyun, lüğət proqramlarından istifadə edin.</p>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">📚</div>
+                        <h3>2. Grammar — Qrammatika</h3>
+                        <p>Qrammatik qaydaları əzbərləməkdən çox, praktika ilə istifadəsini öyrənin və cümlə qurun.</p>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">🎧</div>
+                        <h3>3. Listening — Dinləmə</h3>
+                        <p>Hər gün 15–20 dəqiqə ingilis dilində podcast və ya TED Talks dinləyərək dinləmə bacarığınızı inkişaf etdirin.</p>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">🗣️</div>
+                        <h3>4. Speaking — Danışıq</h3>
+                        <p>Özünüzlə danışın, səsinizi yazın və AI ilə dialoqlara girərək özünüzü sərbəst hiss edənə qədər məşq edin.</p>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">📖</div>
+                        <h3>5. Reading — Oxuma</h3>
+                        <p>Maraq dairənizə uyğun ingiliscə məqalələr, qısa hekayələr və kitablar oxumağa başlayın.</p>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">✍️</div>
+                        <h3>6. Writing — Yazma</h3>
+                        <p>Hər gün öyrəndiyiniz yeni sözlərlə qısa cümlələr və ya gündəlik yazaraq yazmaq bacarığınızı gücləndirin.</p>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">⏱️</div>
+                        <h3>7. Consistency — Davamlılıq</h3>
+                        <p>Həftədə bir gün saatlarla oxumaq əvəzinə, hər gün 30 dəqiqə ayırmaq daha effektivdir.</p>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">🎯</div>
+                        <h3>8. Goal Setting — Məqsəd Qoyma</h3>
+                        <p>Təhsil planınızı hazırlayın (məsələn, IELTS, iş üçün) və reallığa əsaslanan hədəflər qoyun.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kurikulum -->
+        <section class="levels-section" id="curriculum">
+            <div class="container">
+                <h2 class="section-title" style="text-align:center;">📋 Səviyyələr üzrə Kurikulum</h2>
+                <div class="levels-timeline">
+
+                    <!-- A1 — Beginner -->
+                    <div class="level-card" id="level-a1">
+                        <div class="level-header">
+                            <div class="level-title">Beginner — Başlanğıc</div>
+                            <div class="level-badge">A1</div>
+                        </div>
+                        <div class="level-content-wrap">
+                            <div class="level-content">
+                                <div class="level-section">
+                                    <h4>📚 Qrammatika</h4>
+                                    <ul class="level-list">
+                                        <li>To be (am, is, are)</li>
+                                        <li>Present Simple Tense</li>
+                                        <li>Cəm şəkilçiləri (-s, -es)</li>
+                                        <li>This / That / These / Those</li>
+                                        <li>There is / There are</li>
+                                        <li>Artikllər: a, an, the</li>
+                                    </ul>
+                                </div>
+                                <div class="level-section">
+                                    <h4>🗣️ Danışıq Mövzuları</h4>
+                                    <ul class="level-list">
+                                        <li>Özünü təqdim etmə</li>
+                                        <li>Ailə üzvləri və peşələr</li>
+                                        <li>Gündəlik rutin</li>
+                                        <li>Rəqəmlər, vaxt, günlər</li>
+                                        <li>Qida və içkilər</li>
+                                        <li>Rənglər və əşyalar</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- A2 — Elementary -->
+                    <div class="level-card" id="level-a2">
+                        <div class="level-header">
+                            <div class="level-title">Elementary — Əsas</div>
+                            <div class="level-badge">A2</div>
+                        </div>
+                        <div class="level-content-wrap">
+                            <div class="level-content">
+                                <div class="level-section">
+                                    <h4>📚 Qrammatika</h4>
+                                    <ul class="level-list">
+                                        <li>Past Simple Tense</li>
+                                        <li>Future: will / going to</li>
+                                        <li>Müqayisə dərəcələri (comparative, superlative)</li>
+                                        <li>Present Continuous Tense</li>
+                                        <li>Sayılan / Sayılmayan isimlər</li>
+                                        <li>Some / Any / Much / Many</li>
+                                    </ul>
+                                </div>
+                                <div class="level-section">
+                                    <h4>🗣️ Danışıq Mövzuları</h4>
+                                    <ul class="level-list">
+                                        <li>Keçmiş tətil təcrübələri</li>
+                                        <li>Gələcək planlar və xəyallar</li>
+                                        <li>Hobbilər və maraqlar</li>
+                                        <li>Alış-veriş və qiymətlər</li>
+                                        <li>Hava haqqında danışma</li>
+                                        <li>Yol göstərmə və istiqamətlər</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- B1 — Intermediate (PRO) -->
+                    <div class="level-card locked-level locked" data-level="B1" id="level-b1">
+                        <div class="lock-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <h3 class="lock-title">Pro Tələb Olunur</h3>
+                            <p class="lock-desc">B1 və daha yuxarı səviyyələrdəki xüsusi kurikulum və materiallara giriş üçün Pro abunəliyinizi aktivləşdirin.</p>
+                            <button class="btn btn-primary" onclick="openPremiumModal()">💎 Pro Aktivləşdir</button>
+                        </div>
+                        <div class="level-header">
+                            <div class="level-title">Intermediate — Orta <span class="pro-badge">PRO</span></div>
+                            <div class="level-badge" style="background:var(--bg-tertiary);color:#888;">B1</div>
+                        </div>
+                        <div class="level-content-wrap">
+                            <div class="level-content">
+                                <div class="level-section">
+                                    <h4>📚 Qrammatika</h4>
+                                    <ul class="level-list">
+                                        <li>Present Perfect Tense</li>
+                                        <li>Conditionals (Type 0, 1, 2)</li>
+                                        <li>Modal Verbs (can, could, must, should)</li>
+                                        <li>Passive Voice (əsas formalar)</li>
+                                        <li>Relative Clauses (who, which, that)</li>
+                                        <li>Gerund vs Infinitive</li>
+                                    </ul>
+                                </div>
+                                <div class="level-section">
+                                    <h4>🗣️ Danışıq Mövzuları</h4>
+                                    <ul class="level-list">
+                                        <li>Səyahət və mədəniyyətlər</li>
+                                        <li>Texnologiya və internet</li>
+                                        <li>İş mühiti və müsahibələr</li>
+                                        <li>Sağlamlıq və idman</li>
+                                        <li>Fikir bildirmə və müzakirə</li>
+                                        <li>Problemlərin həlli</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- B2 — Upper-Intermediate (PRO) -->
+                    <div class="level-card locked-level locked" data-level="B2" id="level-b2">
+                        <div class="lock-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <h3 class="lock-title">Pro Tələb Olunur</h3>
+                            <p class="lock-desc">Bu səviyyənin tam materiallarını görmək üçün Pro hesabınızı aktivləşdirin.</p>
+                            <button class="btn btn-primary" onclick="openPremiumModal()">💎 Pro Aktivləşdir</button>
+                        </div>
+                        <div class="level-header">
+                            <div class="level-title">Upper-Intermediate — Yuxarı Orta <span class="pro-badge">PRO</span></div>
+                            <div class="level-badge" style="background:var(--bg-tertiary);color:#888;">B2</div>
+                        </div>
+                        <div class="level-content-wrap">
+                            <div class="level-content">
+                                <div class="level-section">
+                                    <h4>📚 Qrammatika</h4>
+                                    <ul class="level-list">
+                                        <li>Past Perfect Tense</li>
+                                        <li>Reported Speech (vasitəli nitq)</li>
+                                        <li>Conditionals (Type 3, Mixed)</li>
+                                        <li>Advanced Passive Constructions</li>
+                                        <li>Wish / If only</li>
+                                        <li>Phrasal Verbs (mürəkkəb fellər)</li>
+                                    </ul>
+                                </div>
+                                <div class="level-section">
+                                    <h4>🗣️ Danışıq Mövzuları</h4>
+                                    <ul class="level-list">
+                                        <li>Mücərrəd mövzularda müzakirə</li>
+                                        <li>Peşəkar prezentasiyalar</li>
+                                        <li>Mədəniyyətlərarası fərqlər</li>
+                                        <li>İdiomlər və söz birləşmələri</li>
+                                        <li>Media savadlılığı</li>
+                                        <li>Ətraf mühit və sosial məsələlər</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- C1 — Advanced (PRO) -->
+                    <div class="level-card locked-level locked" data-level="C1" id="level-c1">
+                        <div class="lock-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <h3 class="lock-title">Pro Tələb Olunur</h3>
+                            <p class="lock-desc">Qabaqcıl səviyyələr üçün Pro hesab tələb olunur.</p>
+                            <button class="btn btn-primary" onclick="openPremiumModal()">💎 Pro Aktivləşdir</button>
+                        </div>
+                        <div class="level-header">
+                            <div class="level-title">Advanced — Təkmil <span class="pro-badge">PRO</span></div>
+                            <div class="level-badge" style="background:var(--bg-tertiary);color:#888;">C1</div>
+                        </div>
+                        <div class="level-content-wrap">
+                            <div class="level-content">
+                                <div class="level-section">
+                                    <h4>📚 Qrammatika və Üslub</h4>
+                                    <ul class="level-list">
+                                        <li>Inversions (tərsinə cümlə quruluşları)</li>
+                                        <li>Cleft Sentences</li>
+                                        <li>Advanced Subjunctive</li>
+                                        <li>Ellipsis və Substitution</li>
+                                        <li>Discourse Markers</li>
+                                        <li>Formal vs Informal register</li>
+                                    </ul>
+                                </div>
+                                <div class="level-section">
+                                    <h4>🗣️ Danışıq Mövzuları</h4>
+                                    <ul class="level-list">
+                                        <li>Akademik yazı və debat</li>
+                                        <li>Peşəkar danışıqlar</li>
+                                        <li>Fəlsəfə və etika</li>
+                                        <li>Ədəbiyyat və incəsənət</li>
+                                        <li>IELTS / TOEFL hazırlığı</li>
+                                        <li>Çıxış və nitq təcrübəsi</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- C2 — Mastery (PRO) -->
+                    <div class="level-card locked-level locked" data-level="C2" id="level-c2">
+                        <div class="lock-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <h3 class="lock-title">Pro Tələb Olunur</h3>
+                            <p class="lock-desc">Ən yüksək səviyyə — ana dili kimi ustalıq.</p>
+                            <button class="btn btn-primary" onclick="openPremiumModal()">💎 Pro Aktivləşdir</button>
+                        </div>
+                        <div class="level-header">
+                            <div class="level-title">Mastery — Mükəmməllik <span class="pro-badge">PRO</span></div>
+                            <div class="level-badge" style="background:var(--bg-tertiary);color:#888;">C2</div>
+                        </div>
+                        <div class="level-content-wrap">
+                            <div class="level-content">
+                                <div class="level-section">
+                                    <h4>📚 Qrammatika və Nüanslar</h4>
+                                    <ul class="level-list">
+                                        <li>Üslub nüansları və ton idarəetməsi</li>
+                                        <li>Mürəkkəb cümlə strukturları</li>
+                                        <li>İroni, metafora və söz oyunları</li>
+                                        <li>Akademik və texniki yazı</li>
+                                        <li>Native-level collocations</li>
+                                        <li>Error-free communication</li>
+                                    </ul>
+                                </div>
+                                <div class="level-section">
+                                    <h4>🗣️ Danışıq Mövzuları</h4>
+                                    <ul class="level-list">
+                                        <li>Spontan debat və arqumentasiya</li>
+                                        <li>Dərin mədəni müzakirələr</li>
+                                        <li>Peşəkar diplomatiyanın dili</li>
+                                        <li>Dolğun şifahi təqdimat</li>
+                                        <li>Hüquqi və elmi terminologiya</li>
+                                        <li>Tərcümə və lokalizasiya</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Premium Modal -->
+    <div id="premiumModal" class="modal">
+        <div class="modal-content" style="max-width:450px;text-align:center;">
+            <button class="modal-close" onclick="closePremiumModal()">&times;</button>
+            <div class="premium-icon">💎</div>
+            <h2>Premium Hesaba Keçid</h2>
+            <p style="color:var(--text-secondary);margin-top:0.5rem;">B1-dən C2-yə qədər bütün öyrənmə materiallarına limitsiz giriş əldə etmək üçün bizimlə əlaqə saxlayın.</p>
+
+            <div class="premium-benefits">
+                <h4 style="margin-bottom:0.75rem;color:var(--text-primary);">Nələr daxildir?</h4>
+                <ul class="level-list">
+                    <li>B1–C2 tam kurikulum və materiallar</li>
+                    <li>Detallı test izahları</li>
+                    <li>Premium qrammatika tapşırıqları</li>
+                    <li>Xüsusi danışıq ssenariləri</li>
+                </ul>
+            </div>
+
+            <div class="contact-buttons">
+                <a href="https://wa.me/994603140201?text=Salam%2C%20Alielenglish%20hesab%C4%B1m%C4%B1%20Premium%20etm%C9%99k%20ist%C9%99yir%C9%99m." target="_blank" rel="noopener" class="btn btn-whatsapp" id="premiumWhatsappBtn">
+                    📱 WhatsApp ilə Yaz
+                </a>
+                <a href="https://t.me/alielenglish" target="_blank" rel="noopener" class="btn btn-telegram" id="premiumTelegramBtn">
+                    ✈️ Telegram ilə Yaz
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Alielenglish</h4>
+                    <p data-i18n="footer.about">2023-dən bəri minlərlə tələbəyə keyfiyyətli ingilis dili təhsili təqdim edirik.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.rights">&copy; 2025 Alielenglish. Bütün hüquqlar qorunur.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts/design-system.js"></script>
+    <script src="scripts/i18n.js"></script>
+    <script src="scripts/main.js"></script>
+    <script type="module" src="scripts/auth.js"></script>
+    <script src="scripts/learning-path.js"></script>
+</body>
+</html>

@@ -1,0 +1,358 @@
+/* ========================================
+   Learning Path — Styles
+   ======================================== */
+
+/* Hero Section */
+.learning-path-hero {
+    padding: 6rem 0 3rem;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(108, 99, 255, 0.06) 0%, rgba(168, 85, 247, 0.06) 100%);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.path-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 620px;
+    margin: 1rem auto 0;
+    line-height: 1.7;
+}
+
+/* 8 Qızıl Qayda */
+.rules-section {
+    padding: 4rem 0;
+    background: var(--bg-secondary);
+}
+
+.rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.rule-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rule-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 30px rgba(108, 99, 255, 0.12);
+}
+
+.rule-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: rgba(108, 99, 255, 0.1);
+    border-radius: 14px;
+}
+
+.rule-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.rule-card p {
+    color: var(--text-secondary);
+    font-size: 0.93rem;
+    line-height: 1.65;
+}
+
+/* Kurikulum / Levels */
+.levels-section {
+    padding: 4rem 0;
+}
+
+.levels-timeline {
+    max-width: 820px;
+    margin: 2rem auto 0;
+    position: relative;
+}
+
+.level-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.level-card:hover {
+    border-color: rgba(108, 99, 255, 0.3);
+}
+
+.level-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.level-badge {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1.1rem;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.level-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.level-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.level-content-wrap {
+    transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+.level-section h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.level-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.level-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.55rem;
+    color: var(--text-secondary);
+    font-size: 0.93rem;
+    line-height: 1.5;
+}
+
+.level-list li::before {
+    content: "•";
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* ========================================
+   Premium Lock System
+   ======================================== */
+.level-card.locked .level-content-wrap {
+    filter: blur(6px);
+    opacity: 0.5;
+    pointer-events: none;
+    user-select: none;
+}
+
+.level-card.locked .level-header {
+    opacity: 0.6;
+}
+
+.lock-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(13, 13, 20, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    text-align: center;
+    padding: 2rem;
+    border-radius: 20px;
+    transition: opacity 0.4s ease;
+}
+
+.lock-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: floatLock 3s ease-in-out infinite;
+}
+
+@keyframes floatLock {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.lock-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.lock-desc {
+    color: #cbd5e1;
+    margin-bottom: 1.5rem;
+    max-width: 320px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Premium Modal  */
+.premium-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.premium-benefits {
+    text-align: left;
+    margin: 1.5rem 0;
+    background: rgba(255, 215, 0, 0.04);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-radius: 14px;
+    padding: 1.5rem;
+}
+
+.premium-benefits h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.contact-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.btn-whatsapp {
+    background: #25D366;
+    color: white;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 0.85rem 1.5rem;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.btn-whatsapp:hover {
+    background: #1da851;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+}
+
+.btn-telegram {
+    background: #0088cc;
+    color: white;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 0.85rem 1.5rem;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.btn-telegram:hover {
+    background: #006fa1;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 136, 204, 0.3);
+}
+
+/* Pro Badge */
+.pro-badge {
+    background: linear-gradient(90deg, #ffd700, #ffaa00);
+    color: #000;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Toast Notification */
+.lp-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #1a1a2e;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(108, 99, 255, 0.3);
+    font-size: 0.95rem;
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.35s ease;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+.lp-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media (max-width: 768px) {
+    .level-content {
+        grid-template-columns: 1fr;
+    }
+
+    .learning-path-hero {
+        padding: 5rem 0 2rem;
+    }
+
+    .level-title {
+        font-size: 1.15rem;
+    }
+
+    .rules-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lock-title {
+        font-size: 1.15rem;
+    }
+
+    .lock-desc {
+        font-size: 0.85rem;
+    }
+}
