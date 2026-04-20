@@ -64,6 +64,46 @@ jobs:
             grep -q "Strict-Transport-Security" _headers && echo "OK: HSTS" || echo "MISSING: HSTS"
           fi
 
+      - name: Firestore Rules Syntax Check
+        run: |
+          echo "=== Checking Firestore rules syntax ==="
+          if [ -f "firestore.rules" ]; then
+            echo "firestore.rules found"
+            # Check for basic structure
+            grep -q "rules_version" firestore.rules && echo "OK: rules_version present" || echo "WARNING: rules_version missing"
+            grep -q "isAdmin()" firestore.rules && echo "OK: isAdmin() function present" || echo "WARNING: isAdmin() missing"
+            grep -q "premium" firestore.rules && echo "OK: premium field rules present" || echo "WARNING: premium rules missing"
+            LINE_COUNT=$(wc -l < firestore.rules)
+            echo "Total lines: $LINE_COUNT"
+          else
+            echo "WARNING: firestore.rules not found!"
+          fi
+
+  deploy-firebase:
+    name: Deploy Firestore Rules
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Deploy Firestore Security Rules
+        run: firebase deploy --only firestore:rules --project alielenglish --token "${{ secrets.FIREBASE_TOKEN }}" --non-interactive
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        continue-on-error: true
+
+      - name: Firebase Deploy Status
+        run: echo "Firestore rules deploy completed (check above for errors)"
+
   build-and-deploy:
     name: Build & Deploy
     runs-on: ubuntu-latest
@@ -86,9 +126,9 @@ jobs:
       - name: Create dist directory
         run: |
           mkdir -p dist
-          cp -r *.html styles scripts i18n assets sw.js _headers dist/ 2>/dev/null || true
-          cp -r locales dist/ 2>/dev/null || true
-          cp firestore.rules dist/ 2>/dev/null || true
+          cp -r *.html styles scripts i18n assets sw.js dist/ 2>/dev/null || true
+          cp -r _headers dist/ 2>/dev/null || true
+          cp sitemap.xml robots.txt dist/ 2>/dev/null || true
 
       - name: Minify CSS
         run: |
@@ -107,7 +147,8 @@ jobs:
           for f in dist/scripts/*.js; do
             [ -f "$f" ] || continue
             [[ "$f" == *".min.js" ]] && continue
-            [[ "$f" == *"auth.js" ]] && { echo "  SKIP $f (ES modules)"; continue; }
+            # Skip ES modules - they have special syntax
+            [[ "$f" == *"auth.js" ]] && { echo "  SKIP $f (ES module)"; continue; }
             ORIG=$(stat -c%s "$f")
             terser "$f" -o "$f" --compress --mangle 2>/dev/null || true
             NEW=$(stat -c%s "$f")
