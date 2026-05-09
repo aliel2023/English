@@ -8,7 +8,7 @@ const INLINE_TRANSLATIONS = {
     az: {
         nav: { home: "Ana Səhifə", daily: "Günün Sözü", speaking: "Danışıq Pratikası", test: "Səviyyə Testi", resources: "Resurslar", learningPath: "Öyrənmə Yolu", pricing: "Qiymətlər", contact: "Əlaqə", favorites: "❤️ Sevimlilər", dashboard: "📊 Dashboard", admin: "👑 Admin Panel", logout: "🚪 Çıxış", login: "Daxil Ol" },
         hero: { title: "İngilis Dilini <span class=\"gradient-text\">Peşəkar</span> Səviyyədə Öyrən", subtitle: "A1-dən C2-yə qədər strukturlu proqram, gündəlik canlı dərslər və 13,000+ aktiv tələbə ilə öyrənmə səyahətinə başlayın", btnStart: "Pulsuz Başla", btnPlans: "Premium Planlara Bax", statStudents: "Aktiv Tələbə", statLessons: "Dərs Materialu", statSatisfaction: "% Məmnuniyyət" },
-        features: { title: "Niyə Alielenglish?", daily: "Gündəlik Dərslər", dailyDesc: "Hər gün yeni söz, ifadə və qrammatika qaydaları ilə davamlı təlim", program: "Strukturlu Proqram", programDesc: "A1-dən C2-yə qədər CEFR standartlarına uyğun mərhələli öyrənmə", support: "Canlı Dəstək", supportDesc: "Suallarınıza 24/7 cavab və mentor dəstəyi ilə heç vaxt tək deyilsiniz" },
+        features: { title: "Niyə Alielenglish?", daily: "Gündəlik Dərslər", dailyDesc: "Hər gün yeni söz, ifadə və qrammatika qaydaları ilə davamlı təlim", program: "Strukturlu Proqram", programDesc: "A1-dən C2-yə qədər CEFR standartlarına uyğun mərhələli öyrənmə", support: "Canlı Dəstək", supportDesc: "Suallarınıza 24/7 cavab və mentor dəstəyi ilə heç vaxt tək deyilsiniz", progress: "İrəliləyiş Təqibi", progressDesc: "Öz inkişafınızı izləyin və motivasiya ilə hədəflərə çatın", flashcard: "Flashcard Öyrənmə", flashcardDesc: "İnteraktiv flashcard sistemi ilə sözləri asan yadda saxlayın", business: "İş İngilizcəsi", businessDesc: "Karyera inkişafınız üçün Business English xüsusi modulları" },
         cta: { title: "Daha Gözləməyin - İndi Başlayın!", subtitle: "İlk 100 qeydiyyatçıya <strong>50% endirim</strong> və <strong>pulsuz</strong> bonus material paketimiz", btnRegister: "Qeydiyyatdan Keç" },
         footer: { about: "2023-dən bəri minlərlə tələbəyə keyfiyyətli ingilis dili təhsili təqdim edirik.", links: "Keçidlər", support: "Dəstək", newsletter: "Xəbər Bülleteni", newsletterDesc: "Gündəlik dərs və xüsusi təkliflərdən xəbərdar olun", btnSubscribe: "Abunə Ol", rights: "© 2025 Alielenglish. Bütün hüquqlar qorunur." },
         modal: { welcome: "🎉 Xoş gəlmisiniz!", subtitle: "Pulsuz e-kitab və bonus materiallar əldə etmək üçün qeydiyyatdan keçin", inputName: "Adınız", inputEmail: "Email ünvanınız", btnSend: "Göndər", privacy: "🔒 Məlumatlarınız təhlükəsizdir və paylaşılmır" },
@@ -24,7 +24,7 @@ const INLINE_TRANSLATIONS = {
     en: {
         nav: { home: "Home", daily: "Word of the Day", speaking: "Speaking Practice", test: "Level Test", resources: "Resources", learningPath: "Learning Path", pricing: "Pricing", contact: "Contact", favorites: "\u2764\ufe0f Favorites", dashboard: "\ud83d\udcca Dashboard", admin: "\ud83d\udc51 Admin Panel", logout: "\ud83d\udeaa Logout", login: "Login" },
         hero: { title: "Learn English at a <span class=\"gradient-text\">Professional</span> Level", subtitle: "Start your learning journey with a structured program from A1 to C2, daily live lessons and 13,000+ active students", btnStart: "Start Free", btnPlans: "View Premium Plans", statStudents: "Active Students", statLessons: "Lesson Materials", statSatisfaction: "% Satisfaction" },
-        features: { title: "Why Alielenglish?", daily: "Daily Lessons", dailyDesc: "Continuous training with new words, phrases and grammar rules every day", program: "Structured Program", programDesc: "Staged learning according to CEFR standards from A1 to C2", support: "Live Support", supportDesc: "You are never alone with 24/7 answers to your questions and mentor support" },
+        features: { title: "Why Alielenglish?", daily: "Daily Lessons", dailyDesc: "Continuous training with new words, phrases and grammar rules every day", program: "Structured Program", programDesc: "Staged learning according to CEFR standards from A1 to C2", support: "Live Support", supportDesc: "You are never alone with 24/7 answers to your questions and mentor support", progress: "Progress Tracking", progressDesc: "Track your development and reach your goals with motivation", flashcard: "Flashcard Learning", flashcardDesc: "Memorize words easily with interactive flashcard system", business: "Business English", businessDesc: "Special Business English modules for your career development" },
         cta: { title: "Don't Wait - Start Now!", subtitle: "For the first 100 registrants <strong>50% discount</strong> and <strong>free</strong> bonus material package", btnRegister: "Register" },
         footer: { about: "Since 2023, we have been providing quality English education to thousands of students.", links: "Links", support: "Support", newsletter: "Newsletter", newsletterDesc: "Stay informed about daily lessons and special offers", btnSubscribe: "Subscribe", rights: "© 2025 Alielenglish. All rights reserved." },
         modal: { welcome: "🎉 Welcome!", subtitle: "Register to get a free e-book and bonus materials", inputName: "Your Name", inputEmail: "Your Email", btnSend: "Send", privacy: "🔒 Your information is secure and not shared" },
@@ -41,19 +41,24 @@ const INLINE_TRANSLATIONS = {
 
 // ===== Load Language =====
 async function loadLanguage(lang) {
-    // First try fetch (works on HTTP/HTTPS)
-    try {
-        const response = await fetch(`i18n/${lang}.json`);
-        if (response.ok) {
-            translations = await response.json();
-            currentLang = lang;
-            return true;
+    // file:// protokolunda fetch işləmir — inline fallback-ə birbaşa keç
+    const isFileProtocol = window.location.protocol === 'file:';
+
+    if (!isFileProtocol) {
+        // HTTP/HTTPS-də fetch sına
+        try {
+            const response = await fetch(`i18n/${lang}.json`);
+            if (response.ok) {
+                translations = await response.json();
+                currentLang = lang;
+                return true;
+            }
+        } catch (e) {
+            // fetch uğursuz — inline fallback-ə keç
         }
-    } catch (e) {
-        // fetch failed (file:// protocol or network error) — use inline fallback
     }
 
-    // Use inline fallback
+    // Inline fallback (həmişə işləyir)
     if (INLINE_TRANSLATIONS[lang]) {
         translations = INLINE_TRANSLATIONS[lang];
         currentLang = lang;

@@ -1,0 +1,211 @@
+/* ============================================
+   Alielenglish — Page Transitions & Entry Animations
+   Premium slide-up reveals, stagger cascades, skeleton loaders
+   ============================================ */
+
+/* --- Page Entry Animation --- */
+@keyframes pageSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+main,
+.page-content,
+.dashboard-content,
+.test-container,
+.daily-word-container {
+    animation: pageSlideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* --- Section Stagger Reveals --- */
+@keyframes sectionReveal {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+section,
+.content-section,
+.card-grid,
+.stats-grid,
+.bento-grid {
+    animation: sectionReveal 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+section:nth-child(1) { animation-delay: 0.05s; }
+section:nth-child(2) { animation-delay: 0.12s; }
+section:nth-child(3) { animation-delay: 0.19s; }
+section:nth-child(4) { animation-delay: 0.26s; }
+section:nth-child(5) { animation-delay: 0.33s; }
+section:nth-child(6) { animation-delay: 0.4s; }
+
+/* --- Card Stagger Entry --- */
+.feature-card,
+.qa-card,
+.resource-card,
+.pricing-card,
+.archive-card,
+.badge-card {
+    animation: sectionReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.feature-card:nth-child(1),
+.qa-card:nth-child(1),
+.resource-card:nth-child(1),
+.pricing-card:nth-child(1) { animation-delay: 0.08s; }
+
+.feature-card:nth-child(2),
+.qa-card:nth-child(2),
+.resource-card:nth-child(2),
+.pricing-card:nth-child(2) { animation-delay: 0.16s; }
+
+.feature-card:nth-child(3),
+.qa-card:nth-child(3),
+.resource-card:nth-child(3),
+.pricing-card:nth-child(3) { animation-delay: 0.24s; }
+
+.feature-card:nth-child(4),
+.qa-card:nth-child(4),
+.resource-card:nth-child(4) { animation-delay: 0.32s; }
+
+.feature-card:nth-child(5),
+.resource-card:nth-child(5) { animation-delay: 0.4s; }
+
+.feature-card:nth-child(6),
+.resource-card:nth-child(6) { animation-delay: 0.48s; }
+
+/* --- Skeleton Loader (Loading State) --- */
+@keyframes skeletonPulse {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.skeleton {
+    background: linear-gradient(90deg, 
+        rgba(255,255,255,0.03) 25%, 
+        rgba(255,255,255,0.08) 50%, 
+        rgba(255,255,255,0.03) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeletonPulse 1.8s ease infinite;
+    border-radius: 8px;
+}
+
+.skeleton-text {
+    height: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+}
+
+.skeleton-title {
+    height: 1.5rem;
+    width: 60%;
+    margin-bottom: 0.75rem;
+}
+
+.skeleton-card {
+    height: 180px;
+    border-radius: 12px;
+}
+
+/* --- Smooth Scroll Behavior --- */
+html {
+    scroll-behavior: smooth;
+}
+
+/* --- Navigation Link Hover Transitions --- */
+.nav-links a,
+.sidebar-menu a {
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.nav-links a:hover,
+.sidebar-menu a:hover {
+    transform: translateX(2px);
+}
+
+/* --- Footer Social Links --- */
+.footer-social a,
+.social-link,
+.social-item {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                color 0.25s ease,
+                box-shadow 0.3s ease;
+}
+
+.footer-social a:hover,
+.social-link:hover,
+.social-item:hover {
+    transform: scale(1.12) translateY(-2px);
+}
+
+/* --- Button Press Effect --- */
+.btn,
+.btn-primary,
+.btn-secondary,
+.option-btn,
+.filter-btn,
+.filter-tab {
+    transition: transform 0.15s ease, 
+                box-shadow 0.25s ease, 
+                background 0.25s ease,
+                border-color 0.25s ease,
+                color 0.25s ease;
+}
+
+.btn:active,
+.btn-primary:active,
+.btn-secondary:active {
+    transform: scale(0.97);
+}
+
+/* --- Modal Entry --- */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.92) translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal.active .modal-content {
+    animation: modalFadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.modal.active {
+    animation: fadeIn 0.25s ease both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    html {
+        scroll-behavior: auto;
+    }
+}

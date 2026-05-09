@@ -1,0 +1,219 @@
+/* ============================================
+   Alielenglish — Dashboard Animations
+   Stat hover lifts, badge glow, streak fire, weekly bounce
+   ============================================ */
+
+/* --- Stat Card Hover Lift --- */
+.stat-item,
+.stat-card,
+.dash-stat {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), 
+                box-shadow 0.35s ease,
+                border-color 0.3s ease;
+}
+
+.stat-item:hover,
+.stat-card:hover,
+.dash-stat:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 32px rgba(230, 57, 70, 0.15);
+    border-color: rgba(230, 57, 70, 0.3);
+}
+
+/* --- Dashboard Card Entry Stagger --- */
+@keyframes dashCardEntry {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.dashboard-content .stat-item:nth-child(1),
+.dashboard-content .dash-stat:nth-child(1) { animation: dashCardEntry 0.45s cubic-bezier(0.22,1,0.36,1) 0.1s both; }
+
+.dashboard-content .stat-item:nth-child(2),
+.dashboard-content .dash-stat:nth-child(2) { animation: dashCardEntry 0.45s cubic-bezier(0.22,1,0.36,1) 0.18s both; }
+
+.dashboard-content .stat-item:nth-child(3),
+.dashboard-content .dash-stat:nth-child(3) { animation: dashCardEntry 0.45s cubic-bezier(0.22,1,0.36,1) 0.26s both; }
+
+.dashboard-content .stat-item:nth-child(4),
+.dashboard-content .dash-stat:nth-child(4) { animation: dashCardEntry 0.45s cubic-bezier(0.22,1,0.36,1) 0.34s both; }
+
+.dashboard-content .stat-item:nth-child(5),
+.dashboard-content .dash-stat:nth-child(5) { animation: dashCardEntry 0.45s cubic-bezier(0.22,1,0.36,1) 0.42s both; }
+
+.dashboard-content .stat-item:nth-child(6),
+.dashboard-content .dash-stat:nth-child(6) { animation: dashCardEntry 0.45s cubic-bezier(0.22,1,0.36,1) 0.5s both; }
+
+/* --- Badge Unlock Glow Pulse --- */
+@keyframes badgeGlow {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(230, 57, 70, 0);
+    }
+    50% {
+        box-shadow: 0 0 18px 4px rgba(230, 57, 70, 0.25);
+    }
+}
+
+.badge-card.unlocked {
+    animation: badgeGlow 3.5s ease-in-out infinite;
+    transition: transform 0.3s ease;
+}
+
+.badge-card.unlocked:hover {
+    transform: translateY(-3px) scale(1.03);
+}
+
+.badge-card.locked {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.badge-card.locked:hover {
+    transform: scale(1.02);
+    opacity: 0.85;
+}
+
+/* --- Hot Streak Fire Shimmer --- */
+@keyframes fireShimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.hot-streak {
+    background-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 75, 75, 0.06) 25%,
+        rgba(255, 120, 50, 0.1) 50%,
+        rgba(255, 75, 75, 0.06) 75%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: fireShimmer 3s linear infinite;
+    border-color: rgba(230, 57, 70, 0.4) !important;
+}
+
+/* --- Weekly Day Bounce (Progress Circles) --- */
+@keyframes dayBounceIn {
+    0% {
+        transform: scale(0.4);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.weekly-day.active .day-circle {
+    animation: dayBounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    background: var(--primary) !important;
+    color: #fff !important;
+    border-color: var(--primary) !important;
+}
+
+.weekly-day:nth-child(1) .day-circle { animation-delay: 0.05s; }
+.weekly-day:nth-child(2) .day-circle { animation-delay: 0.1s; }
+.weekly-day:nth-child(3) .day-circle { animation-delay: 0.15s; }
+.weekly-day:nth-child(4) .day-circle { animation-delay: 0.2s; }
+.weekly-day:nth-child(5) .day-circle { animation-delay: 0.25s; }
+.weekly-day:nth-child(6) .day-circle { animation-delay: 0.3s; }
+.weekly-day:nth-child(7) .day-circle { animation-delay: 0.35s; }
+
+/* --- Today Indicator Pulse --- */
+@keyframes todayPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(230, 57, 70, 0);
+    }
+}
+
+.weekly-day.today .day-circle {
+    animation: todayPulse 2.5s ease-in-out infinite;
+    border: 2px solid var(--primary) !important;
+}
+
+/* --- Streak Number Counter Glow --- */
+@keyframes streakGlow {
+    0%, 100% { text-shadow: 0 0 8px rgba(230, 57, 70, 0); }
+    50% { text-shadow: 0 0 16px rgba(230, 57, 70, 0.5); }
+}
+
+.hot-streak .streak-number,
+.hot-streak #dashStreakNum {
+    animation: streakGlow 2s ease-in-out infinite;
+    color: var(--primary);
+}
+
+/* --- Test History Item Hover --- */
+.test-history-item {
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.test-history-item:hover {
+    transform: translateX(4px);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* --- Account Info Item --- */
+.account-info-item {
+    transition: background 0.25s ease;
+}
+
+.account-info-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* --- Dashboard Avatar Entrance --- */
+@keyframes avatarPop {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+#dashAvatar {
+    animation: avatarPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+
+/* --- Daily Tip Card Shimmer --- */
+.tip-card,
+.dash-tip {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tip-card:hover,
+.dash-tip:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+    .badge-card.unlocked,
+    .hot-streak,
+    .weekly-day.today .day-circle,
+    .hot-streak .streak-number,
+    .hot-streak #dashStreakNum,
+    #dashAvatar {
+        animation: none !important;
+    }
+}

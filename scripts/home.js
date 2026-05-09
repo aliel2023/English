@@ -1,1 +1,105 @@
-function animateCounter(e){const t=parseInt(e.getAttribute("data-target")),n=t/125;let r=0;const s=setInterval(()=>{r+=n,r>=t?(e.textContent=t.toLocaleString(),clearInterval(s)):e.textContent=Math.floor(r).toLocaleString()},16)}const observeStats=()=>{const e=document.querySelectorAll(".stat-number"),t=new IntersectionObserver(e=>{e.forEach(e=>{e.isIntersecting&&"0"===e.target.textContent&&animateCounter(e.target)})},{threshold:.5});e.forEach(e=>t.observe(e))},animateFeatureCards=()=>{const e=document.querySelectorAll(".feature-card"),t=new IntersectionObserver(e=>{e.forEach((e,t)=>{e.isIntersecting&&setTimeout(()=>{e.target.style.opacity="1",e.target.style.transform="translateY(0)"},100*t)})},{threshold:.1});e.forEach(e=>{e.style.opacity="0",e.style.transform="translateY(30px)",e.style.transition="all 0.5s ease",t.observe(e)})},showWelcomeMessage=()=>{const e=localStorage.getItem("alielUser");if(e){const t=JSON.parse(e).name,n=document.createElement("div");n.style.cssText="\n            position: fixed;\n            top: 100px;\n            right: 20px;\n            background: linear-gradient(135deg, #e63946, #ff4757);\n            color: white;\n            padding: 1rem 1.5rem;\n            border-radius: 12px;\n            box-shadow: 0 4px 20px rgba(230, 57, 70, 0.4);\n            z-index: 1001;\n            animation: slideIn 0.5s ease;\n        ",n.textContent=`Xoş gəlmisiniz, ${t}! 👋`,document.body.appendChild(n),setTimeout(()=>{n.style.animation="slideOut 0.5s ease",setTimeout(()=>n.remove(),500)},3e3)}},displayUserProgress=()=>{const e=getUserProgress();if(e){const t=document.querySelector(".hero-stats");if(t){const n=`\n                <div class="stat-item" style="grid-column: span 3; padding-top: 1rem; border-top: 1px solid var(--border);">\n                    <div style="display: flex; justify-content: space-between; align-items: center;">\n                        <span style="color: var(--text-secondary);">Sizin səviyyəniz:</span>\n                        <span style="color: var(--primary); font-weight: 700; font-size: 1.5rem;">${e.level}</span>\n                    </div>\n                    <div style="width: 100%; height: 8px; background: var(--border); border-radius: 4px; margin-top: 0.5rem; overflow: hidden;">\n                        <div style="width: ${e.completedLessons/50*100}%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-light)); transition: width 0.5s ease;"></div>\n                    </div>\n                    <span style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem;">${e.completedLessons}/50 dərs tamamlandı</span>\n                </div>\n            `;t.insertAdjacentHTML("beforeend",n)}}},addAnimationStyles=()=>{const e=document.createElement("style");e.textContent="\n        @keyframes slideIn {\n            from {\n                transform: translateX(400px);\n                opacity: 0;\n            }\n            to {\n                transform: translateX(0);\n                opacity: 1;\n            }\n        }\n        \n        @keyframes slideOut {\n            from {\n                transform: translateX(0);\n                opacity: 1;\n            }\n            to {\n                transform: translateX(400px);\n                opacity: 0;\n            }\n        }\n    ",document.head.appendChild(e)};document.addEventListener("DOMContentLoaded",()=>{addAnimationStyles(),observeStats(),animateFeatureCards(),showWelcomeMessage(),displayUserProgress()});
+/* ==========================================================================
+   Home Page — Counter Animation, Feature Reveal, Welcome Message
+   ========================================================================== */
+
+function animateCounter(el) {
+    const target = parseInt(el.getAttribute('data-target'));
+    const suffix = el.getAttribute('data-suffix') || '';
+    const duration = 2000; // ms
+    const frameRate = 16; // ~60fps
+    const totalFrames = duration / frameRate;
+    const increment = target / totalFrames;
+    let current = 0;
+
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            el.textContent = target.toLocaleString() + suffix;
+            clearInterval(timer);
+        } else {
+            el.textContent = Math.floor(current).toLocaleString() + suffix;
+        }
+    }, frameRate);
+}
+
+const observeStats = () => {
+    const counters = document.querySelectorAll('.stat-number');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && entry.target.textContent === '0') {
+                animateCounter(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    counters.forEach(el => observer.observe(el));
+};
+
+const animateFeatureCards = () => {
+    const cards = document.querySelectorAll('.feature-card');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }, i * 100);
+            }
+        });
+    }, { threshold: 0.1 });
+    cards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'all 0.5s ease';
+        observer.observe(card);
+    });
+};
+
+const showWelcomeMessage = () => {
+    const user = localStorage.getItem('alielUser');
+    if (user) {
+        const name = JSON.parse(user).name;
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(135deg, #e63946, #ff4757);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(230, 57, 70, 0.4);
+            z-index: 1001;
+            animation: slideIn 0.5s ease;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+        `;
+        toast.textContent = `Xoş gəlmisiniz, ${name}! 👋`;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.5s ease';
+            setTimeout(() => toast.remove(), 500);
+        }, 3000);
+    }
+};
+
+const addAnimationStyles = () => {
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to   { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to   { transform: translateX(400px); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    addAnimationStyles();
+    observeStats();
+    animateFeatureCards();
+    showWelcomeMessage();
+});
