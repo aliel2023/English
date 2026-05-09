@@ -4,7 +4,7 @@
  * Offline: Essential pages and grammar rules cached
  */
 
-const CACHE_NAME = 'alielenglish-v3.0';
+const CACHE_NAME = 'alielenglish-v3.1';
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '/');
 const OFFLINE_URL = BASE + 'index.html';
 
