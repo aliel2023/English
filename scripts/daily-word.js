@@ -41,35 +41,30 @@ async function fetchWordFromAI() {
         "examples" (array of 2 objects with "en" and "az" string keys), 
         "synonyms" (array of 3-4 strings).`;
 
-        // Assuming CONFIG is not directly imported, we use the known supabase URL
-        // Import SUPABASE_URL dynamically or assume it exists. Actually we can just fetch.
-        // It's better to fetch via Edge function. But we need the URL.
-        let apiUrl = "https://YOUR_PROJECT_ID.supabase.co/functions/v1/chat";
-        // Attempt to get real URL if auth.js has loaded supabase
-        if (window.supabase) {
-            apiUrl = window.supabase.supabaseUrl + '/functions/v1/chat';
-        }
-
-        const session = await window.supabase?.auth.getSession();
-        const token = session?.data?.session?.access_token || "";
+        let apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyDvH7wNLFVlkU3Lr_gIf-RD2iBzjVGFWSU`;
 
         showToast("Süni intellekt sizin üçün günün sözünü seçir...", "info");
 
         const resp = await fetch(apiUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                systemInstruction: "You are an English vocabulary API. Always return raw JSON.",
-                message: prompt
+                contents: [{
+                    role: "user",
+                    parts: [{ text: "You are an English vocabulary API. Always return raw JSON.\n\n" + prompt }]
+                }],
+                generationConfig: {
+                    temperature: 0.7,
+                    responseMimeType: "application/json"
+                }
             })
         });
 
         if (!resp.ok) throw new Error("API Error");
         const data = await resp.json();
-        let aiText = data.response.trim();
+        let aiText = data.candidates[0].content.parts[0].text.trim();
         if (aiText.startsWith("```json")) {
             aiText = aiText.substring(7, aiText.length - 3).trim();
         }

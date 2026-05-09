@@ -10,8 +10,8 @@
 
     // ===== CONFIG =====
     const CONFIG = {
-        apiKey: '', // API key is handled securely by Supabase Edge Function
-        apiUrl: 'https://YOUR_SUPABASE_PROJECT_ID.supabase.co/functions/v1/chat', // TODO: Update with actual Supabase Edge Function URL
+        apiKey: 'AIzaSyDvH7wNLFVlkU3Lr_gIf-RD2iBzjVGFWSU',
+        apiUrl: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
         storageKey: 'ai_teacher_data',
         maxHistory: 20,
         maxApiHistory: 6,
