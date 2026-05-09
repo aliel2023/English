@@ -30,7 +30,6 @@ serve(async (req: Request) => {
     const { message, systemInstruction } = await req.json();
 
     // 3. Check Tier Limits (Free: 20/day)
-    // We need the service_role key to bypass RLS for incrementing usage securely
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
@@ -38,22 +37,16 @@ serve(async (req: Request) => {
 
     const { data: userData } = await supabaseAdmin
       .from('users')
-      .select('is_pro')
-      .eq('id', user.id)
+      .select('premium_active, daily_query_count, last_reset_date')
+      .eq('uid', user.id)
       .single();
 
-    if (!userData?.is_pro) {
-      // Check usage limits
-      const { data: usageData } = await supabaseAdmin
-        .from('ai_usage')
-        .select('query_count, last_reset_date')
-        .eq('user_id', user.id)
-        .single();
-
+    if (!userData?.premium_active) {
       const today = new Date().toISOString().split('T')[0];
-      let queryCount = usageData?.query_count || 0;
+      let queryCount = userData?.daily_query_count || 0;
+      let lastDate = userData?.last_reset_date ? userData.last_reset_date.split('T')[0] : null;
 
-      if (usageData?.last_reset_date !== today) {
+      if (lastDate !== today) {
         queryCount = 0; // Reset for new day
       }
 
@@ -68,11 +61,10 @@ serve(async (req: Request) => {
       }
 
       // Increment usage
-      await supabaseAdmin.from('ai_usage').upsert({
-        user_id: user.id,
-        query_count: queryCount + 1,
-        last_reset_date: today
-      });
+      await supabaseAdmin.from('users').update({
+        daily_query_count: queryCount + 1,
+        last_reset_date: new Date().toISOString()
+      }).eq('uid', user.id);
     }
 
     // 4. Securely call Gemini API

@@ -1,1 +1,437 @@
-const wordDatabase=[{word:"ACCOMPLISH",pronunciation:"/əˈkʌmplɪʃ/",type:"verb",level:"A2",translation:"Başarmaq, həyata keçirmək, nail olmaq",definition:"To succeed in doing or completing something, especially something difficult",examples:[{en:"She accomplished her goal of learning English in one year.",az:"O, bir il ərzində ingilis dili öyrənmək məqsədinə çatdı."},{en:"The team accomplished a lot during the project.",az:"Komanda layihə zamanı çox şey bacardı."}],synonyms:["achieve","complete","fulfill","succeed"]},{word:"CHALLENGE",pronunciation:"/ˈtʃælɪndʒ/",type:"noun/verb",level:"A2",translation:"Çətinlik, sınaq; meydan oxumaq",definition:"Something new and difficult that requires great effort and determination",examples:[{en:"Learning a new language is a big challenge.",az:"Yeni dil öyrənmək böyük bir sınaqdır."},{en:"She challenged herself to run every day.",az:"O, özünə hər gün qaçmaq çağırışını qoydu."}],synonyms:["difficulty","problem","obstacle","test"]},{word:"OPPORTUNITY",pronunciation:"/ˌɒpəˈtjuːnəti/",type:"noun",level:"B1",translation:"Fürsət, imkan",definition:"A time or situation that makes it possible to do something that you want to do",examples:[{en:"This job offers great opportunities for growth.",az:"Bu iş inkişaf üçün əla fürsətlər təklif edir."},{en:"Don't miss this opportunity to learn English.",az:"İngilis dili öyrənmək fürsətini əldən verməyin."}],synonyms:["chance","possibility","occasion","opening"]},{word:"PERSEVERANCE",pronunciation:"/ˌpɜːsɪˈvɪərəns/",type:"noun",level:"B2",translation:"Əzmkarlıq, inadkarlıq, tab gətirmə",definition:"Continued effort to do something despite difficulty, failure, or opposition",examples:[{en:"Her perseverance helped her pass the exam.",az:"Onun əzmkarlığı imtahanı keçməsinə kömək etdi."},{en:"Success requires perseverance and hard work.",az:"Uğur əzmkarlıq və çətin iş tələb edir."}],synonyms:["determination","persistence","tenacity","endurance"]},{word:"ELOQUENT",pronunciation:"/ˈeləkwənt/",type:"adjective",level:"C1",translation:"Natiq, ifadəli danışan, yaxşı nitq verən",definition:"Well-spoken and able to express ideas or feelings clearly and effectively",examples:[{en:"She gave an eloquent speech at the conference.",az:"O, konfransda natiqanə bir nitq söylədi."},{en:"His eloquent writing impressed everyone.",az:"Onun natiqanə yazısı hamını heyran etdi."}],synonyms:["articulate","fluent","expressive","persuasive"]},{word:"AMBIGUOUS",pronunciation:"/æmˈbɪɡjuəs/",type:"adjective",level:"B2",translation:"Qeyri-müəyyən, iki mənalı, aydın olmayan",definition:"Open to more than one interpretation; not having one obvious meaning",examples:[{en:"The instructions were ambiguous and confusing.",az:"Təlimatlar qeyri-müəyyən və çaşdırıcı idi."},{en:"His answer was deliberately ambiguous.",az:"Onun cavabı qəsdən qeyri-müəyyən idi."}],synonyms:["unclear","vague","equivocal","uncertain"]},{word:"RESILIENT",pronunciation:"/rɪˈzɪliənt/",type:"adjective",level:"B2",translation:"Dayanıqlı, çevik, bərkimiş",definition:"Able to recover quickly from difficult conditions or setbacks",examples:[{en:"Children are remarkably resilient.",az:"Uşaqlar müstəsna dərəcədə dayanıqlıdırlar."},{en:"She proved to be resilient in the face of adversity.",az:"O, çətinliklərlə üz-üzə dayanıqlı olduğunu sübut etdi."}],synonyms:["tough","adaptable","strong","flexible"]},{word:"ELOQUENCE",pronunciation:"/ˈeləkwəns/",type:"noun",level:"C1",translation:"Natiqlik, gözəl, inandırıcı nitq",definition:"The practice or art of using language with fluency and aptness",examples:[{en:"The president spoke with great eloquence.",az:"Prezident böyük natiqlik ilə danışdı."}],synonyms:["fluency","articulacy","expression","rhetoric"]},{word:"ENDEAVOUR",pronunciation:"/ɪnˈdevər/",type:"noun/verb",level:"B2",translation:"Cəhd etmək, səy göstərmək",definition:"To try hard to do or achieve something; an earnest attempt",examples:[{en:"We endeavour to provide the best service possible.",az:"Biz mümkün olan ən yaxşı xidməti təqdim etməyə çalışırıq."}],synonyms:["attempt","try","strive","effort"]},{word:"PROFOUND",pronunciation:"/prəˈfaʊnd/",type:"adjective",level:"B2",translation:"Dərin, dərindən hiss olunan, mühüm",definition:"Having or showing great knowledge or insight; very great or intense",examples:[{en:"The book had a profound effect on me.",az:"Kitab məndə dərin bir təsir buraxdı."},{en:"She has a profound understanding of the subject.",az:"Mövzunu dərin biliklərlə mənimsəyir."}],synonyms:["deep","intense","thoughtful","significant"]},{word:"DILIGENT",pronunciation:"/ˈdɪlɪdʒənt/",type:"adjective",level:"B1",translation:"Çalışqan, zəhmətkeş, müntəzəm",definition:"Having or showing care and conscientiousness in one's work or duties",examples:[{en:"She is a diligent student who never misses class.",az:"O, heç vaxt dərsi buraxmayan çalışqan bir tələbədir."}],synonyms:["hardworking","dedicated","industrious","thorough"]},{word:"ENTHUSIASM",pronunciation:"/ɪnˈθjuːziæzəm/",type:"noun",level:"B1",translation:"Həvəs, coşqu, maraq",definition:"Intense and eager enjoyment, interest, or approval",examples:[{en:"She approached every task with great enthusiasm.",az:"O, hər tapşırığa böyük həvəslə yanaşdı."}],synonyms:["eagerness","passion","excitement","zeal"]},{word:"COLLABORATE",pronunciation:"/kəˈlæbəreɪt/",type:"verb",level:"B1",translation:"Əməkdaşlıq etmək, birgə işləmək",definition:"To work jointly on an activity or project; cooperate",examples:[{en:"The two companies collaborated on the project.",az:"İki şirkət layihədə əməkdaşlıq etdi."}],synonyms:["cooperate","work together","partner","team up"]},{word:"INNOVATIVE",pronunciation:"/ˈɪnəveɪtɪv/",type:"adjective",level:"B2",translation:"Yenilikçi, novator, müasir",definition:"Featuring new methods; advanced and original",examples:[{en:"The company is known for its innovative products.",az:"Şirkət yenilikçi məhsulları ilə tanınır."}],synonyms:["creative","original","inventive","pioneering"]},{word:"ARTICULATE",pronunciation:"/ɑːˈtɪkjʊleɪt/",type:"adjective/verb",level:"B2",translation:"Fikirlərini aydın ifadə edən; aydın danışmaq",definition:"Having or showing the ability to speak fluently and coherently",examples:[{en:"She is very articulate and persuasive.",az:"O, çox aydın danışan və inandırıcıdır."}],synonyms:["eloquent","clear","fluent","expressive"]},{word:"TENACIOUS",pronunciation:"/tɪˈneɪʃəs/",type:"adjective",level:"C1",translation:"Inamlı, möhkəm dayanan, inadkar",definition:"Tending to keep a firm hold of something; persistent; not easily discouraged",examples:[{en:"He is a tenacious negotiator.",az:"O, inadkar bir danışıqçıdır."}],synonyms:["persistent","determined","stubborn","resolute"]},{word:"EMPATHY",pronunciation:"/ˈempəθi/",type:"noun",level:"B2",translation:"Empatiya, başqasının hislərini anlamaq",definition:"The ability to understand and share the feelings of another person",examples:[{en:"Good teachers show empathy towards their students.",az:"Yaxşı müəllimlər şagirdlərinə empatiya göstərir."}],synonyms:["compassion","understanding","sympathy","sensitivity"]},{word:"INEVITABLE",pronunciation:"/ɪnˈevɪtəbl/",type:"adjective",level:"B2",translation:"Qaçılmaz, mütləq baş verəcək",definition:"Certain to happen; unavoidable",examples:[{en:"Change is inevitable in life.",az:"Həyatda dəyişiklik qaçılmazdır."}],synonyms:["unavoidable","certain","inescapable","imminent"]},{word:"METICULOUS",pronunciation:"/mɪˈtɪkjʊləs/",type:"adjective",level:"C1",translation:"Ən kiçik ətraflara diqqət edən, dəqiq",definition:"Showing great attention to detail or being very careful and precise",examples:[{en:"She is meticulous about her work.",az:"O, işinə çox diqqətlidir."}],synonyms:["precise","careful","thorough","attentive"]},{word:"VERSATILE",pronunciation:"/ˈvɜːsətaɪl/",type:"adjective",level:"B2",translation:"Çoxfunksiyalı, universal, çevik",definition:"Able to adapt or be adapted to many different functions or activities",examples:[{en:"She is a versatile musician who plays many instruments.",az:"O, bir çox musiqi aləti çalan universal bir musiqiçidir."}],synonyms:["adaptable","flexible","multitalented","resourceful"]},{word:"BENEVOLENT",pronunciation:"/bɪˈnevələnt/",type:"adjective",level:"C1",translation:"Xeyirxah, xoşniyyətli, əliaçıq",definition:"Well-meaning and kindly; showing goodwill towards others",examples:[{en:"The benevolent leader helped many poor families.",az:"Xeyirxah lider bir çox kasıb ailəyə kömək etdi."}],synonyms:["kind","generous","charitable","good-hearted"]},{word:"IMPECCABLE",pronunciation:"/ɪmˈpekəbl/",type:"adjective",level:"C1",translation:"Qüsursuz, mükəmməl",definition:"In accordance with the highest standards; faultless",examples:[{en:"His English pronunciation is impeccable.",az:"Onun ingilis dili tələffüzü qüsursuzdur."}],synonyms:["perfect","flawless","faultless","immaculate"]},{word:"DILEMMA",pronunciation:"/dɪˈlemə/",type:"noun",level:"B1",translation:"İkiləm, çıxılmaz vəziyyət",definition:"A situation requiring a choice between two equally undesirable alternatives",examples:[{en:"She faced a difficult dilemma about her career.",az:"O, karyerasına dair çətin bir ikiləmlə üzləşdi."}],synonyms:["predicament","quandary","difficulty","problem"]},{word:"ACQUIRE",pronunciation:"/əˈkwaɪər/",type:"verb",level:"B1",translation:"Əldə etmək, qazanmaq, öyrənmək",definition:"To obtain or come to have something; to learn or develop a skill or habit",examples:[{en:"She acquired fluency in English through practice.",az:"O, məşq etməklə ingiliscəni axıcı öyrəndi."}],synonyms:["obtain","gain","develop","learn"]},{word:"DISTINGUISH",pronunciation:"/dɪˈstɪŋɡwɪʃ/",type:"verb",level:"B1",translation:"Fərqləndirmək, ayırd etmək",definition:"To recognize or treat as different; to be the distinguishing feature of",examples:[{en:"Can you distinguish British from American English?",az:"Britaniya ilə Amerikan ingiliscəsini fərqləndirə bilirsiniz?"}],synonyms:["differentiate","tell apart","discern","separate"]},{word:"FLOURISH",pronunciation:"/ˈflʌrɪʃ/",type:"verb",level:"B2",translation:"Çiçəklənmək, inkişaf etmək, rövnəqlənmək",definition:"To grow or develop in a healthy and vigorous way; to be very successful",examples:[{en:"Her business flourished after the new strategy.",az:"Yeni strategiyadan sonra onun işi çiçəkləndi."}],synonyms:["thrive","prosper","grow","bloom"]},{word:"IMPLICIT",pronunciation:"/ɪmˈplɪsɪt/",type:"adjective",level:"C1",translation:"Gizli, deyilmədən başa düşülən",definition:"Suggested though not directly expressed; complete and unquestioning",examples:[{en:"There was an implicit agreement between them.",az:"Onlar arasında gizli bir razılaşma var idi."}],synonyms:["implied","unstated","unspoken","absolute"]},{word:"SUBSTANTIAL",pronunciation:"/səbˈstænʃəl/",type:"adjective",level:"B2",translation:"Əhəmiyyətli, ciddi miqdarda, tutarlı",definition:"Of considerable importance, size, or worth",examples:[{en:"She made a substantial improvement in her English.",az:"O, ingiliscəsini əhəmiyyətli dərəcədə inkişaf etdirdi."}],synonyms:["significant","considerable","large","important"]},{word:"COHERENT",pronunciation:"/kəʊˈhɪərənt/",type:"adjective",level:"B2",translation:"Ardıcıl, məntiqi, ahəngdar",definition:"Logical and consistent; (of a person) able to speak clearly and logically",examples:[{en:"Her essay was well-structured and coherent.",az:"Onun ese yaxşı qurulmuş və ardıcıl idi."}],synonyms:["logical","consistent","clear","structured"]},{word:"ADJACENT",pronunciation:"/əˈdʒeɪsənt/",type:"adjective",level:"B1",translation:"Yanındakı, qonşu, bitişik",definition:"Next to or adjoining something else; close to something",examples:[{en:"The school is adjacent to the park.",az:"Məktəb parkın yanındadır."}],synonyms:["neighboring","next to","nearby","adjoining"]}];function getTodayWord(){const e=(new Date).toDateString();let n=0;for(let t=0;t<e.length;t++)n=e.charCodeAt(t)+((n<<5)-n);return wordDatabase[Math.abs(n)%wordDatabase.length]}let todayWord=null;function loadWordOfDay(){document.getElementById("wordLevel").textContent=`${todayWord.level} LEVEL`,document.getElementById("wordTitle").textContent=todayWord.word,document.getElementById("wordPronunciation").textContent=todayWord.pronunciation,document.getElementById("wordType").textContent=todayWord.type,document.getElementById("wordTranslation").textContent=todayWord.translation,document.getElementById("wordDefinition").textContent=todayWord.definition;const e=todayWord.examples[0];if(document.getElementById("example1En").textContent=`"${e.en}"`,document.getElementById("example1Az").textContent=e.az,todayWord.examples[1])document.getElementById("example2En").textContent=`"${todayWord.examples[1].en}"`,document.getElementById("example2Az").textContent=todayWord.examples[1].az;else{const e=document.getElementById("example2En");e&&e.closest(".example-item")&&(e.closest(".example-item").style.display="none")}const n=todayWord.synonyms.map(e=>`<span class="tag">${e}</span>`).join(""),t=document.querySelector(".synonym-tags");t&&(t.innerHTML=n),markWordAsSeen(todayWord.word),updateFavoriteButton()}function updateFavoriteButton(){const e=document.querySelector('[onclick="addWordToFavBtn()"]');if(!e)return;const n="function"==typeof getCurrentUser?getCurrentUser():null;n&&n.favorites&&n.favorites.words&&n.favorites.words.some(e=>("object"==typeof e?e.word:e)===todayWord.word)&&(e.innerHTML="❤️ Sevimlilərdir",e.style.opacity="0.7",e.disabled=!0)}function playAudio(e){const n=todayWord?todayWord.word:document.getElementById("wordTitle").textContent;if("speechSynthesis"in window){window.speechSynthesis.cancel();const t=new SpeechSynthesisUtterance(n);t.lang="en-US",t.rate=.8,t.pitch=1,window.speechSynthesis.speak(t);const a=e&&e.target?e.target.closest("button"):null;a&&(a.style.transform="scale(1.1)",setTimeout(()=>a.style.transform="scale(1)",300))}else showToast("Bu cihaz səs oxutmanı dəstəkləmir. Lütfən Chrome/Edge istifadə edin.","warning")}function addWordToFavBtn(){if(!("function"==typeof getCurrentUser?getCurrentUser():null))return void(window.location.href="login.html?next=daily-word.html");const e={word:todayWord.word,pronunciation:todayWord.pronunciation,type:todayWord.type,level:todayWord.level,translation:todayWord.translation,definition:todayWord.definition,examples:todayWord.examples,synonyms:todayWord.synonyms,savedAt:(new Date).toISOString()};"function"==typeof window.addToFavorites?window.addToFavorites(e,"words").then(e=>{if(!1!==e){const e=document.querySelector('[onclick="addWordToFavBtn()"]');e&&(e.innerHTML="❤️ Sevimlilərdir",e.style.opacity="0.7",e.disabled=!0),showToast("✅ Söz sevimlilərə əlavə edildi!","success")}}).catch(()=>{showToast("⚠️ Sevimlilərə əlavə edilmədi. Yenidən cəhd edin.","error")}):_addToLocalFavorites()}function _addToLocalFavorites(){const e=JSON.parse(localStorage.getItem("favoriteWords")||"[]");if(e.find(e=>("object"==typeof e?e.word:e)===todayWord.word))return void showToast("❤️ Bu söz artıq sevimlilərinizdədir!","info");const n={word:todayWord.word,level:todayWord.level,translation:todayWord.translation,savedAt:(new Date).toISOString()};e.push(n),localStorage.setItem("favoriteWords",JSON.stringify(e)),showToast("✅ Söz sevimlilərə əlavə edildi!","success");const t=document.getElementById("favoriteCount");t&&(t.textContent=e.length)}function shareWord(){const e=`📚 Günün Sözü: ${todayWord.word}\n\n✅ ${todayWord.translation}\n\n💬 "${todayWord.examples[0].en}"\n\n🔗 Alielenglish ilə öyrən!`;navigator.share?navigator.share({title:"Günün Sözü - Alielenglish",text:e,url:window.location.href}):navigator.clipboard.writeText(e).then(()=>{showToast("📋 Mətn kopyalandı!","success")}).catch(()=>{showToast("📋 Link kopyalanmadı","warning")})}function loadStatistics(){const e="function"==typeof getCurrentUser?getCurrentUser():null;let n,t,a;e?(n=(e.seenWords||[]).length,t=e.currentStreak||0,a=(e.favoriteWords||[]).length):(n=JSON.parse(localStorage.getItem("seenWords")||"[]").length,t=parseInt(localStorage.getItem("currentStreak")||"0"),a=JSON.parse(localStorage.getItem("favoriteWords")||"[]").length),animateCounter(document.getElementById("totalWordsLearned"),n),animateCounter(document.getElementById("currentStreak"),t),animateCounter(document.getElementById("favoriteCount"),a)}function animateCounter(e,n){if(!e||0===n)return void(e&&(e.textContent="0"));let t=0;const a=Math.max(1,n/30),i=setInterval(()=>{t+=a,t>=n?(e.textContent=n,clearInterval(i)):e.textContent=Math.floor(t)},30)}function markWordAsSeen(e){const n=JSON.parse(localStorage.getItem("seenWords")||"[]");n.includes(e)||(n.push(e),localStorage.setItem("seenWords",JSON.stringify(n)))}function updateStreak(){if("function"==typeof getCurrentUser?getCurrentUser():null)return;const e=localStorage.getItem("lastDailyWordVisit"),n=(new Date).toDateString();if(e!==n){const t=new Date(Date.now()-864e5).toDateString();let a=parseInt(localStorage.getItem("currentStreak")||"0");a=e===t?a+1:1,localStorage.setItem("currentStreak",a.toString()),localStorage.setItem("lastDailyWordVisit",n)}}document.addEventListener("DOMContentLoaded",function(){todayWord=getTodayWord();const e=new Date,n=document.getElementById("dailyDate");if(n){const t=localStorage.getItem("selectedLanguage")||"az";n.textContent=e.toLocaleDateString("az"===t?"az-AZ":"en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"})}loadWordOfDay(),loadStatistics(),loadArchive(),updateStreak()}),document.addEventListener("alielAuthReady",function(){updateFavoriteButton(),loadStatistics()});let displayedArchiveCount=0;const archivePerPage=6;function loadArchive(){const e=document.getElementById("archiveGrid");if(!e)return;const n="function"==typeof getCurrentUser?getCurrentUser():null,t=n?(n.favoriteWords||[]).map(e=>"object"==typeof e?e.word:e):JSON.parse(localStorage.getItem("favoriteWords")||"[]"),a=wordDatabase.filter(e=>e.word!==todayWord.word);for(let n=displayedArchiveCount;n<Math.min(displayedArchiveCount+archivePerPage,a.length);n++){const i=a[n],o=t.includes(i.word),r=document.createElement("div");r.className="archive-card",r.dataset.level=i.level,r.dataset.favorite=o,r.onclick=()=>viewArchivedWord(i),r.innerHTML=`\n            <span class="word-badge">${i.level}</span>\n            <h3>${i.word}</h3>\n            <p class="pronunciation">${i.pronunciation}</p>\n            <p class="translation">${i.translation}</p>\n            ${o?'<span style="color:var(--primary);font-size:0.8rem;">❤️ Sevimlilərdə</span>':""}\n        `,e.appendChild(r)}displayedArchiveCount+=archivePerPage;const i=document.getElementById("loadMoreBtn");i&&displayedArchiveCount>=a.length&&(i.style.display="none")}function loadMoreArchive(){loadArchive()}function filterArchive(e,n){const t=document.querySelectorAll(".archive-card");document.querySelectorAll(".filter-btn").forEach(e=>e.classList.remove("active")),n&&n.target&&n.target.classList.add("active"),t.forEach(n=>{n.style.display="all"===e?"block":"favorites"===e?"true"===n.dataset.favorite?"block":"none":n.dataset.level===e?"block":"none"})}function viewArchivedWord(e){const n=document.getElementById("archiveWordModal");n&&n.remove();const t=document.createElement("div");t.id="archiveWordModal",t.className="modal active",t.innerHTML=`\n        <div class="modal-content" style="max-width:500px;text-align:left;">\n            <button class="modal-close" onclick="this.closest('.modal').remove();document.body.style.overflow='';">×</button>\n            <div style="display:flex;gap:0.75rem;align-items:center;margin-bottom:1rem;">\n                <span class="word-badge" style="background:rgba(230,57,70,0.15);color:var(--primary);border:1px solid rgba(230,57,70,0.3);padding:0.3rem 0.8rem;border-radius:50px;">${e.level}</span>\n                <span style="background:var(--bg-dark);border:1px solid var(--border);color:var(--text-muted);padding:0.2rem 0.6rem;border-radius:4px;font-size:0.8rem;">${e.type}</span>\n            </div>\n            <h2 style="font-size:2rem;letter-spacing:2px;margin-bottom:0.25rem;">${e.word}</h2>\n            <p style="color:var(--primary);font-style:italic;margin-bottom:1.5rem;">${e.pronunciation}</p>\n            <div style="background:var(--bg-dark);border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:1rem;">\n                <h4 style="color:var(--primary);margin-bottom:0.5rem;">🌐 Tərcümə</h4>\n                <p style="color:var(--text-secondary);">${e.translation}</p>\n            </div>\n            <div style="background:var(--bg-dark);border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:1rem;">\n                <h4 style="color:var(--primary);margin-bottom:0.5rem;">💬 Nümunə</h4>\n                <p style="color:var(--text-primary);font-style:italic;">"${e.examples[0].en}"</p>\n                <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.3rem;">${e.examples[0].az}</p>\n            </div>\n            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">\n                <button class="btn btn-primary" onclick='speakWord("${e.word}")'>🔊 Dinlə</button>\n                <button class="btn btn-secondary" onclick='addArchiveWordToFav(${JSON.stringify(e).replace(/'/g,"&#39;")})'>❤️ Sevimlilərə</button>\n            </div>\n        </div>\n    `,t.addEventListener("click",e=>{e.target===t&&(t.remove(),document.body.style.overflow="")}),document.body.appendChild(t),document.body.style.overflow="hidden"}function speakWord(e){if("speechSynthesis"in window){window.speechSynthesis.cancel();const n=new SpeechSynthesisUtterance(e);n.lang="en-US",n.rate=.85,window.speechSynthesis.speak(n)}}function addArchiveWordToFav(e){"function"==typeof addToFavorites&&addToFavorites({...e,savedAt:(new Date).toISOString()},"words")}"undefined"==typeof showToast&&(window.showToast=function(e,n){if(window.DS&&"function"==typeof window.DS.toast)window.DS.toast({msg:e,type:n||"info",duration:3500});else{const n=document.createElement("div");n.style.cssText="position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#1c2333;color:#fff;padding:.75rem 1.5rem;border-radius:8px;z-index:9999;font-size:.9rem;box-shadow:0 4px 20px rgba(0,0,0,.4)",n.textContent=e,document.body.appendChild(n),setTimeout(()=>n.remove(),3e3)}});
+let todayWord = null;
+
+async function getTodayWord() {
+    const today = new Date().toDateString();
+    const storedStr = localStorage.getItem('daily_word_data');
+    if (storedStr) {
+        try {
+            const stored = JSON.parse(storedStr);
+            if (stored.date === today && stored.word) {
+                return stored.word;
+            }
+        } catch (e) {}
+    }
+
+    // Əgər yoxdursa, süni intellektdən (Gemini) yeni söz alaq
+    return await fetchWordFromAI();
+}
+
+async function fetchWordFromAI() {
+    try {
+        const uid = window.currentUser?.id || null;
+        if (window.handleAIQueryLimit) {
+            const limitCheck = await window.handleAIQueryLimit(uid);
+            if (!limitCheck.allowed) {
+                if (limitCheck.reason === "guest_limit") {
+                    showToast("Süni intellekt limitiniz bitdi. Pulsuz qeydiyyatdan keçin.", "warning");
+                } else {
+                    showToast("Gündəlik limit (20) bitdi. Premium-a keçid edin.", "warning");
+                }
+                return getFallbackWord(); // return static word if limit reached
+            }
+        }
+
+        // Supabase Edge Function çağırışı
+        const userLevel = window.currentUserData?.level || "B1";
+        const prompt = `Provide a random, highly useful English word for a ${userLevel} level learner. 
+        Return ONLY a valid JSON object (without markdown blocks like \`\`\`json) with these exact keys:
+        "word" (string), "pronunciation" (string), "type" (string, e.g. "noun", "verb"), 
+        "level" (string, e.g. "${userLevel}"), "translation" (string, in Azerbaijani), 
+        "definition" (string, in English), 
+        "examples" (array of 2 objects with "en" and "az" string keys), 
+        "synonyms" (array of 3-4 strings).`;
+
+        // Assuming CONFIG is not directly imported, we use the known supabase URL
+        // Import SUPABASE_URL dynamically or assume it exists. Actually we can just fetch.
+        // It's better to fetch via Edge function. But we need the URL.
+        let apiUrl = "https://YOUR_PROJECT_ID.supabase.co/functions/v1/chat";
+        // Attempt to get real URL if auth.js has loaded supabase
+        if (window.supabase) {
+            apiUrl = window.supabase.supabaseUrl + '/functions/v1/chat';
+        }
+
+        const session = await window.supabase?.auth.getSession();
+        const token = session?.data?.session?.access_token || "";
+
+        showToast("Süni intellekt sizin üçün günün sözünü seçir...", "info");
+
+        const resp = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify({
+                systemInstruction: "You are an English vocabulary API. Always return raw JSON.",
+                message: prompt
+            })
+        });
+
+        if (!resp.ok) throw new Error("API Error");
+        const data = await resp.json();
+        let aiText = data.response.trim();
+        if (aiText.startsWith("```json")) {
+            aiText = aiText.substring(7, aiText.length - 3).trim();
+        }
+        
+        const newWord = JSON.parse(aiText);
+        
+        // Cache it for today
+        localStorage.setItem('daily_word_data', JSON.stringify({
+            date: new Date().toDateString(),
+            word: newWord
+        }));
+        
+        return newWord;
+    } catch (e) {
+        console.error("AI Fetch Error:", e);
+        showToast("Sözü internetdən çəkmək mümkün olmadı, offline baza istifadə edilir.", "warning");
+        return getFallbackWord();
+    }
+}
+
+function getFallbackWord() {
+    return {
+        word: "RESILIENT",
+        pronunciation: "/rɪˈzɪliənt/",
+        type: "adjective",
+        level: "B2",
+        translation: "Dayanıqlı, çevik, bərkimiş",
+        definition: "Able to recover quickly from difficult conditions or setbacks",
+        examples: [
+            { en: "Children are remarkably resilient.", az: "Uşaqlar müstəsna dərəcədə dayanıqlıdırlar." },
+            { en: "She proved to be resilient in the face of adversity.", az: "O, çətinliklərlə üz-üzə dayanıqlı olduğunu sübut etdi." }
+        ],
+        synonyms: ["tough", "adaptable", "strong", "flexible"]
+    };
+}
+
+async function loadWordOfDay() {
+    document.getElementById("wordTitle").textContent = "Yüklənir...";
+    todayWord = await getTodayWord();
+    
+    document.getElementById("wordLevel").textContent = `${todayWord.level} LEVEL`;
+    document.getElementById("wordTitle").textContent = todayWord.word;
+    document.getElementById("wordPronunciation").textContent = todayWord.pronunciation;
+    document.getElementById("wordType").textContent = todayWord.type;
+    document.getElementById("wordTranslation").textContent = todayWord.translation;
+    document.getElementById("wordDefinition").textContent = todayWord.definition;
+    
+    const ex1 = todayWord.examples[0];
+    document.getElementById("example1En").textContent = `"${ex1.en}"`;
+    document.getElementById("example1Az").textContent = ex1.az;
+    
+    if (todayWord.examples[1]) {
+        document.getElementById("example2En").textContent = `"${todayWord.examples[1].en}"`;
+        document.getElementById("example2Az").textContent = todayWord.examples[1].az;
+    } else {
+        const e2 = document.getElementById("example2En");
+        if (e2 && e2.closest(".example-item")) {
+            e2.closest(".example-item").style.display = "none";
+        }
+    }
+    
+    const tags = todayWord.synonyms.map(e => `<span class="tag">${e}</span>`).join("");
+    const tagCont = document.querySelector(".synonym-tags");
+    if (tagCont) tagCont.innerHTML = tags;
+    
+    markWordAsSeen(todayWord.word);
+    updateFavoriteButton();
+}
+
+function updateFavoriteButton() {
+    const btn = document.querySelector('[onclick="addWordToFavBtn()"]');
+    if (!btn) return;
+    const user = window.currentUserData;
+    if (user && user.favorites && user.favorites.words && user.favorites.words.some(w => (typeof w === 'object' ? w.word : w) === todayWord.word)) {
+        btn.innerHTML = "❤️ Sevimlilərdir";
+        btn.style.opacity = "0.7";
+        btn.disabled = true;
+    }
+}
+
+function playAudio(e) {
+    const text = todayWord ? todayWord.word : document.getElementById("wordTitle").textContent;
+    if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = "en-US";
+        utter.rate = 0.8;
+        utter.pitch = 1;
+        window.speechSynthesis.speak(utter);
+        const btn = e && e.target ? e.target.closest("button") : null;
+        if (btn) {
+            btn.style.transform = "scale(1.1)";
+            setTimeout(() => btn.style.transform = "scale(1)", 300);
+        }
+    } else {
+        if(window.showToast) showToast("Bu cihaz səs oxutmanı dəstəkləmir.", "warning");
+    }
+}
+
+function addWordToFavBtn() {
+    if (!window.currentUserData) {
+        window.location.href = "login.html?next=daily-word.html";
+        return;
+    }
+    const favObj = {
+        word: todayWord.word,
+        pronunciation: todayWord.pronunciation,
+        type: todayWord.type,
+        level: todayWord.level,
+        translation: todayWord.translation,
+        definition: todayWord.definition,
+        examples: todayWord.examples,
+        synonyms: todayWord.synonyms,
+        savedAt: new Date().toISOString()
+    };
+    if (typeof window.addToFavorites === "function") {
+        window.addToFavorites(favObj, "words").then(res => {
+            if (res !== false) {
+                const btn = document.querySelector('[onclick="addWordToFavBtn()"]');
+                if (btn) {
+                    btn.innerHTML = "❤️ Sevimlilərdir";
+                    btn.style.opacity = "0.7";
+                    btn.disabled = true;
+                }
+                if(window.showToast) showToast("✅ Söz sevimlilərə əlavə edildi!", "success");
+            }
+        }).catch(() => {
+            if(window.showToast) showToast("⚠️ Xəta baş verdi.", "error");
+        });
+    } else {
+        _addToLocalFavorites();
+    }
+}
+
+function _addToLocalFavorites() {
+    const arr = JSON.parse(localStorage.getItem("favoriteWords") || "[]");
+    if (arr.find(e => (typeof e === 'object' ? e.word : e) === todayWord.word)) {
+        if(window.showToast) showToast("❤️ Bu söz artıq sevimlilərinizdədir!", "info");
+        return;
+    }
+    arr.push({
+        word: todayWord.word,
+        level: todayWord.level,
+        translation: todayWord.translation,
+        savedAt: new Date().toISOString()
+    });
+    localStorage.setItem("favoriteWords", JSON.stringify(arr));
+    if(window.showToast) showToast("✅ Söz sevimlilərə əlavə edildi!", "success");
+    const counter = document.getElementById("favoriteCount");
+    if (counter) counter.textContent = arr.length;
+}
+
+function shareWord() {
+    const txt = `📚 Günün Sözü: ${todayWord.word}\n\n✅ ${todayWord.translation}\n\n💬 "${todayWord.examples[0].en}"\n\n🔗 Alielenglish ilə öyrən!`;
+    if (navigator.share) {
+        navigator.share({ title: "Günün Sözü", text: txt, url: window.location.href });
+    } else {
+        navigator.clipboard.writeText(txt).then(() => {
+            if(window.showToast) showToast("📋 Kopyalandı!", "success");
+        });
+    }
+}
+
+function loadStatistics() {
+    const user = window.currentUserData;
+    let seen = 0, streak = 0, favs = 0;
+    if (user) {
+        seen = (user.seenWords || []).length;
+        streak = user.current_streak || 0;
+        favs = (user.favorites?.words || []).length;
+    } else {
+        seen = JSON.parse(localStorage.getItem("seenWords") || "[]").length;
+        streak = parseInt(localStorage.getItem("currentStreak") || "0");
+        favs = JSON.parse(localStorage.getItem("favoriteWords") || "[]").length;
+    }
+    animateCounter(document.getElementById("totalWordsLearned"), seen);
+    animateCounter(document.getElementById("currentStreak"), streak);
+    animateCounter(document.getElementById("favoriteCount"), favs);
+}
+
+function animateCounter(el, target) {
+    if (!el || target === 0) {
+        if (el) el.textContent = "0";
+        return;
+    }
+    let cur = 0;
+    const inc = Math.max(1, target / 30);
+    const interval = setInterval(() => {
+        cur += inc;
+        if (cur >= target) {
+            el.textContent = target;
+            clearInterval(interval);
+        } else {
+            el.textContent = Math.floor(cur);
+        }
+    }, 30);
+}
+
+function markWordAsSeen(w) {
+    const arr = JSON.parse(localStorage.getItem("seenWords") || "[]");
+    if (!arr.includes(w)) {
+        arr.push(w);
+        localStorage.setItem("seenWords", JSON.stringify(arr));
+    }
+}
+
+function updateStreak() {
+    if (window.currentUserData) return;
+    const lastDate = localStorage.getItem("lastDailyWordVisit");
+    const today = new Date().toDateString();
+    if (lastDate !== today) {
+        const yest = new Date(Date.now() - 864e5).toDateString();
+        let s = parseInt(localStorage.getItem("currentStreak") || "0");
+        s = (lastDate === yest) ? s + 1 : 1;
+        localStorage.setItem("currentStreak", s.toString());
+        localStorage.setItem("lastDailyWordVisit", today);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const dateEl = document.getElementById("dailyDate");
+    if (dateEl) {
+        const lang = localStorage.getItem("selectedLanguage") || "az";
+        dateEl.textContent = new Date().toLocaleDateString(lang === "az" ? "az-AZ" : "en-US", {
+            weekday: "long", year: "numeric", month: "long", day: "numeric"
+        });
+    }
+    loadWordOfDay().then(() => {
+        loadStatistics();
+        updateStreak();
+    });
+});
+
+document.addEventListener("alielAuthReady", function() {
+    updateFavoriteButton();
+    loadStatistics();
+});
+
+}
+
+let displayedArchiveCount = 0;
+const archivePerPage = 6;
+
+function loadArchive() {
+    const grid = document.getElementById("archiveGrid");
+    if (!grid) return;
+    
+    // We display seenWords as archive
+    let seenWords = [];
+    const user = window.currentUserData;
+    if (user) {
+        seenWords = user.seenWords || [];
+    } else {
+        seenWords = JSON.parse(localStorage.getItem("seenWords") || "[]");
+    }
+
+    // Usually seenWords contains just strings, or objects. If it's strings, we don't have full details.
+    // So for the archive, we will load favorites, as favorites store full objects.
+    let favWords = [];
+    if (user) {
+        favWords = user.favorites?.words || [];
+    } else {
+        favWords = JSON.parse(localStorage.getItem("favoriteWords") || "[]");
+    }
+
+    const archiveSource = favWords.filter(w => w.word !== todayWord?.word);
+
+    for (let i = displayedArchiveCount; i < Math.min(displayedArchiveCount + archivePerPage, archiveSource.length); i++) {
+        const wordObj = archiveSource[i];
+        const isFav = true; // since we pull from favWords
+        
+        const card = document.createElement("div");
+        card.className = "archive-card";
+        card.dataset.level = wordObj.level || "B1";
+        card.dataset.favorite = "true";
+        card.onclick = () => viewArchivedWord(wordObj);
+        
+        card.innerHTML = `
+            <span class="word-badge">${wordObj.level || "B1"}</span>
+            <h3>${wordObj.word}</h3>
+            <p class="pronunciation">${wordObj.pronunciation || ""}</p>
+            <p class="translation">${wordObj.translation || ""}</p>
+            <span style="color:var(--primary);font-size:0.8rem;">❤️ Sevimlilərdə</span>
+        `;
+        grid.appendChild(card);
+    }
+    displayedArchiveCount += archivePerPage;
+    const btn = document.getElementById("loadMoreBtn");
+    if (btn) {
+        if (displayedArchiveCount >= archiveSource.length) {
+            btn.style.display = "none";
+        } else {
+            btn.style.display = "inline-block";
+        }
+    }
+}
+
+function loadMoreArchive() {
+    loadArchive();
+}
+
+function filterArchive(filterVal, e) {
+    const cards = document.querySelectorAll(".archive-card");
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    if (e && e.target) e.target.classList.add("active");
+    
+    cards.forEach(c => {
+        if (filterVal === "all") c.style.display = "block";
+        else if (filterVal === "favorites") c.style.display = c.dataset.favorite === "true" ? "block" : "none";
+        else c.style.display = c.dataset.level === filterVal ? "block" : "none";
+    });
+}
+
+function viewArchivedWord(wordObj) {
+    const existing = document.getElementById("archiveWordModal");
+    if (existing) existing.remove();
+    
+    const exEn = wordObj.examples && wordObj.examples.length > 0 ? wordObj.examples[0].en : "";
+    const exAz = wordObj.examples && wordObj.examples.length > 0 ? wordObj.examples[0].az : "";
+
+    const modal = document.createElement("div");
+    modal.id = "archiveWordModal";
+    modal.className = "modal active";
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:500px;text-align:left;">
+            <button class="modal-close" onclick="this.closest('.modal').remove();document.body.style.overflow='';">×</button>
+            <div style="display:flex;gap:0.75rem;align-items:center;margin-bottom:1rem;">
+                <span class="word-badge" style="background:rgba(230,57,70,0.15);color:var(--primary);border:1px solid rgba(230,57,70,0.3);padding:0.3rem 0.8rem;border-radius:50px;">${wordObj.level || "B1"}</span>
+                <span style="background:var(--bg-dark);border:1px solid var(--border);color:var(--text-muted);padding:0.2rem 0.6rem;border-radius:4px;font-size:0.8rem;">${wordObj.type || "word"}</span>
+            </div>
+            <h2 style="font-size:2rem;letter-spacing:2px;margin-bottom:0.25rem;">${wordObj.word}</h2>
+            <p style="color:var(--primary);font-style:italic;margin-bottom:1.5rem;">${wordObj.pronunciation || ""}</p>
+            <div style="background:var(--bg-dark);border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:1rem;">
+                <h4 style="color:var(--primary);margin-bottom:0.5rem;">🌐 Tərcümə</h4>
+                <p style="color:var(--text-secondary);">${wordObj.translation || ""}</p>
+            </div>
+            <div style="background:var(--bg-dark);border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:1rem;">
+                <h4 style="color:var(--primary);margin-bottom:0.5rem;">💬 Nümunə</h4>
+                <p style="color:var(--text-primary);font-style:italic;">"${exEn}"</p>
+                <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.3rem;">${exAz}</p>
+            </div>
+            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+                <button class="btn btn-primary" onclick='speakWord("${wordObj.word}")'>🔊 Dinlə</button>
+            </div>
+        </div>
+    `;
+    modal.addEventListener("click", ev => {
+        if (ev.target === modal) {
+            modal.remove();
+            document.body.style.overflow = "";
+        }
+    });
+    document.body.appendChild(modal);
+    document.body.style.overflow = "hidden";
+}
+
+function speakWord(w) {
+    if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(w);
+        utter.lang = "en-US";
+        utter.rate = 0.85;
+        window.speechSynthesis.speak(utter);
+    }
+}

@@ -189,6 +189,20 @@
 
     // ===== GEMINI API CALL =====
     async function callAPI(userMessage) {
+        // 1. Limit Yoxlanışı
+        const uid = window.currentUser?.id || null;
+        if (window.handleAIQueryLimit) {
+            const limitCheck = await window.handleAIQueryLimit(uid);
+            if (!limitCheck.allowed) {
+                if (limitCheck.reason === "guest_limit") {
+                    return "Bu xüsusiyyətdən daha çox istifadə etmək üçün zəhmət olmasa daxil olun. Hesabınız yoxdursa, pulsuz qeydiyyatdan keçə bilərsiniz.";
+                } else if (limitCheck.reason === "standard_limit") {
+                    return "Gündəlik 20 sual limitinizi doldurdunuz! 🚀 Limitsiz süni intellekt və tam giriş üçün [Premium](pricing.html) hesabına keçid edə bilərsiniz.";
+                }
+                return "Süni intellektə qoşulmaq mümkün olmadı. Zəhmət olmasa bir az sonra yenidən cəhd edin.";
+            }
+        }
+
         state.apiHistory.push({ role: 'user', text: userMessage });
 
         try {

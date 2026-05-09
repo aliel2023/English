@@ -452,3 +452,52 @@ window.checkPremiumExpiration = async function(){
         }
     }
 };
+
+window.handleAIQueryLimit = async function(uid) {
+    if (!uid) {
+        let guestCount = parseInt(localStorage.getItem('guest_ai_count') || '0');
+        let guestDate = localStorage.getItem('guest_ai_date');
+        let today = new Date().toDateString();
+        if (guestDate !== today) {
+            guestCount = 0;
+            localStorage.setItem('guest_ai_date', today);
+        }
+        if (guestCount >= 3) return { allowed: false, count: guestCount, max: 3, isPro: false, reason: "guest_limit" };
+        
+        localStorage.setItem('guest_ai_count', guestCount + 1);
+        return { allowed: true, count: guestCount + 1, max: 3, isPro: false };
+    }
+
+    try {
+        const { data, error } = await supabase.from('users').select('premium_active, daily_query_count, last_reset_date').eq('uid', uid).single();
+        if (error) throw error;
+
+        if (data.premium_active) {
+            return { allowed: true, count: data.daily_query_count || 0, max: Infinity, isPro: true };
+        }
+
+        let count = data.daily_query_count || 0;
+        let lastDate = data.last_reset_date ? new Date(data.last_reset_date).toDateString() : null;
+        let today = new Date().toDateString();
+
+        if (lastDate !== today) {
+            count = 0;
+        }
+
+        if (count >= 20) {
+            return { allowed: false, count: count, max: 20, isPro: false, reason: "standard_limit" };
+        }
+
+        const newCount = count + 1;
+        await supabase.from('users').update({
+            daily_query_count: newCount,
+            last_reset_date: new Date().toISOString()
+        }).eq('uid', uid);
+
+        return { allowed: true, count: newCount, max: 20, isPro: false };
+
+    } catch (e) {
+        console.error("AI Limit Check Error:", e);
+        return { allowed: false, reason: "error" };
+    }
+};
