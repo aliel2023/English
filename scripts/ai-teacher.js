@@ -189,63 +189,39 @@
 
     // ===== GEMINI API CALL =====
     async function callAPI(userMessage) {
+        if (!window.AISystem) {
+            return "AI System yüklənməyib. Zəhmət olmasa səhifəni yeniləyin.";
+        }
+        
         // 1. Limit Yoxlanışı
-        const uid = window.currentUser?.id || null;
-        if (window.handleAIQueryLimit) {
-            const limitCheck = await window.handleAIQueryLimit(uid);
-            if (!limitCheck.allowed) {
-                if (limitCheck.reason === "guest_limit") {
-                    return "Bu xüsusiyyətdən daha çox istifadə etmək üçün zəhmət olmasa daxil olun. Hesabınız yoxdursa, pulsuz qeydiyyatdan keçə bilərsiniz.";
-                } else if (limitCheck.reason === "standard_limit") {
-                    return "Gündəlik 20 sual limitinizi doldurdunuz! 🚀 Limitsiz süni intellekt və tam giriş üçün [Premium](pricing.html) hesabına keçid edə bilərsiniz.";
-                }
-                return "Süni intellektə qoşulmaq mümkün olmadı. Zəhmət olmasa bir az sonra yenidən cəhd edin.";
+        const user = window.getCurrentUser ? window.getCurrentUser() : null;
+        const uid = user ? user.uid : null;
+        const usage = await window.AISystem.checkUsage(uid);
+        
+        if (!usage.allowed) {
+            if (usage.isGuest) {
+                return `Bu xüsusiyyətdən daha çox istifadə etmək üçün zəhmət olmasa daxil olun. Hesabınız yoxdursa, pulsuz qeydiyyatdan keçə bilərsiniz. Qonaq limiti: ${usage.max}`;
+            } else {
+                return `Gündəlik ${usage.max} sual limitinizi doldurdunuz! 🚀 Limitsiz süni intellekt və tam giriş üçün Premium hesabına keçid edə bilərsiniz.`;
             }
         }
 
-        state.apiHistory.push({ role: 'user', text: userMessage });
-
         try {
-            const recent = state.apiHistory.slice(-CONFIG.maxApiHistory);
-            const contents = recent.map(m => ({
-                role: m.role === 'user' ? 'user' : 'model',
-                parts: [{ text: m.text }]
-            }));
-
-            // Prepend system prompt to first message with separator
-            if (contents.length > 0) {
-                contents[0].parts[0].text = buildSystemPrompt() + '\n\n---USER_MSG---\n\n' + contents[0].parts[0].text;
-            }
-
-            const url = CONFIG.apiKey ? `${CONFIG.apiUrl}?key=${CONFIG.apiKey}` : CONFIG.apiUrl;
-            const resp = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents,
-                    generationConfig: {
-                        temperature: CONFIG.temperature,
-                        maxOutputTokens: CONFIG.maxTokens,
-                        topP: 0.9
-                    },
-                    safetySettings: [
-                        { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-                        { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' }
-                    ]
-                })
-            });
-
-            if (!resp.ok) throw new Error(`API ${resp.status}`);
-            const data = await resp.json();
-            const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (!reply) throw new Error('Empty response');
-
+            const level = user ? user.level : 'B1';
+            const historyObj = state.apiHistory.map(h => ({ user: h.role === 'user' ? h.text : '', ai: h.role === 'model' ? h.text : '' })).filter(h => h.user || h.ai);
+            const reply = await window.AISystem.chat(userMessage, [], level); // Using clean chat history since ai-system handles formatting
+            
+            await window.AISystem.incrementUsage(uid);
+            
+            state.apiHistory.push({ role: 'user', text: userMessage });
             state.apiHistory.push({ role: 'model', text: reply });
+            if (state.apiHistory.length > CONFIG.maxApiHistory * 2) {
+                state.apiHistory = state.apiHistory.slice(-CONFIG.maxApiHistory * 2);
+            }
+            
             return reply;
-
         } catch (err) {
             console.warn('AIT API error:', err.message);
-            state.apiHistory.pop();
             return getFallback(userMessage);
         }
     }

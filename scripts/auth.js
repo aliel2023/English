@@ -2,11 +2,11 @@ import { supabase } from '../js/config.js';
 
 !function(){const e=document.createElement("style");e.id="auth-nav-hide",e.textContent="\n        .nav-auth-pending .auth-nav-btn,\n        .nav-auth-pending .user-nav-menu {\n            opacity: 0 !important;\n            pointer-events: none !important;\n            transition: opacity 0.25s ease !important;\n        }\n    ",document.head.appendChild(e),document.addEventListener("DOMContentLoaded",()=>{const e=document.querySelector(".nav-actions");e&&e.classList.add("nav-auth-pending")})}();
 
-function sanitizeHTML(e){return"string"!=typeof e?String(e||""):e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#x27;").replace(/\//g,"&#x2F;")}
+function sanitizeHTML(e){if(typeof e!=="string")return String(e||"");if(window.DOMPurify)return window.DOMPurify.sanitize(e);return e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#x27;").replace(/\//g,"&#x2F;")}
 window.sanitizeHTML=sanitizeHTML;
 
 const Validator={email:e=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.trim()),name:e=>e.trim().length>=2&&e.trim().length<=50&&/^[\p{L}\s\-']+$/u.test(e.trim()),password:e=>e.length>=8,hasUpperCase:e=>/[A-Z]/.test(e),hasNumber:e=>/[0-9]/.test(e),hasSpecial:e=>/[!@#$%^&*(),.?":{}|<>]/.test(e),strength:e=>{let t=0;return e.length>=8&&t++,e.length>=12&&t++,/[A-Z]/.test(e)&&t++,/[0-9]/.test(e)&&t++,/[^A-Za-z0-9]/.test(e)&&t++,t}};
-const RateLimit={attempts:0,lockedUntil:0,penalties:[0,0,0,3e4,12e4,9e5],check(){const e=Date.now();if(e<this.lockedUntil){const t=Math.ceil((this.lockedUntil-e)/1e3),a=Math.floor(t/60);return{allowed:!1,message:`🔒 ${a>0?a+" dəq ":""}${t%60} san gözləyin.`}}this.attempts++;const t=this.penalties[Math.min(this.attempts,this.penalties.length-1)];return t>0&&(this.lockedUntil=e+t),{allowed:!0}},reset(){this.attempts=0,this.lockedUntil=0}};
+const RateLimit={attempts:0,lockedUntil:0,penalties:[0,0,0,0,0,9e5],check(){const e=Date.now();if(e<this.lockedUntil){const t=Math.ceil((this.lockedUntil-e)/1e3),a=Math.floor(t/60);return{allowed:!1,message:`🔒 ${a>0?a+" dəq ":""}${t%60} san gözləyin.`}}this.attempts++;const t=this.penalties[Math.min(this.attempts,this.penalties.length-1)];return t>0&&(this.lockedUntil=e+t),{allowed:!0}},reset(){this.attempts=0,this.lockedUntil=0}};
 
 function isAdminUser(e){return e&&"admin"===e.role}
 let currentUser,currentUserData,authInitialized=!1,_navRendered=!1;
@@ -141,7 +141,7 @@ function updateNavForUser(e){
               l=parseInt(e.current_streak)||0,
               d=isAdminUser(e),
               isPremium=window.isUserPremium?window.isUserPremium():false;
-        t&&(t.insertAdjacentHTML("afterbegin",`\n                <div class="user-nav-menu" id="userNavMenu">\n                    <button class="user-avatar-btn" onclick="toggleUserDropdown()">\n                        <span class="user-avatar">${s}</span>\n                        <span class="user-name-short">${i}</span>\n                        <span class="streak-badge">🔥${l}</span>\n                    </button>\n                    <div class="user-dropdown" id="userDropdown">\n                        <div class="user-dropdown-header">\n                            <strong>${r}</strong>\n                            <span class="user-level-badge">${o}</span>\n                            ${isPremium?'<span style="font-size: 0.75rem; background: linear-gradient(90deg, #ffd700, #ffaa00); color: #000; padding: 0.1rem 0.3rem; border-radius: 4px; font-weight: bold; margin-left: 0.5rem;" title="Premium Hesab">⭐ PRO</span>':""}\n                        </div>\n                        <a href="favorites.html" class="dropdown-item" data-i18n="nav.favorites">❤️ Sevimlilər</a>\n                        <a href="dashboard.html" class="dropdown-item" data-i18n="nav.dashboard">📊 Dashboard</a>\n                        ${d?'<a href="admin.html" class="dropdown-item" style="color:#ffd700;font-weight:700;" data-i18n="nav.admin">👑 Admin Panel</a>':""}\n                        <button onclick="logoutUser()" class="dropdown-item logout-btn" data-i18n="nav.logout">🚪 Çıxış</button>\n                    </div>\n                </div>`),
+        t&&(t.insertAdjacentHTML("afterbegin",`\n                <div class="user-nav-menu" id="userNavMenu">\n                    <button class="user-avatar-btn" onclick="toggleUserDropdown()">\n                        <span class="user-avatar">${s}</span>\n                        <span class="user-name-short">${i}</span>\n                        <span class="streak-badge">🔥${l}</span>\n                    </button>\n                    <div class="user-dropdown" id="userDropdown">\n                        <div class="user-dropdown-header">\n                            <strong>${r}</strong>\n                            <span class="user-level-badge">${o}</span>\n                            ${isPremium?'<span style="font-size: 0.75rem; background: linear-gradient(90deg, #ffd700, #ffaa00); color: #000; padding: 0.1rem 0.3rem; border-radius: 4px; font-weight: bold; margin-left: 0.5rem;" title="Premium Hesab">⭐ PRO</span>':""}\n                        </div>\n                        <a href="favorites.html" class="dropdown-item" data-i18n="nav.favorites">❤️ Sevimlilər</a>\n                        <a href="profile.html" class="dropdown-item">👤 Profil</a>\n                        <a href="dashboard.html" class="dropdown-item" data-i18n="nav.dashboard">📊 Dashboard</a>\n                        ${d?'<a href="admin.html" class="dropdown-item" style="color:#ffd700;font-weight:700;" data-i18n="nav.admin">👑 Admin Panel</a>':""}\n                        <button onclick="logoutUser()" class="dropdown-item logout-btn" data-i18n="nav.logout">🚪 Çıxış</button>\n                    </div>\n                </div>`),
         t._dropdownListenerAdded||(t._dropdownListenerAdded=!0,document.addEventListener("click",e=>{const t=document.getElementById("userNavMenu");if(t&&!t.contains(e.target)){const e=document.getElementById("userDropdown");e&&e.classList.remove("show")}})));
         a&&a.insertAdjacentHTML("beforeend",`\n                <li class="auth-nav-mobile" style="border-top:1px solid rgba(255,255,255,.15);margin-top:.5rem;padding-top:.5rem;">\n                    <a href="dashboard.html"><span data-i18n="nav.dashboard">📊 Dashboard</span> (${i})</a>\n                </li>\n                <li class="auth-nav-mobile">\n                    <a href="favorites.html" data-i18n="nav.favorites">❤️ Sevimlilər</a>\n                </li>\n                ${d?'<li class="auth-nav-mobile"><a href="admin.html" style="color:#ffd700;font-weight:700;" data-i18n="nav.admin">👑 Admin Panel</a></li>':""}\n                <li class="auth-nav-mobile">\n                    <a href="#" onclick="logoutUser();closeMobileMenu();return false;" style="color:#ff6b6b;" data-i18n="nav.logout">🚪 Çıxış</a>\n                </li>`)
     }else{
@@ -388,8 +388,8 @@ window.handleLogin = async function(e){
     
     const s = await loginUser(t, a);
     if(s.success){
-        showAuthSuccess("✅ Uğurla daxil oldunuz!");
-        setTimeout(() => closeAuthModal(), 1200);
+        showAuthSuccess("✅ Uğurla daxil oldunuz! Yönləndirilir...");
+        setTimeout(() => window.location.href = "dashboard.html", 1000);
     } else {
         showAuthError(s.error);
         n.disabled = false;
@@ -417,8 +417,8 @@ window.handleRegister = async function(e){
     
     const l = await registerUser(t, a, n, i);
     if(l.success){
-        showAuthSuccess("🎉 Qeydiyyat uğurlu! Xoş gəldiniz!");
-        setTimeout(() => closeAuthModal(), 1500);
+        showAuthSuccess("🎉 Qeydiyyat uğurlu! Yönləndirilir...");
+        setTimeout(() => window.location.href = "dashboard.html", 1000);
     } else {
         showAuthError(l.error);
         o.disabled = false;

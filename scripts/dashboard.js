@@ -1,1 +1,205 @@
-let currentDashUid,dashInited=!1;function initDashboard(e){const t=e&&e.detail?e.detail.user:"function"==typeof getCurrentUser?getCurrentUser():void 0;if(void 0===t)return;const n=t?t.uid:null;if(dashInited&&currentDashUid===n)return;dashInited=!0,currentDashUid=n;const a=document.getElementById("dashContent"),d=document.getElementById("dashAuthRequired");if(!t)return a&&a.classList.add("hidden"),void(d&&d.classList.remove("hidden"));a&&a.classList.remove("hidden"),d&&d.classList.add("hidden"),loadDashboard(t)}document.addEventListener("alielAuthReady",initDashboard);let _dashCheckCount=0;function _checkAuthForDash(){if(!(dashInited&&void 0!==currentDashUid||(_dashCheckCount++,_dashCheckCount>20))){if("function"==typeof getCurrentUser){const e=getCurrentUser();if(void 0!==e)return void initDashboard({detail:{user:e}})}setTimeout(_checkAuthForDash,100)}}function loadDashboard(e){"function"==typeof sanitizeHTML&&sanitizeHTML;function t(e){if(!e)return"Məlumat yoxdur";if(e&&"function"==typeof e.toDate)return e.toDate().toLocaleDateString("az-AZ");const t=new Date(e);return isNaN(t)?"Məlumat yoxdur":t.toLocaleDateString("az-AZ")}const n=(new Date).getHours(),a=n<12?"Sabahınız xeyir":n<17?"Günortanız xeyir":"Axşamınız xeyir",d=document.getElementById("dashGreeting");d&&(d.textContent=`${a}, ${e.name}! 👋`);const i=document.getElementById("dashSubtitle");i&&(i.textContent=`${e.level||"A1"} səviyyəsi | Qeydiyyat: ${t(e.createdAt)}`);const s=document.getElementById("dashAvatar");s&&(s.textContent=(e.name||"U").charAt(0).toUpperCase());const o=document.getElementById("dashStreakNum");o&&(o.textContent=e.currentStreak||0);const l=document.getElementById("dashStreakCard");l&&e.currentStreak>=7&&l.classList.add("hot-streak"),animateStat("statWords",(e.seenWords||[]).length),animateStat("statTests",(e.testHistory||[]).length),animateStat("statDays",e.activeDays||1),animateStat("statFavs",(e.favorites&&e.favorites.words||[]).length),animateStat("statStreak",e.longestStreak||e.currentStreak||0);const c=document.getElementById("statLevel");c&&(c.textContent=e.level||"A1");const r=getDailyTip(e),u=document.getElementById("dashTipIcon"),m=document.getElementById("dashTipTitle"),y=document.getElementById("dashTipText");u&&(u.textContent=r.icon),m&&(m.textContent=r.title),y&&(y.textContent=r.content),loadWeeklyProgress(e),loadBadges(e),loadTestHistory(e),loadAccountInfo(e,t)}function animateStat(e,t){const n=document.getElementById(e);if(!n)return;if("string"==typeof t)return void(n.textContent=t);if(0===t)return void(n.textContent="0");let a=0;const d=Math.max(1,t/30),i=setInterval(()=>{a+=d,a>=t?(n.textContent=t,clearInterval(i)):n.textContent=Math.floor(a)},40)}function loadWeeklyProgress(e){const t=document.getElementById("weeklyDays"),n=["B","Ç.A","Ç","C.A","C","Ş","B."],a=["Bazar","Bazar ertəsi","Çərşənbə axşamı","Çərşənbə","Cümə axşamı","Cümə","Şənbə"],d=new Date,i=d.getDay(),s=(e.loginHistory||[]).map(e=>new Date(e).toDateString());let o=0;for(let e=0;e<7;e++){const l=e-i,c=new Date(d);c.setDate(d.getDate()+l);const r=e===i,u=c<d||r,m=s.includes(c.toDateString());m&&o++;const y=document.createElement("div");y.className=`weekly-day ${r?"today":""} ${m?"active":""} ${u&&!m?"missed":""}`,y.title=a[e],y.innerHTML=`\n            <div class="day-circle">${m?"✓":n[e]}</div>\n            <div class="day-name">${n[e]}</div>\n        `,t.appendChild(y)}const l=document.getElementById("weeklyGoalText");l&&(l.textContent=`${o}/${e.weeklyGoal||7} gün`)}function loadBadges(e){const t=document.getElementById("badgesGrid"),n=(e.badges,e.favorites&&e.favorites.words||e.favoriteWords||[]);[{badge:"🌟 Yeni Başlayən",desc:"Qeydiyyatdan keçdiniz",unlocked:!0},{badge:"📅 1 Həftə",desc:"7 dəfə giriş",unlocked:(e.loginCount||0)>=7},{badge:"🔥 7 Günlük Sıra",desc:"7 gün ardıcıl",unlocked:(e.currentStreak||0)>=7},{badge:"📚 10 Söz",desc:"10 söz öyrəndiniz",unlocked:(e.seenWords||[]).length>=10},{badge:"📚 50 Söz",desc:"50 söz öyrəndiniz",unlocked:(e.seenWords||[]).length>=50},{badge:"❤️ Sevimlilər",desc:"5 söz sevimlilərə",unlocked:n.length>=5},{badge:"🧪 Test Ustadı",desc:"3 test tamaməldınız",unlocked:(e.testHistory||[]).length>=3},{badge:"🏅 1 Ay",desc:"30 giriş",unlocked:(e.loginCount||0)>=30},{badge:"🔥 30 Günlük Sıra",desc:"30 gün ardıcıl",unlocked:(e.currentStreak||0)>=30},{badge:"📈 B1 Səviyyəsi",desc:"B1 və ya üzrǐ çatın",unlocked:["B1","B2","C1","C2"].includes(e.level)},{badge:"🎓 İleri Səviyyə",desc:"C1 və ya üzrǐ çatın",unlocked:["C1","C2"].includes(e.level)}].forEach(e=>{const n=document.createElement("div");n.className="badge-card "+(e.unlocked?"unlocked":"locked"),n.innerHTML=`\n            <div class="badge-emoji">${e.badge.split(" ")[0]}</div>\n            <div class="badge-name">${e.badge.slice(e.badge.indexOf(" ")+1)}</div>\n            <div class="badge-desc">${e.desc}</div>\n            ${e.unlocked?"":'<div class="badge-lock">🔒</div>'}\n        `,t.appendChild(n)})}function loadTestHistory(e){const t=document.getElementById("testHistoryContent");if(!t)return;const n=e.testHistory||[];if(0===n.length){t.innerHTML="";const e=document.createElement("div");return e.className="empty-state",e.innerHTML='Hələ heç bir test tamamlanmayıb. <a href="test.html" class="link-primary">Testi başlayın →</a>',void t.appendChild(e)}const a=[...n].reverse().slice(0,10);t.innerHTML="";const d=document.createElement("div");d.className="test-history-list",a.forEach(e=>{const t=document.createElement("div");t.className="test-history-item";const n=document.createElement("div");n.className="test-level-badge",n.textContent=e.level||"?";const a=document.createElement("div");a.className="test-info";const i=document.createElement("strong");i.textContent=`${parseInt(e.score)||0}/${parseInt(e.total)||0} düzgün`;const s=document.createElement("span"),o=new Date(e.date);s.textContent=isNaN(o)?"":o.toLocaleDateString("az-AZ"),a.appendChild(i),a.appendChild(s);const l=document.createElement("div");l.className="test-score-pct";const c=Math.round(e.percentage||(e.total?e.score/e.total*100:0));l.textContent=`%${c}`,l.style.color=c>=70?"var(--success)":"var(--warning)",t.appendChild(n),t.appendChild(a),t.appendChild(l),d.appendChild(t)}),t.appendChild(d)}function loadAccountInfo(e,t){const n=document.getElementById("accountInfoGrid");if(!n)return;const a=[{label:"👤 Ad",value:e.name||""},{label:"📧 Email",value:e.email||""},{label:"📅 Qeydiyyat",value:t?t(e.createdAt):""},{label:"📈 Səviyyə",value:e.level||"A1"},{label:"🔥 Streak",value:`${e.currentStreak||0} gün`}];n.innerHTML="",a.forEach(({label:e,value:t})=>{const a=document.createElement("div");a.className="account-info-item";const d=document.createElement("span");d.className="acc-label",d.textContent=e;const i=document.createElement("span");i.className="acc-value",i.textContent=t,a.appendChild(d),a.appendChild(i),n.appendChild(a)})}function getDailyTip(e){const t=e.currentStreak||0,n=e.level||"A1",a=(e.testHistory||[]).length,d=(e.favorites&&e.favorites.words||[]).length;return 0===t?{icon:"🌱",title:"Başlayın!",content:"Hər gün bir səhifə oxumaq vərdiyinizi formələşdirin. Streak-inizi başlatməq üçün bu gün fəaliyyət göstərin!"}:t<7?{icon:"🔥",title:"Davam edin!",content:`${t} günlük siranız var. 7 günü tamamlamaq üçün davam edin!`}:t>=7&&a<1?{icon:"🎯",title:"Test vaxtı!",content:"Artıq möhtəşəm bir siranız var. Səviyyə testini keçmǐyi unutmayın!"}:d<5?{icon:"❤️",title:"Söz saxlayın!",content:"Günün Sozü bölməsindən sözləri sevimlilərə əlavə edin. 5+ söz badge qazanadırsınız!"}:{icon:"🚀",title:"Həyəcan verici!",content:`${n} səviyyəsini mənimsiyirsiniz. Növbəti hədəfə doğru irəlǐləmək üçün hər gün davam edin!`}}document.addEventListener("DOMContentLoaded",()=>{setTimeout(_checkAuthForDash,300)});
+import { supabase } from '../js/config.js';
+
+let dashInited = false;
+let currentDashUid = null;
+
+// Call init on auth ready
+document.addEventListener("alielAuthReady", (e) => {
+    initDashboard(e.detail?.user);
+});
+
+async function initDashboard(user) {
+    if (!user) {
+        document.getElementById("dashContent")?.classList.add("hidden");
+        document.getElementById("dashAuthRequired")?.classList.remove("hidden");
+        return;
+    }
+    
+    if (dashInited && currentDashUid === user.uid) return;
+    dashInited = true;
+    currentDashUid = user.uid;
+
+    document.getElementById("dashContent")?.classList.remove("hidden");
+    document.getElementById("dashAuthRequired")?.classList.add("hidden");
+
+    loadDashboard(user);
+}
+
+async function loadDashboard(user) {
+    const hr = new Date().getHours();
+    const greeting = hr < 12 ? "Sabahınız xeyir" : hr < 17 ? "Günortanız xeyir" : "Axşamınız xeyir";
+    
+    document.getElementById("dashGreeting").textContent = `${greeting}, ${user.name}! 👋`;
+    document.getElementById("dashSubtitle").textContent = `${user.level || "A1"} səviyyəsi | Qeydiyyat: ${new Date().toLocaleDateString('az-AZ')}`;
+    document.getElementById("dashAvatar").textContent = (user.name || "U").charAt(0).toUpperCase();
+    document.getElementById("dashStreakNum").textContent = user.current_streak || 0;
+
+    if ((user.current_streak || 0) >= 7) {
+        document.getElementById("dashStreakCard")?.classList.add("hot-streak");
+    }
+
+    animateStat("statWords", user.words_learned || 0);
+    animateStat("statTests", user.tests_completed || 0);
+    animateStat("statDays", user.active_days || 1);
+    animateStat("statFavs", (user.favorites?.words || []).length);
+    animateStat("statStreak", user.longest_streak || user.current_streak || 0);
+    document.getElementById("statLevel").textContent = user.level || "A1";
+
+    // AI messages remaining
+    if (window.AISystem) {
+        const usage = await window.AISystem.checkUsage(user.uid);
+        const tipIcon = document.getElementById("dashTipIcon");
+        const tipTitle = document.getElementById("dashTipTitle");
+        const tipText = document.getElementById("dashTipText");
+        if (tipIcon && tipTitle && tipText) {
+            tipIcon.textContent = "🤖";
+            tipTitle.textContent = "AI Müəllim";
+            if (usage.isPremium) {
+                tipText.textContent = "Sizin limitsiz AI sorğu haqqınız var (Pro).";
+            } else {
+                tipText.textContent = `Bu gün üçün ${usage.remaining} / ${usage.max} AI sorğunuz qalıb.`;
+            }
+        }
+    }
+
+    loadWeeklyProgress(user);
+    loadBadges(user);
+    loadTestHistory(user);
+    loadAccountInfo(user);
+}
+
+function animateStat(id, target) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (typeof target === "string" || target === 0) {
+        el.textContent = target;
+        return;
+    }
+    let current = 0;
+    const step = Math.max(1, target / 30);
+    const interval = setInterval(() => {
+        current += step;
+        if (current >= target) {
+            el.textContent = target;
+            clearInterval(interval);
+        } else {
+            el.textContent = Math.floor(current);
+        }
+    }, 40);
+}
+
+function loadWeeklyProgress(user) {
+    const container = document.getElementById("weeklyDays");
+    if (!container) return;
+    container.innerHTML = '';
+    
+    const days = ["B", "Ç.A", "Ç", "C.A", "C", "Ş", "B."];
+    const fullDays = ["Bazar", "Bazar ertəsi", "Çərşənbə axşamı", "Çərşənbə", "Cümə axşamı", "Cümə", "Şənbə"];
+    const now = new Date();
+    const todayIndex = now.getDay();
+    const activity = user.weekly_activity || [false, false, false, false, false, false, false];
+    
+    let activeCount = 0;
+    for (let i = 0; i < 7; i++) {
+        const isToday = i === todayIndex;
+        const isActive = activity[i];
+        if (isActive) activeCount++;
+        
+        const el = document.createElement("div");
+        el.className = `weekly-day ${isToday ? "today" : ""} ${isActive ? "active" : ""}`;
+        el.title = fullDays[i];
+        el.innerHTML = `
+            <div class="day-circle">${isActive ? "✓" : days[i]}</div>
+            <div class="day-name">${days[i]}</div>
+        `;
+        container.appendChild(el);
+    }
+    
+    const goalText = document.getElementById("weeklyGoalText");
+    if (goalText) goalText.textContent = `${activeCount}/7 gün`;
+}
+
+function loadBadges(user) {
+    const container = document.getElementById("badgesGrid");
+    if (!container) return;
+    container.innerHTML = '';
+    
+    const userBadges = user.badges || [];
+    
+    const allBadges = [
+        { name: "🌱 Başlanğıc", desc: "Sistemə qoşuldunuz", req: true },
+        { name: "🔥 7 Günlük Sıra", desc: "7 gün ardıcıl daxil ol", req: userBadges.includes("🔥 7 Günlük Sıra") || (user.current_streak >= 7) },
+        { name: "🏆 30 Günlük Sıra", desc: "30 gün ardıcıl daxil ol", req: userBadges.includes("🏆 30 Günlük Sıra") || (user.current_streak >= 30) },
+        { name: "📚 Söz Ustadı", desc: "50 söz öyrən", req: user.words_learned >= 50 },
+        { name: "🎯 Test Ustadı", desc: "10 test tamamla", req: user.tests_completed >= 10 }
+    ];
+    
+    allBadges.forEach(b => {
+        const el = document.createElement("div");
+        el.className = "badge-card " + (b.req ? "unlocked" : "locked");
+        const parts = b.name.split(" ");
+        el.innerHTML = `
+            <div class="badge-emoji">${parts[0]}</div>
+            <div class="badge-name">${parts.slice(1).join(" ")}</div>
+            <div class="badge-desc">${b.desc}</div>
+            ${b.req ? "" : '<div class="badge-lock">🔒</div>'}
+        `;
+        container.appendChild(el);
+    });
+}
+
+function loadTestHistory(user) {
+    const container = document.getElementById("testHistoryContent");
+    if (!container) return;
+    
+    const history = user.test_history || [];
+    if (history.length === 0) {
+        container.innerHTML = '<div class="empty-state">Hələ heç bir test tamamlanmayıb. <a href="test.html" class="link-primary">Testi başlayın →</a></div>';
+        return;
+    }
+    
+    container.innerHTML = '';
+    const list = document.createElement("div");
+    list.className = "test-history-list";
+    
+    [...history].reverse().slice(0, 5).forEach(test => {
+        const item = document.createElement("div");
+        item.className = "test-history-item";
+        
+        const d = new Date(test.date);
+        const dateStr = isNaN(d) ? "" : d.toLocaleDateString("az-AZ");
+        
+        item.innerHTML = `
+            <div class="test-level-badge">${test.level || "?"}</div>
+            <div class="test-info">
+                <strong>${test.score}/${test.total} düzgün</strong>
+                <span>${dateStr}</span>
+            </div>
+            <div class="test-score-pct" style="color: ${test.percentage >= 70 ? 'var(--success)' : 'var(--warning)'}">${test.percentage}%</div>
+        `;
+        list.appendChild(item);
+    });
+    container.appendChild(list);
+}
+
+function loadAccountInfo(user) {
+    const container = document.getElementById("accountInfoGrid");
+    if (!container) return;
+    container.innerHTML = '';
+    
+    const isPro = user.role === 'admin' || user.premium_active;
+    
+    const info = [
+        { label: "👤 Ad", value: user.name || "" },
+        { label: "📧 Email", value: user.email || "" },
+        { label: "📈 Səviyyə", value: user.level || "A1" },
+        { label: "⭐ Status", value: isPro ? "PRO" : "Standart" }
+    ];
+    
+    info.forEach(item => {
+        const el = document.createElement("div");
+        el.className = "account-info-item";
+        el.innerHTML = `<span class="acc-label">${item.label}</span><span class="acc-value">${item.value}</span>`;
+        container.appendChild(el);
+    });
+}

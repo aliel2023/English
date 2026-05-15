@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://generativelanguage.googleapis.com; frame-src 'none'; object-src 'none'; base-uri 'self';">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Profil tənzimləmələri — Alielenglish">
+    <meta name="robots" content="noindex">
+    <title>Profil — Alielenglish</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&subset=latin,latin-ext&display=swap">
+    <link rel="stylesheet" href="styles/design-system.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/sidebar-nav.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link rel="stylesheet" href="styles/auth.css">
+    <style>
+        .profile-page { padding: 2rem 0 4rem; min-height: 80vh; }
+        .profile-container { max-width: 640px; margin: 0 auto; padding: 0 1.5rem; }
+        .profile-card { background: var(--bg-card, #1c2333); border: 1px solid var(--border, #2d3748); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; }
+        .profile-card h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+        .profile-avatar-section { text-align: center; margin-bottom: 1.5rem; }
+        .profile-avatar-lg { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #e63946, #c1121f); display: inline-flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 0.75rem; }
+        .profile-field { margin-bottom: 1rem; }
+        .profile-field label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--muted, #94a3b8); margin-bottom: 0.4rem; }
+        .profile-input { width: 100%; padding: 0.8rem 1rem; border-radius: 10px; border: 2px solid var(--border, #2d3748); background: var(--input-bg, #243047); color: var(--text, #f1f5f9); font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s; outline: none; }
+        .profile-input:focus { border-color: #e63946; }
+        .profile-input:disabled { opacity: 0.5; cursor: not-allowed; }
+        .profile-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
+        .profile-save-btn { width: 100%; padding: 0.85rem; border-radius: 10px; border: none; background: linear-gradient(135deg, #e63946, #c1121f); color: #fff; font-size: 1rem; font-weight: 700; cursor: pointer; transition: transform 0.15s, box-shadow 0.2s; box-shadow: 0 4px 16px rgba(230, 57, 70, 0.3); }
+        .profile-save-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(230, 57, 70, 0.45); }
+        .profile-save-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .profile-danger-zone { border-color: rgba(230, 57, 70, 0.3); }
+        .profile-danger-zone h2 { color: #fc8181; }
+        .profile-delete-btn { width: 100%; padding: 0.8rem; border-radius: 10px; border: 2px solid rgba(230, 57, 70, 0.4); background: transparent; color: #fc8181; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+        .profile-delete-btn:hover { background: rgba(230, 57, 70, 0.1); }
+        .profile-msg { padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 1rem; font-size: 0.88rem; font-weight: 500; text-align: center; display: none; }
+        .profile-msg.show { display: block; }
+        .profile-msg.success { background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.3); color: #2ed573; }
+        .profile-msg.error { background: rgba(230, 57, 70, 0.12); border: 1px solid rgba(230, 57, 70, 0.35); color: #fc8181; }
+        .pw-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        @media (max-width: 600px) { .pw-row { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="main-nav">
+            <div class="nav-container">
+                <div class="logo-section">
+                    <a href="index.html" style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;">
+                        <div class="logo"><span class="logo-icon">A</span></div>
+                        <span class="brand-name">Alielenglish</span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html">Ana Səhifə</a></li>
+                    <li><a href="dashboard.html">📊 Dashboard</a></li>
+                    <li><a href="profile.html" class="active">👤 Profil</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="mobile-toggle" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="profile-page">
+        <div class="profile-container">
+            <div id="profileMsg" class="profile-msg"></div>
+
+            <!-- Avatar & Basic Info -->
+            <div class="profile-card">
+                <h2>👤 Profil Məlumatları</h2>
+                <div class="profile-avatar-section">
+                    <div class="profile-avatar-lg" id="profileAvatar">A</div>
+                    <p style="font-size:0.8rem;color:var(--muted);" id="profileEmail">-</p>
+                </div>
+                <div class="profile-field">
+                    <label>Ad Soyad</label>
+                    <input type="text" id="profileName" class="profile-input" placeholder="Adınız" maxlength="50">
+                </div>
+                <div class="profile-field">
+                    <label>İngilis Dili Səviyyəsi</label>
+                    <select id="profileLevel" class="profile-input profile-select">
+                        <option value="A1">A1 — Başlanğıc</option>
+                        <option value="A2">A2 — Əsas</option>
+                        <option value="B1">B1 — Orta</option>
+                        <option value="B2">B2 — Yuxarı Orta</option>
+                        <option value="C1">C1 — Təkmil</option>
+                        <option value="C2">C2 — Ustadlıq</option>
+                    </select>
+                </div>
+                <button class="profile-save-btn" id="saveProfileBtn" onclick="saveProfile()">💾 Yadda Saxla</button>
+            </div>
+
+            <!-- Change Password -->
+            <div class="profile-card">
+                <h2>🔑 Şifrəni Dəyiş</h2>
+                <div class="pw-row">
+                    <div class="profile-field">
+                        <label>Yeni Şifrə</label>
+                        <input type="password" id="newPassword" class="profile-input" placeholder="Min. 8 simvol" minlength="8">
+                    </div>
+                    <div class="profile-field">
+                        <label>Şifrəni Təkrarla</label>
+                        <input type="password" id="confirmPassword" class="profile-input" placeholder="Yenidən daxil edin">
+                    </div>
+                </div>
+                <button class="profile-save-btn" style="background:linear-gradient(135deg,#6366f1,#4f46e5);box-shadow:0 4px 16px rgba(99,102,241,0.3);" onclick="changePassword()">🔐 Şifrəni Yenilə</button>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="profile-card profile-danger-zone">
+                <h2>⚠️ Təhlükəli Zona</h2>
+                <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem;">Hesabınızı silmək geri qaytarılmaz bir əməliyyatdır. Bütün məlumatlarınız silinəcək.</p>
+                <button class="profile-delete-btn" onclick="deleteAccount()">🗑️ Hesabımı Sil</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-bottom"><p>© 2026 Alielenglish. Bütün hüquqlar qorunur.</p></div>
+        </div>
+    </footer>
+
+    <script src="scripts/design-system.js"></script>
+    <script src="scripts/i18n.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script><script src="scripts/main.js"></script>
+    <script type="module" src="scripts/auth.js"></script>
+    <script type="module">
+    import { supabase } from './js/config.js';
+
+    function showMsg(text, type = 'success') {
+        const el = document.getElementById('profileMsg');
+        el.textContent = text;
+        el.className = 'profile-msg show ' + type;
+        setTimeout(() => el.classList.remove('show'), 4000);
+    }
+
+    // Load profile data when auth is ready
+    document.addEventListener('alielAuthReady', (e) => {
+        const user = e.detail?.user;
+        if (!user) {
+            window.location.href = 'login.html?next=profile.html';
+            return;
+        }
+        document.getElementById('profileAvatar').textContent = (user.name || 'A').charAt(0).toUpperCase();
+        document.getElementById('profileEmail').textContent = user.email || '';
+        document.getElementById('profileName').value = user.name || '';
+        document.getElementById('profileLevel').value = user.level || 'A1';
+    });
+
+    // Save profile
+    window.saveProfile = async function() {
+        const btn = document.getElementById('saveProfileBtn');
+        const name = document.getElementById('profileName').value.trim();
+        const level = document.getElementById('profileLevel').value;
+
+        if (name.length < 2) return showMsg('Ad ən azı 2 hərf olmalıdır.', 'error');
+
+        btn.disabled = true; btn.textContent = 'Yüklənir...';
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error('Not authenticated');
+
+            const { error } = await supabase.from('users').update({ name, level }).eq('uid', user.id);
+            if (error) throw error;
+
+            document.getElementById('profileAvatar').textContent = name.charAt(0).toUpperCase();
+            showMsg('✅ Profil uğurla yeniləndi!');
+        } catch (err) {
+            showMsg('❌ Xəta: ' + (err.message || 'Yenidən cəhd edin'), 'error');
+        } finally {
+            btn.disabled = false; btn.textContent = '💾 Yadda Saxla';
+        }
+    };
+
+    // Change password
+    window.changePassword = async function() {
+        const newPw = document.getElementById('newPassword').value;
+        const confirmPw = document.getElementById('confirmPassword').value;
+
+        if (newPw.length < 8) return showMsg('Şifrə minimum 8 simvol olmalıdır.', 'error');
+        if (newPw !== confirmPw) return showMsg('Şifrələr uyğun gəlmir.', 'error');
+
+        try {
+            const { error } = await supabase.auth.updateUser({ password: newPw });
+            if (error) throw error;
+            showMsg('✅ Şifrə uğurla dəyişdirildi!');
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        } catch (err) {
+            showMsg('❌ Xəta: ' + (err.message || 'Yenidən cəhd edin'), 'error');
+        }
+    };
+
+    // Delete account
+    window.deleteAccount = async function() {
+        const confirmed = confirm('⚠️ DİQQƏT: Hesabınız və bütün məlumatlarınız həmişəlik silinəcək. Davam etmək istəyirsiniz?');
+        if (!confirmed) return;
+
+        const secondConfirm = prompt('Hesabı silmək üçün "SİL" yazın:');
+        if (secondConfirm !== 'SİL') return showMsg('Hesab silmə ləğv edildi.', 'error');
+
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error('Not authenticated');
+
+            // Delete user data from users table
+            await supabase.from('users').delete().eq('uid', user.id);
+
+            // Sign out
+            await supabase.auth.signOut();
+            showMsg('Hesabınız silindi. Yönləndirilir...');
+            setTimeout(() => window.location.href = 'index.html', 2000);
+        } catch (err) {
+            showMsg('❌ Xəta: ' + (err.message || 'Admin ilə əlaqə saxlayın.'), 'error');
+        }
+    };
+    </script>
+    <script src="scripts/scroll-to-top.js"></script>
+</body>
+</html>
