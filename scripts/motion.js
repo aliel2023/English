@@ -6,6 +6,27 @@
 document.addEventListener('DOMContentLoaded', () => {
     initCursorParticles();
     initScrollReveals();
+
+    const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
+
+    document.querySelectorAll('.pricing-card,.resource-card,.level-card,.feature-card')
+      .forEach(card => {
+        if (isTouchDevice()) return;
+        card.addEventListener('mouseenter', () => {
+          card.style.willChange = 'transform';
+        });
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          card.style.transform =
+            `translateY(-10px) rotateX(${y * -8}deg) rotateY(${x * 8}deg)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+          card.style.willChange = 'auto';
+        });
+      });
 });
 
 /**
