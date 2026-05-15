@@ -1,4 +1,4 @@
-import { supabase } from '../js/config.js';
+﻿import { supabase } from '../js/config.js';
 
 !function(){const e=document.createElement("style");e.id="auth-nav-hide",e.textContent="\n        .nav-auth-pending .auth-nav-btn,\n        .nav-auth-pending .user-nav-menu {\n            opacity: 0 !important;\n            pointer-events: none !important;\n            transition: opacity 0.25s ease !important;\n        }\n    ",document.head.appendChild(e),document.addEventListener("DOMContentLoaded",()=>{const e=document.querySelector(".nav-actions");e&&e.classList.add("nav-auth-pending")})}();
 
@@ -496,4 +496,51 @@ window.handleAIQueryLimit = async function(uid) {
         console.error("AI Limit Check Error:", e);
         return { allowed: true, reason: "error_bypass" }; // Bypass on error so it works
     }
+};window.handleGoogleLogin = async function () {
+    clearAuthMessages();
+    const btn = document.getElementById('googleBtn');
+    if(btn) {
+        btn.disabled = true;
+        btn.style.opacity = '.6';
+    }
+    try {
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: { redirectTo: window.location.origin + window.location.pathname.replace('login.html', 'dashboard.html').replace('register.html', 'dashboard.html') }
+        });
+        if (error) throw error;
+    } catch (err) {
+        if(btn) {
+            btn.disabled = false;
+            btn.style.opacity = '';
+        }
+        showAuthError(err.message);
+    }
 };
+
+
+window.handleForgotPassword = async function () {
+    clearAuthMessages();
+    const emailInput = document.getElementById('loginEmail');
+    if(!emailInput) return;
+    const email = emailInput.value.trim();
+    if (!email) {
+        showAuthError('Email daxil edin.');
+        emailInput.focus();
+        return;
+    }
+    const btn = document.getElementById('forgotBtn');
+    if(btn) { btn.disabled = true; btn.textContent = 'GÖNDƏRİLİR...'; }
+    try {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + window.location.pathname
+        });
+        if (error) throw error;
+        showAuthSuccess('Link email ünvanına göndərildi.');
+    } catch (err) {
+        showAuthError('Xəta baş verdi.');
+    } finally {
+        if(btn) { btn.disabled = false; btn.textContent = 'ŞİFRƏNİ UNUTDUM?'; }
+    }
+};
+

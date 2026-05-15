@@ -121,7 +121,7 @@
             <div class="duo-divider">VƏ YA</div>
 
             <!-- Email/Password Register Form -->
-            <form id="registerForm" onsubmit="handleRegisterSubmit(event)" novalidate autocomplete="on">
+            <form id="registerForm" onsubmit="handleRegister(event)" novalidate autocomplete="on">
                 <div class="duo-row">
                     <div class="duo-field">
                         <input id="regName" class="duo-input" placeholder="Ad Soyad" required minlength="2" maxlength="50" autocomplete="name">
@@ -141,23 +141,23 @@
                     <input type="email" id="regEmail" class="duo-input" placeholder="Email" required autocomplete="email" inputmode="email">
                 </div>
                 <div class="duo-field duo-pw-wrap">
-                    <input type="password" id="regPass" class="duo-input" placeholder="Şifrə (min. 8 simvol)" required minlength="8" autocomplete="new-password" oninput="updateStrength(this.value)">
-                    <button type="button" class="duo-eye-btn" onclick='toggleEye("regPass",this)'>GÖSTƏR</button>
+                    <input type="password" id="regPassword" class="duo-input" placeholder="Şifrə (min. 8 simvol)" required minlength="8" autocomplete="new-password" oninput="updatePasswordStrength(this.value)">
+                    <button type="button" class="duo-eye-btn" onclick='togglePwVisibility("regPassword",this)'>GÖSTƏR</button>
                 </div>
                 <div class="duo-strength" id="strengthWrap">
                     <div class="duo-strength-track"><div class="duo-strength-bar" id="strengthBar"></div></div>
                     <span class="duo-strength-lbl" id="strengthLabel"></span>
                 </div>
                 <div class="duo-field duo-pw-wrap" style="margin-top:.65rem">
-                    <input type="password" id="regPassConfirm" class="duo-input" placeholder="Şifrəni təkrarla" required autocomplete="new-password">
-                    <button type="button" class="duo-eye-btn" onclick='toggleEye("regPassConfirm",this)'>GÖSTƏR</button>
+                    <input type="password" id="regPasswordConfirm" class="duo-input" placeholder="Şifrəni təkrarla" required autocomplete="new-password">
+                    <button type="button" class="duo-eye-btn" onclick='togglePwVisibility("regPasswordConfirm",this)'>GÖSTƏR</button>
                 </div>
                 <label class="duo-terms">
-                    <input type="checkbox" id="termsCheck" required>
+                    <input type="checkbox" id="regTerms" required>
                     <span><a href="#" onclick='showDoc("privacy",event)'>Gizlilik Siyasəti</a> və <a href="#" onclick='showDoc("terms",event)'>İstifadə Şərtlərini</a> qəbul edirəm</span>
                 </label>
-                <button type="submit" class="duo-submit-btn" id="regBtn">
-                    <span id="regBtnText">PULSUZ QEYDİYYAT</span>
+                <button type="submit" class="duo-submit-btn" id="registerBtn">
+                    <span id="registerBtnText">PULSUZ QEYDİYYAT</span>
                     <span class="duo-spinner hidden" id="regSpinner"></span>
                 </button>
             </form>
@@ -352,3 +352,4 @@
     </script>
 <script src="scripts/scroll-to-top.js"></script></body>
 </html>
+

@@ -7,11 +7,17 @@ function _getSidebarOverlay() {
   return document.getElementById('navOverlay');
 }
 
-function toggleMobileMenu() {
+function toggleMobileMenu(e) {
+  if (e) e.preventDefault();
   const menu = document.getElementById('navMenu');
   if (!menu) return;
   menu.classList.contains('active') ? closeMobileMenu() : openMobileMenu();
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const toggles = document.querySelectorAll('.mobile-toggle, .ds-hamburger');
+    toggles.forEach(t => t.addEventListener('click', toggleMobileMenu));
+});
 
 function openMobileMenu() {
   const menu = document.getElementById('navMenu');
