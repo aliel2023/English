@@ -119,10 +119,7 @@ function initSidebarNav() {
 
 /* Auth vəziyyətinə görə sidebar footer-ini yenilə */
 function _updateSidebarAuth() {
-  // Firebase auth mövcuddursa onAuthStateChanged istifadə et
-  if (typeof firebase !== 'undefined' && firebase.auth) {
-    firebase.auth().onAuthStateChanged(_renderSidebarAuthUI);
-  } else {
+     else {
     // Inline fallback — localStorage-dan yoxla
     try {
       const stored = localStorage.getItem('alielUser');
@@ -132,7 +129,7 @@ function _updateSidebarAuth() {
       _renderSidebarAuthUI(null);
     }
   }
-  // auth.js-dən custom event dinlə (Firebase modular SDK)
+  // auth.js-dən custom event dinlə
   document.addEventListener('authStateChanged', (e) => {
     _renderSidebarAuthUI(e.detail);
   });

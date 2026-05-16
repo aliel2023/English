@@ -87,7 +87,7 @@ self.addEventListener('fetch', (event) => {
 
     if (request.method !== 'GET') return;
     if (url.hostname === 'generativelanguage.googleapis.com') return;
-    if (url.hostname === 'firestore.googleapis.com') return;
+    if (url.hostname === 'supabase.co') return;
     if (url.hostname === 'identitytoolkit.googleapis.com') return;
     if (url.hostname === 'securetoken.googleapis.com') return;
     if (url.hostname === 'script.google.com') return;

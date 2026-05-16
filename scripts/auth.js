@@ -291,36 +291,35 @@ window.removeFromFavorites = async function(e, t="words"){
 window.saveTestResult = async function(level, score, total, percentage){
     if(currentUser) {
         try {
-            const result = {
-                level: level,
-                score: score,
-                total: total,
-                percentage: percentage !== undefined ? Math.round(percentage) : Math.round(score/total*100),
-                date: (new Date).toISOString()
-            };
+            const pct = percentage !== undefined ? Math.round(percentage) : Math.round(score/total*100);
             
-            let history = currentUserData?.test_history || [];
-            history.push(result);
-            const testsCompleted = (currentUserData?.tests_completed || 0) + 1;
+            // Insert into progress table
+            const { error: progErr } = await supabase.from('progress').insert([{
+                user_id: currentUser.id,
+                lesson_id: 'test_' + level,
+                lesson_type: level,
+                score: score
+            }]);
+            if (progErr) console.error('progress insert error:', progErr);
             
-            await supabase.from('users').update({
+            // Update profiles table (level and xp)
+            const { data: profile } = await supabase.from('profiles').select('total_xp').eq('id', currentUser.id).single();
+            const currentXp = profile ? (profile.total_xp || 0) : 0;
+            const newXp = currentXp + (score * 10); // 10 xp per correct answer
+            
+            await supabase.from('profiles').update({
                 level: level,
-                tests_completed: testsCompleted,
-                test_history: history
-            }).eq('uid', currentUser.id);
+                total_xp: newXp
+            }).eq('id', currentUser.id);
             
             if(currentUserData) {
                 currentUserData.level = level;
-                currentUserData.tests_completed = testsCompleted;
-                currentUserData.test_history = history;
             }
         } catch(e) {
             console.error("saveTestResult:", e);
-            if(typeof showToast==="function") showToast("Test nəticəsi saxlanılmadı. Yenidən cəhd edin.","error");
         }
     }
 };
-
 window.toggleUserDropdown = function(){
     const e = document.getElementById("userDropdown");
     e && e.classList.toggle("show");
