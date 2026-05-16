@@ -2,3 +2,7 @@
 node_modules/
 .DS_Store
 old/
+
+.env
+firebase-admin-key.json
+migrate-users.js

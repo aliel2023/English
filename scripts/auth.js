@@ -1,5 +1,61 @@
 ﻿import { supabase } from '../js/config.js';
 
+function sanitizeInput(str) {
+  if (typeof str !== 'string') return '';
+  return str.replace(/[<>"'`]/g,'').replace(/javascript:/gi,'').trim().slice(0,500);
+}
+window.sanitizeInput = sanitizeInput;
+
+const SecurityGuard = {
+  maxAttempts: 5,
+  lockoutMs: 15 * 60 * 1000,
+  getKey: (a) => `sg_${a}_count`,
+  getExpKey: (a) => `sg_${a}_until`,
+  isBlocked(action) {
+    const until = localStorage.getItem(this.getExpKey(action));
+    if (until && Date.now() < parseInt(until)) {
+      const mins = Math.ceil((parseInt(until) - Date.now()) / 60000);
+      return `Hesab müvəqqəti bloklandı. ${mins} dəqiqə sonra cəhd edin.`;
+    }
+    return false;
+  },
+  recordAttempt(action) {
+    const count = parseInt(localStorage.getItem(this.getKey(action)) || '0') + 1;
+    localStorage.setItem(this.getKey(action), count);
+    if (count >= this.maxAttempts) {
+      localStorage.setItem(this.getExpKey(action), Date.now() + this.lockoutMs);
+      localStorage.removeItem(this.getKey(action));
+      return '5 uğursuz cəhd. 15 dəqiqə gözləyin.';
+    }
+    return null;
+  },
+  clearAttempts(action) {
+    localStorage.removeItem(this.getKey(action));
+    localStorage.removeItem(this.getExpKey(action));
+  }
+};
+window.SecurityGuard = SecurityGuard;
+
+// OAuth callback handler inside DOMContentLoaded
+document.addEventListener("DOMContentLoaded", async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session && session.user) {
+        const { data: profile } = await supabase.from('users').select('uid').eq('uid', session.user.id).single();
+        if (!profile) {
+            await supabase.from('users').insert({
+                uid: session.user.id,
+                name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+                // avatar_url: session.user.user_metadata?.avatar_url || '',
+                level: 'A1', streak: 0, total_xp: 0, role: 'user'
+            });
+        }
+        if (window.location.pathname.includes('login') || window.location.pathname.includes('register')) {
+            window.location.href = 'dashboard.html';
+        }
+    }
+});
+
+
 !function(){const e=document.createElement("style");e.id="auth-nav-hide",e.textContent="\n        .nav-auth-pending .auth-nav-btn,\n        .nav-auth-pending .user-nav-menu {\n            opacity: 0 !important;\n            pointer-events: none !important;\n            transition: opacity 0.25s ease !important;\n        }\n    ",document.head.appendChild(e),document.addEventListener("DOMContentLoaded",()=>{const e=document.querySelector(".nav-actions");e&&e.classList.add("nav-auth-pending")})}();
 
 function sanitizeHTML(e){if(typeof e!=="string")return String(e||"");if(window.DOMPurify)return window.DOMPurify.sanitize(e);return e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#x27;").replace(/\//g,"&#x2F;")}
@@ -175,7 +231,7 @@ supabase.auth.onAuthStateChange(async (event, session) => {
             const role = email === "englishaliel@gmail.com" ? "admin" : "user";
             
             const n={
-                uid: session.user.id,
+                uuid: session.user.id,
                 name: sanitizeHTML(name),
                 email: email||"",
                 level:"A1",
@@ -377,51 +433,82 @@ window.togglePwVisibility = function(e, t){
 
 window.handleLogin = async function(e){
     e.preventDefault();
-    const t = document.getElementById("loginEmail").value.trim(),
-          a = document.getElementById("loginPassword").value,
-          n = document.getElementById("loginBtn");
-    
-    n.disabled = true;
-    n.innerHTML = '<span class="auth-spinner"></span> Yüklənir...';
     clearAuthMessages();
     
-    const s = await loginUser(t, a);
-    if(s.success){
+    const blocked = SecurityGuard.isBlocked('login');
+    if (blocked) return showAuthError(blocked);
+
+    const emailEl = document.getElementById("loginEmail");
+    const passEl = document.getElementById("loginPassword");
+    const t = sanitizeInput(emailEl ? emailEl.value : "");
+    const a = sanitizeInput(passEl ? passEl.value : "");
+    
+    const n = document.getElementById("loginBtn");
+    if(n) {
+        n.disabled = true;
+        n.innerHTML = '<span class="auth-spinner"></span> Yüklənir...';
+    }
+    
+    try {
+        const { data, error } = await supabase.auth.signInWithPassword({ email: t.toLowerCase(), password: a });
+        if (error) throw error;
+        
+        SecurityGuard.clearAttempts('login');
         showAuthSuccess("✅ Uğurla daxil oldunuz! Yönləndirilir...");
         setTimeout(() => window.location.href = "dashboard.html", 1000);
-    } else {
-        showAuthError(s.error);
-        n.disabled = false;
-        n.innerHTML = "<span>Daxil Ol</span>";
+    } catch (err) {
+        const msg = SecurityGuard.recordAttempt('login');
+        showAuthError(msg || "❌ Email və ya şifrə yanlışdır.");
+        if(n) {
+            n.disabled = false;
+            n.innerHTML = "<span>Daxil Ol</span>";
+        }
     }
 };
 
 window.handleRegister = async function(e){
     e.preventDefault();
-    const t = document.getElementById("regName").value.trim(),
-          a = document.getElementById("regEmail").value.trim(),
-          n = document.getElementById("regPassword").value,
-          s = document.getElementById("regPasswordConfirm").value,
-          i = document.getElementById("regLevel").value,
-          r = document.getElementById("regTerms").checked,
-          o = document.getElementById("registerBtn");
-          
     clearAuthMessages();
+    
+    const t = sanitizeInput(document.getElementById("regName").value);
+    const a = sanitizeInput(document.getElementById("regEmail").value);
+    const n_pw = sanitizeInput(document.getElementById("regPassword").value);
+    const s = sanitizeInput(document.getElementById("regPasswordConfirm").value);
+    const i = sanitizeInput(document.getElementById("regLevel").value);
+    const r = document.getElementById("regTerms").checked;
+    const o = document.getElementById("registerBtn");
+          
     if(!r) return showAuthError("Şərtləri qəbul etməlisiniz.");
-    if(n!==s) return showAuthError("🔑 Şifrələr uyğun gəlmir.");
-    if(Validator.strength(n)<2) return showAuthError("🔑 Daha güclü şifrə seçin (hərflər + rəqəmlər).");
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a)) return showAuthError("Email formatı yanlışdır.");
+    if(n_pw.length < 8) return showAuthError("Şifrə minimum 8 simvol olmalıdır.");
+    if(n_pw !== s) return showAuthError("🔑 Şifrələr uyğun gəlmir.");
     
-    o.disabled = true;
-    o.innerHTML = '<span class="auth-spinner"></span> Qeydiyyat...';
+    if(o) {
+        o.disabled = true;
+        o.innerHTML = '<span class="auth-spinner"></span> Qeydiyyat...';
+    }
     
-    const l = await registerUser(t, a, n, i);
-    if(l.success){
-        showAuthSuccess("🎉 Qeydiyyat uğurlu! Yönləndirilir...");
-        setTimeout(() => window.location.href = "dashboard.html", 1000);
-    } else {
-        showAuthError(l.error);
-        o.disabled = false;
-        o.innerHTML = "<span>Pulsuz Qeydiyyat</span>";
+    try {
+        const { data, error } = await supabase.auth.signUp({
+            email: a.toLowerCase(),
+            password: n_pw,
+            options: {
+                data: {
+                    name: t,
+                    level: i
+                }
+            }
+        });
+        if (error) throw error;
+        
+        showAuthSuccess("🎉 Email təsdiqi göndərildi (və ya uğurla qeydiyyatdan keçdiniz)! Yönləndirilir...");
+        setTimeout(() => window.location.href = "dashboard.html", 1500);
+    } catch (err) {
+        showAuthError("⚠️ Xəta baş verdi: " + err.message);
+        if(o) {
+            o.disabled = false;
+            o.innerHTML = "<span>Pulsuz Qeydiyyat</span>";
+        }
     }
 };
 
@@ -505,7 +592,7 @@ window.handleAIQueryLimit = async function(uid) {
     try {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
-            options: { redirectTo: window.location.origin + window.location.pathname.replace('login.html', 'dashboard.html').replace('register.html', 'dashboard.html') }
+            options: { redirectTo: 'https://aliel2023.github.io/English/dashboard.html' }
         });
         if (error) throw error;
     } catch (err) {
@@ -516,6 +603,8 @@ window.handleAIQueryLimit = async function(uid) {
         showAuthError(err.message);
     }
 };
+
+window.signInWithGoogle = window.handleGoogleLogin;
 
 
 window.handleForgotPassword = async function () {
