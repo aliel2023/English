@@ -5,7 +5,7 @@
 
 .hero-section {
     position: relative;
-    padding: 140px 2rem 80px;
+    padding: 80px 2rem 60px;
     /* Qırmızı-qara hərəkətli arxaplan */
     background: linear-gradient(135deg, #0a0a0a 0%, #1a0505 50%, #0a0a0a 100%);
     background-size: 200% 200%;
@@ -178,7 +178,7 @@
 .hero-actions {
     display: flex;
     gap: 1rem;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
     flex-wrap: wrap;
     justify-content: center;
     animation: heroContentIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.24s both;
@@ -233,8 +233,8 @@
 .hero-stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 3rem;
-    padding-top: 3rem;
+    gap: 2rem;
+    padding-top: 2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
     width: 100%;
     max-width: 800px;
@@ -281,7 +281,7 @@
    ========================================================================== */
 
 .features-section {
-    padding: 6rem 2rem;
+    padding: 60px 2rem;
     background: #0a0a0a;
     position: relative;
     overflow: hidden;
@@ -379,7 +379,7 @@
    ========================================================================== */
 
 .cta-section {
-    padding: 5rem 2rem;
+    padding: 60px 2rem;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -449,7 +449,7 @@
 
 @media (max-width: 768px) {
     .hero-section {
-        padding: 100px 1.25rem 50px;
+        padding: 60px 1.25rem 40px;
         min-height: unset;
     }
 
@@ -465,7 +465,7 @@
     .hero-actions {
         flex-direction: column;
         gap: 0.75rem;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
     }
 
     .hero-actions .btn {
@@ -488,7 +488,7 @@
     }
 
     .features-section {
-        padding: 4rem 1.25rem;
+        padding: 40px 1.25rem;
     }
 
     .features-grid {
@@ -501,7 +501,7 @@
     }
 
     .cta-section {
-        padding: 4rem 1.25rem;
+        padding: 40px 1.25rem;
     }
 
     .cta-content h2 {

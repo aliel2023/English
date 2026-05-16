@@ -3,7 +3,7 @@
    ========================================================================== */
 
 .testimonials-section {
-    padding: 5rem 0 6rem;
+    padding: 60px 0;
     background: #0d0d0d;
     position: relative;
     overflow: hidden;
@@ -37,7 +37,7 @@
 /* Individual Testimonial Card */
 .testimonial-card {
     min-width: 100%;
-    padding: 2.5rem 3rem;
+    padding: 2rem;
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
@@ -195,7 +195,7 @@
    ========================================================================== */
 
 .ai-practice-section {
-    padding: 3rem 0 4rem;
+    padding: 40px 0;
     background: #0a0a0a;
     position: relative;
 }
@@ -509,7 +509,7 @@
     backdrop-filter: blur(24px) !important;
     -webkit-backdrop-filter: blur(24px) !important;
     flex-direction: column !important;
-    padding: 6rem 1.5rem 2rem !important;
+    padding: 60px 1.5rem 2rem !important;
     transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
     display: flex !important;
     z-index: 999 !important;

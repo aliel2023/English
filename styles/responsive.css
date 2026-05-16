@@ -78,7 +78,7 @@ input, select, textarea { font-size: 16px; } /* iOS zoom prevention */
     .dash-hero-inner h1 { font-size: 1.3rem; }
     
     /* Auth pages */
-    .duo-card { padding: 1.5rem 1rem; margin-top: 70px; }
+    .duo-card { padding: 1.5rem 1rem; margin-top: 24px; }
     .duo-row { grid-template-columns: 1fr; }
     .duo-card-title { font-size: 1.4rem; }
     
@@ -87,7 +87,7 @@ input, select, textarea { font-size: 16px; } /* iOS zoom prevention */
     .footer-links { flex-wrap: wrap; justify-content: center; }
     
     /* Section spacing */
-    .dash-section, section { padding: 1.5rem 0; }
+    .dash-section, section { padding: 24px 0; }
     .dash-section-title, .section-title { font-size: 1.2rem; margin-bottom: 1rem; }
     
     /* Tables */

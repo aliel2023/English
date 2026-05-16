@@ -4,7 +4,7 @@
 
 /* Hero Section */
 .learning-path-hero {
-    padding: 6rem 0 3rem;
+    padding: 60px 0 40px;
     text-align: center;
     background: linear-gradient(135deg, rgba(108, 99, 255, 0.06) 0%, rgba(168, 85, 247, 0.06) 100%);
     border-bottom: 1px solid var(--border-color);
@@ -20,7 +20,7 @@
 
 /* 8 Qızıl Qayda */
 .rules-section {
-    padding: 4rem 0;
+    padding: 40px 0;
     background: var(--bg-secondary);
 }
 
@@ -72,7 +72,7 @@
 
 /* Kurikulum / Levels */
 .levels-section {
-    padding: 4rem 0;
+    padding: 40px 0;
 }
 
 .levels-timeline {
@@ -337,7 +337,7 @@
     }
 
     .learning-path-hero {
-        padding: 5rem 0 2rem;
+        padding: 40px 0 24px;
     }
 
     .level-title {
