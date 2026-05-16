@@ -231,7 +231,7 @@ supabase.auth.onAuthStateChange(async (event, session) => {
             const role = email === "englishaliel@gmail.com" ? "admin" : "user";
             
             const n={
-                uuid: session.user.id,
+                uid: session.user.id,
                 name: sanitizeHTML(name),
                 email: email||"",
                 level:"A1",
