@@ -1,4 +1,4 @@
-﻿import { supabase } from '../js/config.js';
+import { supabase } from '../js/config.js';
 
 function sanitizeInput(str) {
   if (typeof str !== 'string') return '';
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 uid: session.user.id,
                 name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
                 // avatar_url: session.user.user_metadata?.avatar_url || '',
-                level: 'A1', streak: 0, total_xp: 0, role: 'user'
+                level: 'A1', current_streak: 0, role: 'user'
             });
         }
         if (window.location.pathname.includes('login') || window.location.pathname.includes('register')) {
