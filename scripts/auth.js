@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             await supabase.from('users').insert({
                 uid: session.user.id,
                 name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
-                // avatar_url: session.user.user_metadata?.avatar_url || '',
+                email: session.user.email,
                 level: 'A1', current_streak: 0, role: 'user'
             });
         }
@@ -214,9 +214,9 @@ function injectAuthModal(){
     document.getElementById("alielAuthModal").addEventListener("click",e=>{"alielAuthModal"===e.target.id&&closeAuthModal()});
 }
 
-function showAuthError(e){const t=document.getElementById("authError");t&&(t.textContent=e,t.classList.remove("hidden"))}
-function showAuthSuccess(e){const t=document.getElementById("authSuccess");t&&(t.textContent=e,t.classList.remove("hidden"))}
-function clearAuthMessages(){document.getElementById("authError")?.classList.add("hidden");document.getElementById("authSuccess")?.classList.add("hidden")}
+function showAuthError(e){const t=document.getElementById("authError");if(t){t.textContent=e;t.classList.remove("hidden");t.classList.add("show");t.style.display="block"}}
+function showAuthSuccess(e){const t=document.getElementById("authSuccess");if(t){t.textContent=e;t.classList.remove("hidden");t.classList.add("show");t.style.display="block"}}
+function clearAuthMessages(){const e=document.getElementById("authError"),s=document.getElementById("authSuccess");if(e){e.classList.add("hidden");e.classList.remove("show");e.style.display=""}if(s){s.classList.add("hidden");s.classList.remove("show");s.style.display=""}}
 
 supabase.auth.onAuthStateChange(async (event, session) => {
     authInitialized = true;
@@ -441,7 +441,7 @@ window.handleLogin = async function(e){
     const emailEl = document.getElementById("loginEmail");
     const passEl = document.getElementById("loginPassword");
     const t = sanitizeInput(emailEl ? emailEl.value : "");
-    const a = sanitizeInput(passEl ? passEl.value : "");
+    const a = passEl ? passEl.value : "";
     
     const n = document.getElementById("loginBtn");
     if(n) {
