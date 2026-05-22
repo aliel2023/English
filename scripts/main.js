@@ -2,30 +2,38 @@
    main.js — Alielenglish Navigation & Utilities
    ══════════════════════════════════════════════ */
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Mobile hamburger menu
-  const hamburger = document.querySelector('.mobile-toggle') ||
-                    document.querySelector('.hamburger') ||
-                    document.querySelector('.menu-toggle');
-  const navMenu = document.querySelector('.nav-links') ||
-                  document.querySelector('.nav-menu') ||
-                  document.getElementById('navMenu');
-  
-  if (hamburger && navMenu) {
-    hamburger.addEventListener('click', function(e) {
+document.addEventListener('DOMContentLoaded', () => {
+  const initMenu = () => {
+    const hamburger = document.querySelector('.mobile-toggle') || document.querySelector('.hamburger') || document.querySelector('.menu-toggle') || document.getElementById('hamburger');
+    const navMenu = document.querySelector('.nav-links') || document.querySelector('.nav-menu') || document.getElementById('navMenu');
+    
+    if (!hamburger || !navMenu) {
+      console.warn('Menu elements not found, retrying...');
+      setTimeout(initMenu, 500); // Retry if dynamically loaded
+      return;
+    }
+
+    // Remove old listeners by cloning
+    const newHamburger = hamburger.cloneNode(true);
+    hamburger.parentNode.replaceChild(newHamburger, hamburger);
+
+    newHamburger.addEventListener('click', (e) => {
+      e.preventDefault();
       e.stopPropagation();
       const isOpen = navMenu.classList.contains('active');
-      navMenu.classList.toggle('active');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', !isOpen);
+      navMenu.classList.toggle('active', !isOpen);
+      newHamburger.classList.toggle('active', !isOpen);
+      newHamburger.setAttribute('aria-expanded', !isOpen);
     });
-    document.addEventListener('click', function(e) {
-      if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+
+    document.addEventListener('click', (e) => {
+      if (!navMenu.contains(e.target) && !newHamburger.contains(e.target)) {
         navMenu.classList.remove('active');
-        hamburger.classList.remove('active');
+        newHamburger.classList.remove('active');
       }
     });
-  }
+  };
+  initMenu();
 
   // Language switcher
   const langBtns = document.querySelectorAll('[data-lang]');

@@ -3,10 +3,10 @@
  * Gemini 1.5 Flash powered English teacher for Azerbaijani students
  * 30 messages/day free tier, resets at midnight Baku time (UTC+4)
  */
-import { supabase } from '../js/config.js';
+import { supabase, GEMINI_API_KEY } from '../js/config.js';
 
 const AI_CONFIG = {
-    apiKey: 'AIzaSyDvH7wNLFVlkU3Lr_gIf-RD2iBzjVGFWSU',
+    apiKey: GEMINI_API_KEY,
     apiUrl: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
     dailyLimit: 30,
     guestLimit: 3,
