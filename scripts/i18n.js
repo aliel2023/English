@@ -118,6 +118,7 @@ function translatePage() {
 // Qlobal olaraq əlçatan et
 window.translatePage = translatePage;
 window.getTranslation = getNestedTranslation;
+window.switchLanguage = switchLanguage;
 
 // ===== Get Nested Translation (e.g., "nav.home") =====
 function getNestedTranslation(key) {

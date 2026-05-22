@@ -2,40 +2,39 @@
    main.js — Alielenglish Navigation & Utilities
    ══════════════════════════════════════════════ */
 
-document.addEventListener('DOMContentLoaded', () => {
-  const initMenu = () => {
-    const hamburger = document.querySelector('.mobile-toggle') || document.querySelector('.hamburger') || document.querySelector('.menu-toggle') || document.getElementById('hamburger');
-    const navMenu = document.querySelector('.nav-links') || document.querySelector('.nav-menu') || document.getElementById('navMenu');
-    
-    if (!hamburger || !navMenu) {
-      console.warn('Menu elements not found, retrying...');
-      setTimeout(initMenu, 500); // Retry if dynamically loaded
-      return;
+function initMenu() {
+  const hamburger = document.querySelector('.mobile-toggle') || document.querySelector('.hamburger') || document.querySelector('.menu-toggle') || document.getElementById('hamburger');
+  const navMenu = document.querySelector('.nav-links') || document.querySelector('.nav-menu') || document.getElementById('navMenu');
+  
+  if (!hamburger || !navMenu) {
+    console.warn('Menu elements not found, retrying...');
+    setTimeout(initMenu, 500); // Retry if dynamically loaded
+    return;
+  }
+
+  // Remove old listeners by cloning
+  const newHamburger = hamburger.cloneNode(true);
+  hamburger.parentNode.replaceChild(newHamburger, hamburger);
+
+  newHamburger.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const isOpen = navMenu.classList.contains('active');
+    navMenu.classList.toggle('active', !isOpen);
+    newHamburger.classList.toggle('active', !isOpen);
+    newHamburger.setAttribute('aria-expanded', !isOpen);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!navMenu.contains(e.target) && !newHamburger.contains(e.target)) {
+      navMenu.classList.remove('active');
+      newHamburger.classList.remove('active');
     }
+  });
+}
 
-    // Remove old listeners by cloning
-    const newHamburger = hamburger.cloneNode(true);
-    hamburger.parentNode.replaceChild(newHamburger, hamburger);
-
-    newHamburger.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const isOpen = navMenu.classList.contains('active');
-      navMenu.classList.toggle('active', !isOpen);
-      newHamburger.classList.toggle('active', !isOpen);
-      newHamburger.setAttribute('aria-expanded', !isOpen);
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!navMenu.contains(e.target) && !newHamburger.contains(e.target)) {
-        navMenu.classList.remove('active');
-        newHamburger.classList.remove('active');
-      }
-    });
-  };
-  initMenu();
-
-  // Language switcher
+function initLangSwitcher() {
+  // Language switcher for data-lang attributes
   const langBtns = document.querySelectorAll('[data-lang]');
   langBtns.forEach(btn => {
     btn.addEventListener('click', function() {
@@ -46,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
       this.classList.add('active');
     });
   });
-});
+}
 
 // Navigation auth display
 document.addEventListener('alielAuthReady', function(e) {
@@ -142,7 +141,7 @@ function initKeyboardAccessibility() {
 }
 
 /* ── Dil dropdown ── */
-function toggleLangDropdown() {
+window.toggleLangDropdown = function() {
   const menu = document.getElementById('langMenu');
   if (menu) menu.classList.toggle('show');
 }
@@ -208,7 +207,10 @@ function getUserProgress() {
 function showDownloadStats() {}
 
 /* ── DOMContentLoaded ── */
-document.addEventListener('DOMContentLoaded', function () {
+function runAllInit() {
+  initMenu();
+  initLangSwitcher();
+  
   initSidebarNav();
   setActiveNav();
   initSmoothScroll();
@@ -222,7 +224,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const emailForm = document.getElementById('emailForm');
   if (emailForm) emailForm.addEventListener('submit', handleEmailFormSubmit);
   if (typeof initAIChat === 'function') initAIChat();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', runAllInit);
+} else {
+  runAllInit();
+}
 
 /* Lang dropdown bağlama */
 document.addEventListener('click', (e) => {
