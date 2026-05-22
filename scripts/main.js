@@ -2,167 +2,79 @@
    main.js — Alielenglish Navigation & Utilities
    ══════════════════════════════════════════════ */
 
-/* ── Sidebar / Nav overlay helpers ── */
-function _getSidebarOverlay() {
-  return document.getElementById('navOverlay');
-}
+document.addEventListener('DOMContentLoaded', function() {
+  // Mobile hamburger menu
+  const hamburger = document.querySelector('.mobile-toggle') ||
+                    document.querySelector('.hamburger') ||
+                    document.querySelector('.menu-toggle');
+  const navMenu = document.querySelector('.nav-links') ||
+                  document.querySelector('.nav-menu') ||
+                  document.getElementById('navMenu');
+  
+  if (hamburger && navMenu) {
+    hamburger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isOpen = navMenu.classList.contains('active');
+      navMenu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', !isOpen);
+    });
+    document.addEventListener('click', function(e) {
+      if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+        navMenu.classList.remove('active');
+        hamburger.classList.remove('active');
+      }
+    });
+  }
 
-function toggleMobileMenu(e) {
-  if (e) e.preventDefault();
-  const menu = document.getElementById('navMenu');
-  if (!menu) return;
-  menu.classList.contains('active') ? closeMobileMenu() : openMobileMenu();
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const toggles = document.querySelectorAll('.mobile-toggle, .ds-hamburger');
-    toggles.forEach(t => t.addEventListener('click', toggleMobileMenu));
+  // Language switcher
+  const langBtns = document.querySelectorAll('[data-lang]');
+  langBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const lang = this.dataset.lang;
+      localStorage.setItem('aliel_lang', lang);
+      if (window.i18n) window.i18n.setLang(lang);
+      document.querySelectorAll('[data-lang]').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
 });
 
-function openMobileMenu() {
-  const menu = document.getElementById('navMenu');
-  const toggle = document.querySelector('.mobile-toggle');
-  const overlay = _getSidebarOverlay();
-  if (menu) menu.classList.add('active');
-  if (toggle) toggle.classList.add('active');
-  if (overlay) overlay.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
+// Navigation auth display
+document.addEventListener('alielAuthReady', function(e) {
+  const user = e.detail?.user;
+  
+  const loginBtn = document.getElementById('navLoginBtn') || document.querySelector('.nav-login-btn') || document.querySelector('a[href="login.html"]');
+  const logoutBtn = document.getElementById('navLogoutBtn') || document.querySelector('.nav-logout-btn') || document.querySelector('.logout-btn');
+  const dashBtn = document.getElementById('navDashBtn') || document.querySelector('.nav-dashboard-btn') || document.querySelector('a[href="dashboard.html"]');
+  const navUser = document.getElementById('navUserName') || document.querySelector('.nav-user-name');
 
-function closeMobileMenu() {
-  const menu = document.getElementById('navMenu');
-  const toggle = document.querySelector('.mobile-toggle');
-  const overlay = _getSidebarOverlay();
-  if (menu) menu.classList.remove('active');
-  if (toggle) toggle.classList.remove('active');
-  if (overlay) overlay.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-function initSidebarNav() {
-  /* 1 — Overlay yarat */
-  if (!document.getElementById('navOverlay')) {
-    const overlay = document.createElement('div');
-    overlay.id = 'navOverlay';
-    overlay.className = 'nav-overlay';
-    overlay.setAttribute('aria-hidden', 'true');
-    overlay.addEventListener('click', closeMobileMenu);
-    document.body.appendChild(overlay);
+  if (!user) {
+    if (loginBtn) loginBtn.style.display = 'inline-flex';
+    if (logoutBtn) logoutBtn.style.display = 'none';
+    if (dashBtn) dashBtn.style.display = 'none';
+    if (navUser) navUser.textContent = '';
+    return;
   }
+  
+  if (navUser) navUser.textContent = user.name || user.user_metadata?.full_name || user.email.split('@')[0];
+  
+  if (loginBtn) loginBtn.style.display = 'none';
+  if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+  if (dashBtn) dashBtn.style.display = 'inline-flex';
+});
 
-  /* 2 — nav-menu daxilinə sidebar header inject et (logo + bağla düyməsi) */
-  const menu = document.getElementById('navMenu');
-  if (menu && !menu.querySelector('.nav-sidebar-header')) {
-    const hdr = document.createElement('div');
-    hdr.className = 'nav-sidebar-header';
-    hdr.innerHTML = `
-      <a href="index.html" class="nav-sidebar-logo" aria-label="Ana Səhifə">
-        <div class="sidebar-logo-icon">A</div>
-        <span class="sidebar-logo-text">Alielenglish</span>
-      </a>
-      <button class="nav-sidebar-close" onclick="closeMobileMenu()" aria-label="Menyunu bağla">&#x2715;</button>
-    `;
-    menu.insertBefore(hdr, menu.firstChild);
-  }
-
-  /* 3 — Yuxarıdakı logo-section-u <a href="index.html"> kimi çevir */
-  const logoSec = document.querySelector('.logo-section');
-  if (logoSec && logoSec.tagName !== 'A') {
-    const a = document.createElement('a');
-    a.href = 'index.html';
-    a.className = 'logo-section';
-    a.setAttribute('aria-label', 'Ana Səhifəyə qayıt');
-    a.style.textDecoration = 'none';
-    while (logoSec.firstChild) a.appendChild(logoSec.firstChild);
-    logoSec.replaceWith(a);
-  }
-
-  /* 4 — Swipe SAĞ → bağlasın (panel sağdan açılır) */
-  let touchStartX = 0;
-  document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
-  document.addEventListener('touchend', (e) => {
-    const diff = e.changedTouches[0].clientX - touchStartX; // sağdan sola swipe = neqativ
-    const m = document.getElementById('navMenu');
-    // Panel sağdan açılır — sağa swipe (diff > 60) bağlasın
-    if (diff > 60 && m && m.classList.contains('active')) closeMobileMenu();
-  }, { passive: true });
-
-  /* 5 — Nav link klikləndikdə menyunu bağla */
-  document.addEventListener('click', (e) => {
-    if (e.target.closest('.nav-menu a') && !e.target.closest('.nav-sidebar-header') && !e.target.closest('.nav-sidebar-footer')) {
-      const m = document.getElementById('navMenu');
-      if (m && m.classList.contains('active')) setTimeout(closeMobileMenu, 150);
-    }
-  });
-
-  /* 6 — Sidebar footer: dil seçimi + auth bölməsi */
-  if (menu && !menu.querySelector('.nav-sidebar-footer')) {
-    const footer = document.createElement('div');
-    footer.className = 'nav-sidebar-footer';
-    footer.id = 'navSidebarFooter';
-    footer.innerHTML = `
-      <div class="nav-sidebar-lang">
-        <button class="sidebar-lang-btn" onclick="switchLanguage('az',event)">AZ</button>
-        <button class="sidebar-lang-btn" onclick="switchLanguage('en',event)">EN</button>
-      </div>
-      <div class="nav-sidebar-auth" id="navSidebarAuth">
-        <a href="login.html" class="sidebar-auth-btn sidebar-login-btn">🔑 <span data-i18n="nav.login">Daxil Ol</span></a>
-        <a href="register.html" class="sidebar-auth-btn sidebar-register-btn">✨ <span>Qeydiyyat</span></a>
-      </div>
-    `;
-    menu.appendChild(footer);
-  }
-
-  /* 7 — Auth vəziyyətini yoxla, sidebar-ı yenilə */
-  _updateSidebarAuth();
-}
-
-/* Auth vəziyyətinə görə sidebar footer-ini yenilə */
-function _updateSidebarAuth() {
-     else {
-    // Inline fallback — localStorage-dan yoxla
-    try {
-      const stored = localStorage.getItem('alielUser');
-      const user = stored ? JSON.parse(stored) : null;
-      _renderSidebarAuthUI(user);
-    } catch(e) {
-      _renderSidebarAuthUI(null);
-    }
-  }
-  // auth.js-dən custom event dinlə
-  document.addEventListener('authStateChanged', (e) => {
-    _renderSidebarAuthUI(e.detail);
-  });
-}
-
-function _renderSidebarAuthUI(user) {
-  const container = document.getElementById('navSidebarAuth');
-  if (!container) return;
-
-  if (user) {
-    // İstifadəçi daxil olub
-    const name = user.displayName || user.name || user.email || 'İstifadəçi';
-    const initial = name.charAt(0).toUpperCase();
-    const isPremium = user.isPremium || false;
-    container.innerHTML = `
-      <div class="sidebar-user-info">
-        <div class="sidebar-user-avatar">${initial}</div>
-        <div class="sidebar-user-details">
-          <span class="sidebar-user-name">${name}</span>
-          <span class="sidebar-user-badge">${isPremium ? '👑 Premium' : '🆓 Pulsuz'}</span>
-        </div>
-      </div>
-      <a href="dashboard.html" class="sidebar-auth-btn sidebar-dashboard-btn">📊 Dashboard</a>
-      <button onclick="if(typeof logoutUser==='function')logoutUser()" class="sidebar-auth-btn sidebar-logout-btn">🚪 Çıxış</button>
-    `;
-  } else {
-    // Giriş edilməyib
-    container.innerHTML = `
-      <a href="login.html" class="sidebar-auth-btn sidebar-login-btn">🔑 <span data-i18n="nav.login">Daxil Ol</span></a>
-      <a href="register.html" class="sidebar-auth-btn sidebar-register-btn">✨ Qeydiyyat</a>
-    `;
-  }
-}
+// Logout handler
+window.handleLogout = async function() {
+  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+  const sb = createClient(document.querySelector('meta[name="supabase-url"]')?.content || 'https://wuzwvqgmrcqsiegbtrzs.supabase.co', '');
+  if (window.supabase) await window.supabase.auth.signOut();
+  else if (window._supabase) await window._supabase.auth.signOut();
+  else await sb.auth.signOut();
+  
+  localStorage.clear();
+  window.location.href = 'index.html';
+};
 
 /* ── E-mail modal ── */
 function openEmailModal() { window.location.href = 'register.html'; }
