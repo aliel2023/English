@@ -4,3 +4,5 @@ node_modules/
 old/
 firebase-admin-key.json
 migrate-users.js
+
+fix_html.py
