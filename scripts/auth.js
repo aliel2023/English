@@ -2,7 +2,7 @@
 // Alielenglish — Auth System (Clean Rebuild)
 // Supabase Auth + User Profile Management
 // ================================================================
-import { supabase } from '../js/config.js';
+// import { supabase } from '../js/config.js'; // Removed for global script execution
 
 // ── Brute Force Protection ──
 const SecurityGuard = {
@@ -166,7 +166,7 @@ async function createUserProfile(userId, { name, email, level }) {
     daily_query_count: 0,
     last_reset_date: new Date().toISOString()
   };
-  const { error } = await supabase.from('users').upsert([userData]);
+  const { error } = await supabaseClient.from('users').upsert([userData]);
   if (error && error.code !== '23505') {
     console.error('Profile creation error:', error);
   }
@@ -193,7 +193,7 @@ window.handleLogin = async function(event) {
   setLoading('loginBtn', true);
 
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
       email: email.toLowerCase(),
       password: password
     });
@@ -233,7 +233,7 @@ window.handleRegister = async function(event) {
   setLoading('registerBtn', true);
 
   try {
-    const { data: authData, error: authError } = await supabase.auth.signUp({
+    const { data: authData, error: authError } = await supabaseClient.auth.signUp({
       email: email,
       password: password,
       options: { data: { full_name: name } }
@@ -271,10 +271,11 @@ window.handleGoogleLogin = async function() {
   if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
 
   try {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const redirectPath = window.location.pathname.replace(/\/[^\/]*$/, '/dashboard.html');
+    const { error } = await supabaseClient.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'https://aliel2023.github.io/English/dashboard.html'
+        redirectTo: window.location.origin + redirectPath
       }
     });
     if (error) throw error;
@@ -297,8 +298,9 @@ window.handleForgotPassword = async function() {
   if (!email) return showAuthError('Əvvəlcə email daxil edin.');
 
   try {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https://aliel2023.github.io/English/login.html'
+    const redirectPath = window.location.pathname.replace(/\/[^\/]*$/, '/login.html');
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + redirectPath
     });
     if (error) throw error;
     showAuthSuccess('📧 Şifrə sıfırlama linki emailə göndərildi.');
@@ -313,12 +315,12 @@ window.handleForgotPassword = async function() {
 let currentUser = null;
 let currentUserData = null;
 
-supabase.auth.onAuthStateChange(async (event, session) => {
+supabaseClient.auth.onAuthStateChange(async (event, session) => {
   if (session && session.user) {
     currentUser = session.user;
 
     // Check if user profile exists
-    const { data: profile, error } = await supabase
+    const { data: profile, error } = await supabaseClient
       .from('users')
       .select('*')
       .eq('uid', session.user.id)
@@ -335,7 +337,7 @@ supabase.auth.onAuthStateChange(async (event, session) => {
       currentUserData = profile;
       // Ensure admin role for admin email
       if (session.user.email === 'englishaliel@gmail.com' && profile.role !== 'admin') {
-        await supabase.from('users').update({ role: 'admin' }).eq('uid', session.user.id);
+        await supabaseClient.from('users').update({ role: 'admin' }).eq('uid', session.user.id);
         currentUserData.role = 'admin';
       }
     }
@@ -369,7 +371,7 @@ supabase.auth.onAuthStateChange(async (event, session) => {
 // ── Public API ──
 window.getCurrentUser = () => currentUserData;
 window.handleLogout = async function() {
-  await supabase.auth.signOut();
+  await supabaseClient.auth.signOut();
   localStorage.removeItem('sb-wuzwvqgmrcqsiegbtrzs-auth-token');
   window.location.href = 'index.html';
 };
@@ -394,3 +396,119 @@ window.closeDoc = function() {
 };
 
 console.log('[Auth] System initialized');
+
+// ══════════════════════════════════════
+// PROGRESS TRACKING & SYSTEM MEMORY
+// ══════════════════════════════════════
+
+window.updateProgress = async function(level, correctAnswers, percentage) {
+    if (!window.currentUserData) return;
+    try {
+        const user = window.currentUserData;
+        const newTestsCompleted = (user.tests_completed || 0) + 1;
+        
+        let badges = [...(user.badges || [])];
+        if (newTestsCompleted >= 10 && !badges.includes("🎯 Test Ustadı")) {
+            badges.push("🎯 Test Ustadı");
+        }
+
+        const updates = {
+            tests_completed: newTestsCompleted,
+            badges: badges
+        };
+        
+        const { error } = await window.supabaseClient.from('users').update(updates).eq('uid', user.uid);
+        if(!error) window.currentUserData = { ...user, ...updates };
+    } catch (err) {
+        console.error("Error updating progress:", err);
+    }
+};
+
+window.saveTestResult = async function(level, score, total, percentage) {
+    if (!window.currentUserData) return;
+    try {
+        const user = window.currentUserData;
+        const testHistory = user.test_history || [];
+        
+        testHistory.push({
+            date: new Date().toISOString(),
+            level: level,
+            score: score,
+            total: total,
+            percentage: Math.round(percentage)
+        });
+
+        if (testHistory.length > 50) testHistory.shift();
+        
+        const updates = {
+            test_history: testHistory
+        };
+        
+        const { error } = await window.supabaseClient.from('users').update(updates).eq('uid', user.uid);
+        if(!error) window.currentUserData = { ...user, ...updates };
+    } catch (err) {
+        console.error("Error saving test result:", err);
+    }
+};
+
+window.addToFavorites = async function(item, type = "words") {
+    if (!window.currentUserData) return false;
+    try {
+        const user = window.currentUserData;
+        const favorites = user.favorites || { words: [], grammar: [], phrases: [] };
+        if (!favorites[type]) favorites[type] = [];
+        
+        // check if already exists
+        const exists = favorites[type].some(x => {
+            if (typeof x === 'object' && typeof item === 'object') return x.word === item.word;
+            return x === item;
+        });
+        
+        if (exists) return false;
+
+        favorites[type].push(item);
+
+        const newWordsLearned = type === "words" ? (user.words_learned || 0) + 1 : (user.words_learned || 0);
+        
+        let badges = [...(user.badges || [])];
+        if (newWordsLearned >= 50 && !badges.includes("📚 Söz Ustadı")) {
+            badges.push("📚 Söz Ustadı");
+        }
+
+        const updates = {
+            favorites: favorites,
+            words_learned: newWordsLearned,
+            badges: badges
+        };
+        
+        const { error } = await window.supabaseClient.from('users').update(updates).eq('uid', user.uid);
+        if(!error) window.currentUserData = { ...user, ...updates };
+        return true;
+    } catch (err) {
+        console.error("Error adding to favorites:", err);
+        return false;
+    }
+};
+
+window.removeFromFavorites = async function(itemText, type = "words") {
+    if (!window.currentUserData) return false;
+    try {
+        const user = window.currentUserData;
+        const favorites = user.favorites || { words: [], grammar: [], phrases: [] };
+        if (!favorites[type]) return false;
+        
+        favorites[type] = favorites[type].filter(x => {
+            if (typeof x === 'object') return x.word !== itemText;
+            return x !== itemText;
+        });
+        
+        const updates = { favorites: favorites };
+        
+        const { error } = await window.supabaseClient.from('users').update(updates).eq('uid', user.uid);
+        if(!error) window.currentUserData = { ...user, ...updates };
+        return true;
+    } catch (err) {
+        console.error("Error removing from favorites:", err);
+        return false;
+    }
+};

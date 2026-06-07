@@ -73,11 +73,9 @@ document.addEventListener('alielAuthReady', function(e) {
 
 // Logout handler
 window.handleLogout = async function() {
-  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
-  const sb = createClient(document.querySelector('meta[name="supabase-url"]')?.content || 'https://wuzwvqgmrcqsiegbtrzs.supabase.co', '');
-  if (window.supabase) await window.supabase.auth.signOut();
-  else if (window._supabase) await window._supabase.auth.signOut();
-  else await sb.auth.signOut();
+  if (window.supabaseClient) {
+    await window.supabaseClient.auth.signOut();
+  }
   
   localStorage.clear();
   window.location.href = 'index.html';
@@ -211,7 +209,7 @@ function runAllInit() {
   initMenu();
   initLangSwitcher();
   
-  initSidebarNav();
+  // initSidebarNav(); // Undefined function removed
   setActiveNav();
   initSmoothScroll();
   initKeyboardAccessibility();

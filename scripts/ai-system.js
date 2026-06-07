@@ -3,7 +3,6 @@
  * Gemini 1.5 Flash powered English teacher for Azerbaijani students
  * 30 messages/day free tier, resets at midnight Baku time (UTC+4)
  */
-import { supabase, GEMINI_API_KEY } from '../js/config.js';
 
 const AI_CONFIG = {
     apiKey: GEMINI_API_KEY,
@@ -61,7 +60,7 @@ async function checkDailyUsage(userId) {
         }
 
         // Check Supabase usage - use users table directly
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('users')
             .select('daily_query_count, last_reset_date')
             .eq('uid', userId)
@@ -75,7 +74,7 @@ async function checkDailyUsage(userId) {
         // Reset if new day
         if (lastReset !== today) {
             count = 0;
-            await supabase.from('users').update({
+            await supabaseClient.from('users').update({
                 daily_query_count: 0,
                 last_reset_date: new Date().toISOString()
             }).eq('uid', userId);
@@ -114,14 +113,14 @@ async function incrementUsage(userId) {
     }
 
     try {
-        const { data } = await supabase
+        const { data } = await supabaseClient
             .from('users')
             .select('daily_query_count')
             .eq('uid', userId)
             .single();
 
         const newCount = ((data?.daily_query_count) || 0) + 1;
-        await supabase.from('users').update({
+        await supabaseClient.from('users').update({
             daily_query_count: newCount,
             last_reset_date: new Date().toISOString()
         }).eq('uid', userId);
@@ -193,4 +192,4 @@ window.AISystem = {
     getBakuDate: getBakuDateString
 };
 
-export { checkDailyUsage, incrementUsage, callGemini, AI_CONFIG };
+// Export removed for global execution

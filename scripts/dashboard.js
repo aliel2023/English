@@ -1,4 +1,4 @@
-import { supabase } from '../js/config.js';
+
 
 let dashInited = false;
 let currentDashUid = null;

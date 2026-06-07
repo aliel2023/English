@@ -19,10 +19,10 @@ async function getTodayWord() {
 async function fetchWordFromAI() {
     try {
         const uid = window.currentUser?.id || null;
-        if (window.handleAIQueryLimit) {
-            const limitCheck = await window.handleAIQueryLimit(uid);
+        if (window.AISystem && window.AISystem.checkUsage) {
+            const limitCheck = await window.AISystem.checkUsage(uid);
             if (!limitCheck.allowed) {
-                if (limitCheck.reason === "guest_limit") {
+                if (limitCheck.isGuest) {
                     showToast("Süni intellekt limitiniz bitdi. Pulsuz qeydiyyatdan keçin.", "warning");
                 } else {
                     showToast("Gündəlik limit (20) bitdi. Premium-a keçid edin.", "warning");
