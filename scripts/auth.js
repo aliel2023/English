@@ -319,7 +319,8 @@ let currentUserData = null;
 if (!window.supabaseClient) {
   console.warn('[Auth] SupabaseClient not available. Auth features disabled.');
 } else {
-supabaseClient.auth.onAuthStateChange(async (event, session) => {
+if (window.supabaseClient) {
+  supabaseClient.auth.onAuthStateChange(async (event, session) => {
   if (session && session.user) {
     currentUser = session.user;
 
@@ -368,9 +369,9 @@ supabaseClient.auth.onAuthStateChange(async (event, session) => {
     const isProtected = protectedPages.some(p => window.location.pathname.includes(p));
     if (isProtected) {
       window.location.href = 'login.html';
-    }
   }
 });
+}
 }
 
 // ── Public API ──
