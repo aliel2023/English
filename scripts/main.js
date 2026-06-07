@@ -2,13 +2,17 @@
    main.js — Alielenglish Navigation & Utilities
    ══════════════════════════════════════════════ */
 
+let _menuRetries = 0;
 function initMenu() {
   const hamburger = document.querySelector('.mobile-toggle') || document.querySelector('.hamburger') || document.querySelector('.menu-toggle') || document.getElementById('hamburger');
   const navMenu = document.querySelector('.nav-links') || document.querySelector('.nav-menu') || document.getElementById('navMenu');
   
   if (!hamburger || !navMenu) {
-    console.warn('Menu elements not found, retrying...');
-    setTimeout(initMenu, 500); // Retry if dynamically loaded
+    _menuRetries++;
+    if (_menuRetries < 10) {
+      console.warn('Menu elements not found, retrying...');
+      setTimeout(initMenu, 500);
+    }
     return;
   }
 
@@ -33,6 +37,13 @@ function initMenu() {
   });
 }
 
+function closeMobileMenu() {
+  const nm = document.querySelector('.nav-links') || document.querySelector('.nav-menu') || document.getElementById('navMenu');
+  const hb = document.querySelector('.mobile-toggle') || document.querySelector('.hamburger') || document.querySelector('.menu-toggle') || document.getElementById('hamburger');
+  if (nm) nm.classList.remove('active');
+  if (hb) hb.classList.remove('active');
+}
+
 function initLangSwitcher() {
   // Language switcher for data-lang attributes
   const langBtns = document.querySelectorAll('[data-lang]');
@@ -51,9 +62,10 @@ function initLangSwitcher() {
 document.addEventListener('alielAuthReady', function(e) {
   const user = e.detail?.user;
   
-  const loginBtn = document.getElementById('navLoginBtn') || document.querySelector('.nav-login-btn') || document.querySelector('a[href="login.html"]');
+  const nav = document.querySelector('.nav-menu') || document.querySelector('.nav-actions');
+  const loginBtn = document.getElementById('navLoginBtn') || document.querySelector('.nav-login-btn') || (nav && nav.querySelector('a[href="login.html"]'));
   const logoutBtn = document.getElementById('navLogoutBtn') || document.querySelector('.nav-logout-btn') || document.querySelector('.logout-btn');
-  const dashBtn = document.getElementById('navDashBtn') || document.querySelector('.nav-dashboard-btn') || document.querySelector('a[href="dashboard.html"]');
+  const dashBtn = document.getElementById('navDashBtn') || document.querySelector('.nav-dashboard-btn') || (nav && nav.querySelector('a[href="dashboard.html"]'));
   const navUser = document.getElementById('navUserName') || document.querySelector('.nav-user-name');
 
   if (!user) {
@@ -76,13 +88,16 @@ window.handleLogout = async function() {
   if (window.supabaseClient) {
     await window.supabaseClient.auth.signOut();
   }
-  
-  localStorage.clear();
+  localStorage.removeItem('sb-wuzwvqgmrcqsiegbtrzs-auth-token');
   window.location.href = 'index.html';
 };
 
 /* ── E-mail modal ── */
-function openEmailModal() { window.location.href = 'register.html'; }
+function openEmailModal() {
+  const el = document.getElementById('emailModal');
+  if (el) { el.classList.add('active'); document.body.style.overflow = 'hidden'; }
+  else window.location.href = 'register.html';
+}
 function closeEmailModal() {
   const el = document.getElementById('emailModal');
   if (el) { el.classList.remove('active'); document.body.style.overflow = ''; }

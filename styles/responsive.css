@@ -162,7 +162,7 @@ input, select, textarea { font-size: 16px; } /* iOS zoom prevention */
    ══════════════════════════════════════ */
 @media (min-width: 1024px) {
     .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-    .mobile-toggle { display: none !important; }
+    .mobile-toggle { display: none; }
     
     .dash-stats-grid { grid-template-columns: repeat(3, 1fr); }
     .quick-actions-grid { grid-template-columns: repeat(4, 1fr); }
