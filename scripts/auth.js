@@ -143,6 +143,7 @@ window.updatePasswordStrength = function(val) {
 
 // ── Create User Profile in Database ──
 async function createUserProfile(userId, { name, email, level }) {
+  if (!window.supabaseClient) return null;
   const role = email === 'englishaliel@gmail.com' ? 'admin' : 'user';
   const userData = {
     uid: userId,
@@ -315,6 +316,9 @@ window.handleForgotPassword = async function() {
 let currentUser = null;
 let currentUserData = null;
 
+if (!window.supabaseClient) {
+  console.warn('[Auth] SupabaseClient not available. Auth features disabled.');
+} else {
 supabaseClient.auth.onAuthStateChange(async (event, session) => {
   if (session && session.user) {
     currentUser = session.user;
@@ -367,11 +371,14 @@ supabaseClient.auth.onAuthStateChange(async (event, session) => {
     }
   }
 });
+}
 
 // ── Public API ──
 window.getCurrentUser = () => currentUserData;
 window.handleLogout = async function() {
-  await supabaseClient.auth.signOut();
+  if (window.supabaseClient) {
+    await supabaseClient.auth.signOut();
+  }
   localStorage.removeItem('sb-wuzwvqgmrcqsiegbtrzs-auth-token');
   window.location.href = 'index.html';
 };
@@ -436,7 +443,8 @@ window.saveTestResult = async function(level, score, total, percentage) {
             score: score,
             total: total,
             percentage: Math.round(percentage)
-        });
+});
+}
 
         if (testHistory.length > 50) testHistory.shift();
         
