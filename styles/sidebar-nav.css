@@ -146,7 +146,7 @@ a.logo-section .brand-name {
   font-family: var(--font-heading) !important;
   font-size: .9375rem !important;
   font-weight: 500 !important;
-  color: var(--text-secondary) !important;
+  color: var(--text-primary) !important;
   border-radius: 0 !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
   min-height: 50px !important;

@@ -1,8 +1,24 @@
+# Environment & secrets
 .env
+.env.*
+
+# Dependencies
 node_modules/
+
+# OS junk files
 .DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor caches
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Legacy / migration artifacts
 old/
 firebase-admin-key.json
 migrate-users.js
-
 fix_html.py

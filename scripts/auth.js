@@ -319,59 +319,52 @@ let currentUserData = null;
 if (!window.supabaseClient) {
   console.warn('[Auth] SupabaseClient not available. Auth features disabled.');
 } else {
-if (window.supabaseClient) {
   supabaseClient.auth.onAuthStateChange(async (event, session) => {
-  if (session && session.user) {
-    currentUser = session.user;
+    if (session && session.user) {
+      currentUser = session.user;
 
-    // Check if user profile exists
-    const { data: profile, error } = await supabaseClient
-      .from('users')
-      .select('*')
-      .eq('uid', session.user.id)
-      .single();
+      const { data: profile, error } = await supabaseClient
+        .from('users')
+        .select('*')
+        .eq('uid', session.user.id)
+        .single();
 
-    if (!profile || error) {
-      // Auto-create profile for OAuth users
-      const email = session.user.email || '';
-      const name = session.user.user_metadata?.full_name ||
-                   session.user.user_metadata?.name ||
-                   email.split('@')[0] || 'İstifadəçi';
-      currentUserData = await createUserProfile(session.user.id, { name, email, level: 'A1' });
+      if (!profile || error) {
+        const email = session.user.email || '';
+        const name = session.user.user_metadata?.full_name ||
+                     session.user.user_metadata?.name ||
+                     email.split('@')[0] || 'İstifadəçi';
+        currentUserData = await createUserProfile(session.user.id, { name, email, level: 'A1' });
+      } else {
+        currentUserData = profile;
+        if (session.user.email === 'englishaliel@gmail.com' && profile.role !== 'admin') {
+          await supabaseClient.from('users').update({ role: 'admin' }).eq('uid', session.user.id);
+          currentUserData.role = 'admin';
+        }
+      }
+
+      window.currentUser = currentUser;
+      window.currentUserData = currentUserData;
+      document.dispatchEvent(new CustomEvent('alielAuthReady', { detail: { user: currentUserData } }));
+
+      const path = window.location.pathname;
+      if (path.includes('login') || path.includes('register')) {
+        window.location.href = 'dashboard.html';
+      }
     } else {
-      currentUserData = profile;
-      // Ensure admin role for admin email
-      if (session.user.email === 'englishaliel@gmail.com' && profile.role !== 'admin') {
-        await supabaseClient.from('users').update({ role: 'admin' }).eq('uid', session.user.id);
-        currentUserData.role = 'admin';
+      currentUser = null;
+      currentUserData = null;
+      window.currentUser = null;
+      window.currentUserData = null;
+      document.dispatchEvent(new CustomEvent('alielAuthReady', { detail: { user: null } }));
+
+      const protectedPages = ['dashboard', 'profile', 'favorites', 'admin'];
+      const isProtected = protectedPages.some(p => window.location.pathname.includes(p));
+      if (isProtected) {
+        window.location.href = 'login.html';
       }
     }
-
-    // Export for other scripts
-    window.currentUser = currentUser;
-    window.currentUserData = currentUserData;
-    document.dispatchEvent(new CustomEvent('alielAuthReady', { detail: { user: currentUserData } }));
-
-    // Redirect away from login/register pages
-    const path = window.location.pathname;
-    if (path.includes('login') || path.includes('register')) {
-      window.location.href = 'dashboard.html';
-    }
-  } else {
-    currentUser = null;
-    currentUserData = null;
-    window.currentUser = null;
-    window.currentUserData = null;
-    document.dispatchEvent(new CustomEvent('alielAuthReady', { detail: { user: null } }));
-
-    // Protect dashboard pages (redirect to login if not authenticated)
-    const protectedPages = ['dashboard', 'profile', 'favorites', 'admin'];
-    const isProtected = protectedPages.some(p => window.location.pathname.includes(p));
-    if (isProtected) {
-      window.location.href = 'login.html';
-  }
-});
-}
+  });
 }
 
 // ── Public API ──
@@ -444,8 +437,7 @@ window.saveTestResult = async function(level, score, total, percentage) {
             score: score,
             total: total,
             percentage: Math.round(percentage)
-});
-}
+        });
 
         if (testHistory.length > 50) testHistory.shift();
         
