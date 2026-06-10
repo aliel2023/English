@@ -2,7 +2,6 @@
 // Alielenglish — Auth System (Clean Rebuild)
 // Supabase Auth + User Profile Management
 // ================================================================
-// import { supabase } from '../js/config.js'; // Removed for global script execution
 
 // ── Brute Force Protection ──
 const SecurityGuard = {
