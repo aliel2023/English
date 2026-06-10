@@ -311,6 +311,73 @@ window.handleForgotPassword = async function() {
 };
 
 // ══════════════════════════════════════
+// SIDEBAR INJECTION
+// ══════════════════════════════════════
+let _sidebarInjected = false;
+
+function injectSidebar() {
+  if (_sidebarInjected) return;
+  var navMenu = document.querySelector('.nav-menu');
+  if (!navMenu) return;
+
+  var header = document.createElement('div');
+  header.className = 'nav-sidebar-header';
+  header.innerHTML =
+    '<a href="index.html" class="nav-sidebar-logo">' +
+      '<div class="sidebar-logo-icon">A</div>' +
+      '<span class="sidebar-logo-text">Alielenglish</span>' +
+    '</a>' +
+    '<button class="nav-sidebar-close" aria-label="Bağla">✕</button>';
+
+  var footer = document.createElement('div');
+  footer.className = 'nav-sidebar-footer';
+  footer.id = 'navSidebarFooter';
+  footer.innerHTML =
+    '<div class="nav-sidebar-auth" id="navSidebarAuth">' +
+      '<a href="login.html" class="sidebar-auth-btn sidebar-login-btn" id="navLoginBtn">📝 Daxil Ol</a>' +
+      '<a href="register.html" class="sidebar-auth-btn sidebar-register-btn" id="navRegisterBtn">🔑 Qeydiyyat</a>' +
+    '</div>';
+
+  navMenu.insertBefore(header, navMenu.firstChild);
+  navMenu.appendChild(footer);
+
+  header.querySelector('.nav-sidebar-close').addEventListener('click', function() {
+    navMenu.classList.remove('active');
+    var toggle = document.querySelector('.mobile-toggle');
+    if (toggle) toggle.classList.remove('active');
+  });
+
+  _sidebarInjected = true;
+}
+
+function updateSidebarAuth(userData) {
+  var footer = document.getElementById('navSidebarFooter');
+  if (!footer) return;
+  var authEl = document.getElementById('navSidebarAuth');
+  if (!authEl) return;
+
+  if (!userData) {
+    authEl.innerHTML =
+      '<a href="login.html" class="sidebar-auth-btn sidebar-login-btn" id="navLoginBtn">📝 Daxil Ol</a>' +
+      '<a href="register.html" class="sidebar-auth-btn sidebar-register-btn" id="navRegisterBtn">🔑 Qeydiyyat</a>';
+  } else {
+    var name = userData.name || userData.email || 'İstifadəçi';
+    var initial = name.charAt(0).toUpperCase();
+    authEl.innerHTML =
+      '<div class="sidebar-user-info">' +
+        '<div class="sidebar-user-avatar">' + initial + '</div>' +
+        '<div class="sidebar-user-details">' +
+          '<span class="sidebar-user-name" id="navUserName">' + sanitizeHTML(name) + '</span>' +
+          '<span class="sidebar-user-badge">' + (userData.role === 'admin' ? '👑 Admin' : userData.premium_active ? '⭐ Premium' : '🌱 Pulsuz') + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<a href="dashboard.html" class="sidebar-auth-btn sidebar-dashboard-btn" id="navDashBtn">📊 Dashboard</a>' +
+      '<a href="profile.html" class="sidebar-auth-btn sidebar-dashboard-btn" id="navProfileBtn">👤 Profil</a>' +
+      '<button class="sidebar-auth-btn sidebar-logout-btn" id="navLogoutBtn" onclick="window.handleLogout()">🚪 Çıxış</button>';
+  }
+}
+
+// ══════════════════════════════════════
 // AUTH STATE LISTENER (runs on every page)
 // ══════════════════════════════════════
 let currentUser = null;
@@ -319,6 +386,8 @@ let currentUserData = null;
 if (!window.supabaseClient) {
   console.warn('[Auth] SupabaseClient not available. Auth features disabled.');
 } else {
+  injectSidebar();
+
   supabaseClient.auth.onAuthStateChange(async (event, session) => {
     if (session && session.user) {
       currentUser = session.user;
@@ -345,6 +414,7 @@ if (!window.supabaseClient) {
 
       window.currentUser = currentUser;
       window.currentUserData = currentUserData;
+      updateSidebarAuth(currentUserData);
       document.dispatchEvent(new CustomEvent('alielAuthReady', { detail: { user: currentUserData } }));
 
       const path = window.location.pathname;
@@ -356,6 +426,7 @@ if (!window.supabaseClient) {
       currentUserData = null;
       window.currentUser = null;
       window.currentUserData = null;
+      updateSidebarAuth(null);
       document.dispatchEvent(new CustomEvent('alielAuthReady', { detail: { user: null } }));
 
       const protectedPages = ['dashboard', 'profile', 'favorites', 'admin'];
