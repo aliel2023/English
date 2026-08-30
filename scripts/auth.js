@@ -265,17 +265,23 @@ window.handleRegister = async function(event) {
 // ══════════════════════════════════════
 // GOOGLE OAUTH
 // ══════════════════════════════════════
-window.handleGoogleLogin = async function() {
+window.handleGoogleLogin = async function(event) {
+  if (event) event.preventDefault();
   clearAuthMessages();
   const btn = document.getElementById('googleBtn');
   if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
 
   try {
-    const redirectPath = window.location.pathname.replace(/\/[^\/]*$/, '/dashboard.html');
-    const { error } = await supabaseClient.auth.signInWithOAuth({
+    let redirectUrl = undefined;
+    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+      const redirectPath = window.location.pathname.replace(/\/[^\/]*$/, '/dashboard.html');
+      redirectUrl = window.location.origin + redirectPath;
+    }
+
+    const { error } = await window.supabaseClient.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin + redirectPath
+        redirectTo: redirectUrl
       }
     });
     if (error) throw error;
