@@ -46,6 +46,48 @@ CREATE TABLE IF NOT EXISTS public.users (
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 
 -- ================================================================
+-- RLS Helper Functions (SECURITY DEFINER — RLS-i bypass edir,
+-- "infinite recursion in policy" xətasının qarşısını alır)
+-- ================================================================
+
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS boolean
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+    SELECT EXISTS (
+        SELECT 1 FROM public.users
+        WHERE uid = auth.uid() AND role = 'admin'
+    );
+$$;
+
+CREATE OR REPLACE FUNCTION public.own_role()
+RETURNS text
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+    SELECT role FROM public.users WHERE uid = auth.uid();
+$$;
+
+CREATE OR REPLACE FUNCTION public.own_email()
+RETURNS text
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+    SELECT email FROM public.users WHERE uid = auth.uid();
+$$;
+
+GRANT EXECUTE ON FUNCTION public.is_admin() TO anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.own_role() TO anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.own_email() TO anon, authenticated;
+
+-- ================================================================
 -- RLS Policies
 -- ================================================================
 
@@ -60,8 +102,8 @@ CREATE POLICY "Users can update own profile"
     USING (auth.uid() = uid)
     WITH CHECK (
         auth.uid() = uid
-        AND role = (SELECT role FROM public.users WHERE uid = auth.uid())
-        AND email = (SELECT email FROM public.users WHERE uid = auth.uid())
+        AND role = public.own_role()
+        AND email = public.own_email()
     );
 
 -- İstifadəçi öz profilini yarada bilər
@@ -72,32 +114,17 @@ CREATE POLICY "Users can insert own profile"
 -- Admin bütün profilləri oxuya bilər
 CREATE POLICY "Admin can view all profiles"
     ON public.users FOR SELECT
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.users u 
-            WHERE u.uid = auth.uid() AND u.role = 'admin'
-        )
-    );
+    USING (public.is_admin());
 
 -- Admin bütün profilləri yeniləyə bilər (premium vermək daxil)
 CREATE POLICY "Admin can update all profiles"
     ON public.users FOR UPDATE
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.users u 
-            WHERE u.uid = auth.uid() AND u.role = 'admin'
-        )
-    );
+    USING (public.is_admin());
 
 -- Admin istifadəçi silə bilər
 CREATE POLICY "Admin can delete users"
     ON public.users FOR DELETE
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.users u 
-            WHERE u.uid = auth.uid() AND u.role = 'admin'
-        )
-    );
+    USING (public.is_admin());
 
 -- ================================================================
 -- 2. Leads Table (Email toplama / qeydiyyat izləmə)
@@ -121,12 +148,7 @@ CREATE POLICY "Authenticated users can create leads"
 -- Yalnız admin oxuya bilər
 CREATE POLICY "Admin can view leads"
     ON public.leads FOR SELECT
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.users u 
-            WHERE u.uid = auth.uid() AND u.role = 'admin'
-        )
-    );
+    USING (public.is_admin());
 
 -- ================================================================
 -- 3. AI Usage Table (Gündəlik sorğu limiti izləmə)
@@ -170,12 +192,7 @@ CREATE POLICY "Authenticated users can create reports"
 
 CREATE POLICY "Admin can view reports"
     ON public.reports FOR SELECT
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.users u 
-            WHERE u.uid = auth.uid() AND u.role = 'admin'
-        )
-    );
+    USING (public.is_admin());
 
 -- ================================================================
 -- 5. Helper Functions
