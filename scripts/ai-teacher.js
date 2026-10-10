@@ -200,7 +200,7 @@
         
         if (!usage.allowed) {
             if (usage.isGuest) {
-                return `Bu xüsusiyyətdən daha çox istifadə etmək üçün zəhmət olmasa daxil olun. Hesabınız yoxdursa, pulsuz qeydiyyatdan keçə bilərsiniz. Qonaq limiti: ${usage.max}`;
+                return `📊 Gündəlik AI sorğu limitiniz dolub. Qeydiyyatdan keçin — tam giriş əldə edin. Qonaq limiti: ${usage.max}`;
             } else {
                 return `Gündəlik ${usage.max} sual limitinizi doldurdunuz! 🚀 Limitsiz süni intellekt və tam giriş üçün Premium hesabına keçid edə bilərsiniz.`;
             }
@@ -221,7 +221,10 @@
             
             return reply;
         } catch (err) {
-            console.warn('AIT API error:', err.message);
+            console.warn('AIT API error:', err && err.message);
+            if (err && err.friendly) {
+                return err.message;
+            }
             return getFallback(userMessage);
         }
     }

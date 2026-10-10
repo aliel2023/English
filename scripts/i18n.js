@@ -106,7 +106,12 @@ function translatePage() {
             if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                 el.placeholder = translation;
             } else {
-                el.innerHTML = translation;
+                // Use DOMPurify if available for XSS protection
+                if (window.DOMPurify) {
+                    el.innerHTML = DOMPurify.sanitize(translation);
+                } else {
+                    el.innerHTML = translation;
+                }
             }
         }
     });
@@ -119,9 +124,11 @@ function translatePage() {
 window.translatePage = translatePage;
 window.getTranslation = getNestedTranslation;
 window.switchLanguage = switchLanguage;
+window.t = t;
 
 // ===== Get Nested Translation (e.g., "nav.home") =====
 function getNestedTranslation(key) {
+    if (!key || typeof key !== 'string') return null;
     const keys = key.split('.');
     let value = translations;
 

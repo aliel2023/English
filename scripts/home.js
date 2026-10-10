@@ -57,7 +57,13 @@ const animateFeatureCards = () => {
 const showWelcomeMessage = () => {
     const user = localStorage.getItem('alielUser');
     if (user) {
-        const name = JSON.parse(user).name;
+        let name;
+        try {
+            name = JSON.parse(user).name;
+        } catch (e) {
+            return; // Invalid JSON, skip welcome message
+        }
+        if (!name) return;
         const toast = document.createElement('div');
         toast.style.cssText = `
             position: fixed;

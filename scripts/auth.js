@@ -43,6 +43,26 @@ function sanitizeHTML(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// ── Wait until Supabase client is ready (race-condition guard) ──
+function waitForSupabaseClient(timeoutMs) {
+  return new Promise(function(resolve) {
+    if (window.supabaseClient) return resolve(window.supabaseClient);
+    var done = false;
+    function finish() {
+      if (done) return;
+      done = true;
+      resolve(window.supabaseClient || null);
+    }
+    window.addEventListener('supabaseReady', finish, { once: true });
+    var start = Date.now();
+    (function check() {
+      if (window.supabaseClient) return finish();
+      if (Date.now() - start > (timeoutMs || 2000)) return finish();
+      setTimeout(check, 100);
+    })();
+  });
+}
+
 // ── UI Helpers ──
 function showAuthError(msg) {
   clearAuthMessages();
@@ -193,7 +213,12 @@ window.handleLogin = async function(event) {
   setLoading('loginBtn', true);
 
   try {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
+    const client = await waitForSupabaseClient(2000);
+    if (!client) {
+      return showAuthError('⚠️ Sistem hələ hazır deyil. İnternet bağlantınızı yoxlayın və yenidən cəhd edin.');
+    }
+
+    const { data, error } = await client.auth.signInWithPassword({
       email: email.toLowerCase(),
       password: password
     });
@@ -201,10 +226,21 @@ window.handleLogin = async function(event) {
 
     SecurityGuard.clearAttempts('login');
     showAuthSuccess('✅ Uğurla daxil oldunuz! Yönləndirilir...');
-    setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+    const redirectTo = sessionStorage.getItem('redirectAfterLogin') || 'dashboard.html';
+    sessionStorage.removeItem('redirectAfterLogin');
+    setTimeout(() => { window.location.href = redirectTo; }, 800);
   } catch (err) {
     const msg = SecurityGuard.recordAttempt('login');
-    showAuthError(msg || '❌ Email və ya şifrə yanlışdır.');
+    const errMsg = (err && err.message) ? err.message : '';
+    let friendly = '❌ Email və ya şifrə yanlışdır.';
+    if (errMsg.includes('Email not confirmed')) {
+      friendly = '📧 Emailinizi təsdiqləyin. Təsdiq linki göndərilib.';
+    } else if (errMsg.includes('Invalid login credentials')) {
+      friendly = '❌ Email və ya şifrə yanlışdır.';
+    } else if (errMsg.includes('email rate limit') || errMsg.includes('rate limit')) {
+      friendly = '⏳ Çox tez-tez cəhd edirsiniz. 1 dəqiqə gözləyin.';
+    }
+    showAuthError(msg || friendly);
     setLoading('loginBtn', false);
   }
 };
@@ -233,7 +269,12 @@ window.handleRegister = async function(event) {
   setLoading('registerBtn', true);
 
   try {
-    const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+    const client = await waitForSupabaseClient(2000);
+    if (!client) {
+      return showAuthError('⚠️ Sistem hələ hazır deyil. İnternet bağlantınızı yoxlayın və yenidən cəhd edin.');
+    }
+
+    const { data: authData, error: authError } = await client.auth.signUp({
       email: email,
       password: password,
       options: { data: { full_name: name } }
@@ -245,15 +286,28 @@ window.handleRegister = async function(event) {
       await createUserProfile(authData.user.id, { name, email, level });
     }
 
+    // Email confirmation required (no active session returned)
+    if (authData.user && !authData.session) {
+      showAuthSuccess('📧 Emailinizi yoxlayın. Təsdiq linki göndərildi!');
+      setLoading('registerBtn', false);
+      return;
+    }
+
     showAuthSuccess('🎉 Qeydiyyat uğurlu! Yönləndirilir...');
-    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
+    const redirectTo = sessionStorage.getItem('redirectAfterLogin') || 'dashboard.html';
+    sessionStorage.removeItem('redirectAfterLogin');
+    setTimeout(() => { window.location.href = redirectTo; }, 1200);
   } catch (err) {
-    let msg = '⚠️ Qeydiyyat xətası.';
-    const errMsg = err.message || String(err);
+    let msg = '⚠️ Texniki xəta baş verdi. İnternet bağlantınızı yoxlayın.';
+    const errMsg = (err && err.message) ? err.message : String(err);
     if (errMsg.includes('already registered') || errMsg.includes('User already exists')) {
-      msg = '📧 Bu email artıq qeydiyyatdan keçib.';
+      msg = '📧 Bu email artıq qeydiyyatdan keçib. Daxil olmağa çalışın.';
     } else if (errMsg.includes('Password should be at least')) {
-      msg = '🔑 Şifrə çox zəifdir (min. 8 simvol).';
+      msg = '🔑 Şifrə minimum 8 simvol olmalıdır.';
+    } else if (errMsg.includes('email rate limit') || errMsg.includes('rate limit')) {
+      msg = '⏳ Çox tez-tez cəhd edirsiniz. 1 dəqiqə gözləyin.';
+    } else if (errMsg.includes('signup is disabled')) {
+      msg = '🚫 Qeydiyyat müvəqqəti deaktivdir. Administratora müraciət edin.';
     } else if (errMsg.includes('invalid') && errMsg.includes('email')) {
       msg = '📧 Email formatı yanlışdır.';
     }
@@ -272,21 +326,30 @@ window.handleGoogleLogin = async function(event) {
   if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
 
   try {
-    let redirectUrl = undefined;
-    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
-      const redirectPath = window.location.pathname.replace(/\/[^\/]*$/, '/dashboard.html');
-      redirectUrl = window.location.origin + redirectPath;
+    const client = await waitForSupabaseClient(2000);
+    if (!client) {
+      showAuthError('⚠️ Sistem hələ hazır deyil. İnternet bağlantınızı yoxlayın.');
+      if (btn) { btn.disabled = false; btn.style.opacity = ''; }
+      return;
     }
 
-    const { error } = await window.supabaseClient.auth.signInWithOAuth({
+    // GitHub Pages sub-path üçün sabit redirect URL
+    const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/');
+    const redirectTo = baseUrl + 'dashboard.html';
+
+    const { error } = await client.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: redirectUrl
+        redirectTo: redirectTo,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent'
+        }
       }
     });
     if (error) throw error;
   } catch (err) {
-    showAuthError('Google girişi uğursuz oldu: ' + (err.message || ''));
+    showAuthError('Google girişi uğursuz oldu. Zəhmət olmasa yenidən cəhd edin.');
     if (btn) { btn.disabled = false; btn.style.opacity = ''; }
   }
 };
@@ -388,16 +451,19 @@ function updateSidebarAuth(userData) {
 let currentUser = null;
 let currentUserData = null;
 
-if (!window.supabaseClient) {
-  console.warn('[Auth] SupabaseClient not available. Auth features disabled.');
-} else {
+window._authInitialized = false;
+
+function initAuthSystem() {
+  if (!window.supabaseClient || window._authInitialized) return;
+  window._authInitialized = true;
+
   injectSidebar();
 
-  supabaseClient.auth.onAuthStateChange(async (event, session) => {
+  window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
     if (session && session.user) {
       currentUser = session.user;
 
-      const { data: profile, error } = await supabaseClient
+      const { data: profile, error } = await window.supabaseClient
         .from('users')
         .select('*')
         .eq('uid', session.user.id)
@@ -412,7 +478,7 @@ if (!window.supabaseClient) {
       } else {
         currentUserData = profile;
         if (session.user.email === 'englishaliel@gmail.com' && profile.role !== 'admin') {
-          await supabaseClient.from('users').update({ role: 'admin' }).eq('uid', session.user.id);
+          await window.supabaseClient.from('users').update({ role: 'admin' }).eq('uid', session.user.id);
           currentUserData.role = 'admin';
         }
       }
@@ -424,7 +490,9 @@ if (!window.supabaseClient) {
 
       const path = window.location.pathname;
       if (path.includes('login') || path.includes('register')) {
-        window.location.href = 'dashboard.html';
+        const redirectTo = sessionStorage.getItem('redirectAfterLogin') || 'dashboard.html';
+        sessionStorage.removeItem('redirectAfterLogin');
+        window.location.href = redirectTo;
       }
     } else {
       currentUser = null;
@@ -436,11 +504,25 @@ if (!window.supabaseClient) {
 
       const protectedPages = ['dashboard', 'profile', 'favorites', 'admin'];
       const isProtected = protectedPages.some(p => window.location.pathname.includes(p));
-      if (isProtected) {
-        window.location.href = 'login.html';
+      const isAuthPage = window.location.pathname.includes('login') || window.location.pathname.includes('register');
+      if (isProtected && !isAuthPage) {
+        // Loop qarşısını al
+        sessionStorage.setItem('redirectAfterLogin', window.location.href);
+        window.location.replace('login.html'); // replace() history loop-u önləyir
       }
     }
   });
+}
+
+// Əgər artıq hazırdırsa, dərhal işlət; əks halda supabaseReady gözlə
+if (window.supabaseClient) {
+  initAuthSystem();
+} else {
+  window.addEventListener('supabaseReady', initAuthSystem, { once: true });
+  // 5 saniyə sonra yenidən yoxla (fallback)
+  setTimeout(function() {
+    if (window.supabaseClient && !window._authInitialized) initAuthSystem();
+  }, 5000);
 }
 
 // ── Public API ──

@@ -7,6 +7,21 @@
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <style id="antiClickjack">body{display:none!important}</style>
     <script>if(self===top){var antiClickjack=document.getElementById("antiClickjack");antiClickjack&&antiClickjack.parentNode.removeChild(antiClickjack)}else top.location=self.location</script>
+    <script>
+    // Sürətli session yoxlama — Supabase SDK tam yüklənməmiş işləyir
+    (function() {
+      try {
+        var keys = Object.keys(localStorage);
+        var sessionKey = keys.find(function(k){ return k.indexOf('supabase') !== -1 && k.indexOf('auth') !== -1; });
+        if (sessionKey) {
+          var session = JSON.parse(localStorage.getItem(sessionKey));
+          if (session && session.access_token && session.expires_at > Date.now()/1000) {
+            window.location.replace('dashboard.html');
+          }
+        }
+      } catch(e) {}
+    })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <meta name="description" content="Alielenglish — Pulsuz qeydiyyatdan keçin">

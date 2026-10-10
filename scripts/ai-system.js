@@ -60,7 +60,7 @@ async function checkDailyUsage(userId) {
         }
 
         // Check Supabase usage - use users table directly
-        const { data, error } = await supabaseClient
+        const { data, error } = await window.supabaseClient
             .from('users')
             .select('daily_query_count, last_reset_date')
             .eq('uid', userId)
@@ -74,7 +74,7 @@ async function checkDailyUsage(userId) {
         // Reset if new day
         if (lastReset !== today) {
             count = 0;
-            await supabaseClient.from('users').update({
+            await window.supabaseClient.from('users').update({
                 daily_query_count: 0,
                 last_reset_date: new Date().toISOString()
             }).eq('uid', userId);
@@ -113,14 +113,14 @@ async function incrementUsage(userId) {
     }
 
     try {
-        const { data } = await supabaseClient
+        const { data } = await window.supabaseClient
             .from('users')
             .select('daily_query_count')
             .eq('uid', userId)
             .single();
 
         const newCount = ((data?.daily_query_count) || 0) + 1;
-        await supabaseClient.from('users').update({
+        await window.supabaseClient.from('users').update({
             daily_query_count: newCount,
             last_reset_date: new Date().toISOString()
         }).eq('uid', userId);
@@ -168,15 +168,41 @@ async function callGemini(message, history = [], userLevel = 'B1') {
         ]
     };
 
-    const response = await fetch(`${AI_CONFIG.apiUrl}?key=${AI_CONFIG.apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(function() { controller.abort(); }, 10000);
+
+    let response;
+    try {
+        response = await fetch(`${AI_CONFIG.apiUrl}?key=${AI_CONFIG.apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+            signal: controller.signal
+        });
+    } catch (e) {
+        clearTimeout(timeoutId);
+        const friendly = new Error(
+            (e && e.name === 'AbortError')
+                ? '⏱ Cavab gec gəlir. Yenidən cəhd edin.'
+                : '🌐 İnternet bağlantısı yoxdur. Zəhmət olmasa yoxlayın.'
+        );
+        friendly.friendly = true;
+        throw friendly;
+    }
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        throw new Error(err.error?.message || `API Error: ${response.status}`);
+        let friendlyMessage = 'Texniki xəta baş verdi. Yenidən cəhd edin.';
+        if (response.status === 429) {
+            friendlyMessage = '⏳ AI servisi həddən artıq sorğu alıb. 1 dəqiqə gözləyin.';
+        } else if (response.status === 403) {
+            friendlyMessage = '🔧 AI servisi müvəqqəti əlçatmazdır.';
+        } else if (response.status === 400) {
+            friendlyMessage = 'Texniki xəta baş verdi. Yenidən cəhd edin.';
+        }
+        const errObj = new Error(friendlyMessage);
+        errObj.friendly = true;
+        throw errObj;
     }
 
     const data = await response.json();

@@ -50,8 +50,8 @@ function initLangSwitcher() {
   langBtns.forEach(btn => {
     btn.addEventListener('click', function() {
       const lang = this.dataset.lang;
-      localStorage.setItem('aliel_lang', lang);
-      if (window.i18n) window.i18n.setLang(lang);
+      localStorage.setItem('selectedLanguage', lang);
+      if (window.switchLanguage) window.switchLanguage(lang);
       document.querySelectorAll('[data-lang]').forEach(b => b.classList.remove('active'));
       this.classList.add('active');
     });
@@ -68,19 +68,27 @@ document.addEventListener('alielAuthReady', function(e) {
   const dashBtn = document.getElementById('navDashBtn') || document.querySelector('.nav-dashboard-btn') || (nav && nav.querySelector('a[href="dashboard.html"]'));
   const navUser = document.getElementById('navUserName') || document.querySelector('.nav-user-name');
 
+  // Hero section CTA buttons
+  const heroStartBtn = document.getElementById('heroStartBtn');
+  const heroDashBtn = document.getElementById('heroDashBtn');
+
   if (!user) {
     if (loginBtn) loginBtn.style.display = 'inline-flex';
     if (logoutBtn) logoutBtn.style.display = 'none';
     if (dashBtn) dashBtn.style.display = 'none';
     if (navUser) navUser.textContent = '';
+    if (heroStartBtn) { heroStartBtn.classList.remove('hidden'); heroStartBtn.style.display = ''; }
+    if (heroDashBtn) heroDashBtn.classList.add('hidden');
     return;
   }
   
-  if (navUser) navUser.textContent = user.name || user.user_metadata?.full_name || user.email.split('@')[0];
+  if (navUser) navUser.textContent = user.name || user.user_metadata?.full_name || (user.email ? user.email.split('@')[0] : 'İstifadəçi');
   
   if (loginBtn) loginBtn.style.display = 'none';
   if (logoutBtn) logoutBtn.style.display = 'inline-flex';
   if (dashBtn) dashBtn.style.display = 'inline-flex';
+  if (heroStartBtn) heroStartBtn.classList.add('hidden');
+  if (heroDashBtn) heroDashBtn.classList.remove('hidden');
 });
 
 // Logout handler
@@ -92,11 +100,14 @@ window.handleLogout = async function() {
   window.location.href = 'index.html';
 };
 
-/* ── E-mail modal ── */
+/* ── E-mail modal / auth-aware CTA ── */
 function openEmailModal() {
-  const el = document.getElementById('emailModal');
-  if (el) { el.classList.add('active'); document.body.style.overflow = 'hidden'; }
-  else window.location.href = 'register.html';
+  const user = window.currentUserData || (window.getCurrentUser ? window.getCurrentUser() : null);
+  if (user) {
+    window.location.href = 'dashboard.html';
+    return;
+  }
+  window.location.href = 'register.html';
 }
 function closeEmailModal() {
   const el = document.getElementById('emailModal');
@@ -111,8 +122,12 @@ function initSmoothScroll() {
       const href = this.getAttribute('href');
       if (href === '#') return;
       e.preventDefault();
-      const target = document.querySelector(href);
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      try {
+        const target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (err) {
+        // Invalid selector (e.g. '#123') — ignore
+      }
     });
   });
 }
